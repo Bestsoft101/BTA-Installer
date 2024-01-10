@@ -1,0 +1,325 @@
+{
+	"downloads": {
+		"bta-21w47a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w47a/bta.jar",
+		"bta-21w46a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w46a/bta.jar",
+		"bta-21w36b.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w36b/bta.jar",
+		"bta-21w36a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w36a/bta.jar",
+		"bta-21w34a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w34a/bta.jar",
+		"bta-7.1-pre1a.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.1-prerelease-1a/better-than-adventure-7.1.Prerelease.1a-client.jar",
+		"bta-7.1-pre1.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.1-prerelease-1/better-than-adventure-7.1.Prerelease.1-client.jar",
+		"bta-1.7.7.0_02.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.7.0_02/bta.jar",
+		"bta-1.7.7.0_01.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.7.0_01/bta.jar",
+		"bta-1.7.7.0.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.7.0/bta.jar",
+		"bta-1.7.7.0-pre1.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.7.0-prerelease-1/bta_1.7.7.0_pre1_client.jar",
+		"bta-1.7.6.2_02.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2_02/bta.jar",
+		"bta-1.7.6.2_01.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2_01/bta.jar",
+		"bta-1.7.6.2.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2/bta.jar",
+		"bta-1.7.6.2-pre2.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2-prerelease-2/bta.jar",
+		"bta-1.7.6.1.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.1/bta.jar",
+		"bta-1.7.6.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6/bta.jar",
+		"bta-1.7.6-pre3.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6-prerelease-3/bta.jar",
+		"bta-1.7.6-pre2c.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6-prerelease-2c/bta.jar",
+		"bta-1.7.6-pre2b.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6-prerelease-2b/bta.jar",
+		"bta-1.7.6-pre2.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6-prerelease-2/bta.jar",
+		"bta-1.7.6-pre1.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6-prerelease-1/bta.jar",
+		"bta-1.7.5_01.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.5_01/bta.jar",
+		"bta-1.7.5.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.5/bta.jar",
+		"bta-1.7.5-pre3.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.5-prerelease-3/bta.jar",
+		"bta-1.7.5-pre2.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.5-prerelease-2/bta.jar",
+		"bta-1.7.5-pre1.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.5-prerelease-1/bta.jar",
+		"bta-1.7.4_02.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_02/bta.jar",
+		"bta-1.7.4_01_1.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_01_1/bta.jar",
+		"bta-1.7.4_01.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_01/bta.jar",
+		"CustomLaunch.jar":		"https://bestsoft100.github.io/Download/CustomLaunch.jar"
+	},
+	"versions": {
+		"7.1 Prerelease 1a": {
+			"jar": "bta-7.1-pre1a.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			}
+		},
+		"7.1 Prerelease 1": {
+			"jar": "bta-7.1-pre1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			}
+		},
+		"1.7.7.0_02": {
+			"jar": "bta-1.7.7.0_02.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "CustomLaunch",
+				"proxy": false
+			}
+		},
+		"1.7.7.0_01": {
+			"jar": "bta-1.7.7.0_01.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "CustomLaunch",
+				"proxy": false
+			}
+		},
+		"1.7.7.0": {
+			"jar": "bta-1.7.7.0.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "CustomLaunch",
+				"proxy": false
+			}
+		},
+		"1.7.7.0 Pre-1": {
+			"jar": "bta-1.7.7.0-pre1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "CustomLaunch",
+				"proxy": false
+			}
+		},
+		"1.7.6.2_02": {
+			"jar": "bta-1.7.6.2_02.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6.2_01": {
+			"jar": "bta-1.7.6.2_01.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6.2": {
+			"jar": "bta-1.7.6.2.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6.2 Pre-2": {
+			"jar": "bta-1.7.6.2-pre2.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			}
+		},
+		"1.7.6.1": {
+			"jar": "bta-1.7.6.1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.7 Snapshot 21w47a": {
+			"jar": "bta-21w47a.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.7 Snapshot 21w46a": {
+			"jar": "bta-21w46a.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6": {
+			"jar": "bta-1.7.6.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Prerelease 3": {
+			"jar": "bta-1.7.6-pre3.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Prerelease 2c": {
+			"jar": "bta-1.7.6-pre2c.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Prerelease 2b": {
+			"jar": "bta-1.7.6-pre2b.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Prerelease 2": {
+			"jar": "bta-1.7.6-pre2.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Prerelease 1": {
+			"jar": "bta-1.7.6-pre1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Snapshot 21w36b": {
+			"jar": "bta-21w36b.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Snapshot 21w36a": {
+			"jar": "bta-21w36a.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.6 Snapshot 21w34a": {
+			"jar": "bta-21w34a.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.5_01": {
+			"jar": "bta-1.7.5_01.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.5": {
+			"jar": "bta-1.7.5.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.5 Prerelease 3": {
+			"jar": "bta-1.7.5-pre3.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.5 Prerelease 2": {
+			"jar": "bta-1.7.5-pre2.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.5 Prerelease 1": {
+			"jar": "bta-1.7.5-pre1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.4_02": {
+			"jar": "bta-1.7.4_02.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.4_01_1": {
+			"jar": "bta-1.7.4_01_1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		},
+		"1.7.4_01": {
+			"jar": "bta-1.7.4_01.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "default",
+				"proxy": false
+			}
+		}
+	}
+}
