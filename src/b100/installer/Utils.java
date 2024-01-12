@@ -296,5 +296,14 @@ public class Utils {
 		
 		StringUtils.saveStringToFile(file, string.toString());
 	}
+	
+	public static <E> int indexOf(E[] array, E obj) {
+		for(int i=0; i < array.length; i++) {
+			if(array[i] != null && array[i].equals(obj)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 }

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import b100.installer.Config;
 import b100.installer.DownloadManager;
 import b100.installer.Utils;
 import b100.installer.VersionList;
@@ -23,6 +24,8 @@ import b100.utils.StringUtils;
 
 @SuppressWarnings("serial")
 public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, Runnable {
+
+	public static final String INSTALL_TYPE = "betacraft";
 	
 	public final InstallerGUI installerGUI;
 	
@@ -42,9 +45,14 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		
 		instanceTextfield = new JTextField();
 		instanceTextfield.setText("Better Than Adventure!");
-		
-		versionMenu = new JComboBox<>(Utils.toArray(VersionList.getAllVersions()));
+
+		String[] allVersions = Utils.toArray(VersionList.getAllVersions());
+		versionMenu = new JComboBox<>(allVersions);
 		versionMenu.setPreferredSize(new Dimension(256, 24));
+		int selectedVersionIndex = Utils.indexOf(allVersions, Config.getInstance().lastSelectedVersion);
+		if(selectedVersionIndex > 0) {
+			versionMenu.setSelectedIndex(selectedVersionIndex);
+		}
 		
 		startButton = new JButton("Install");
 		startButton.addActionListener(this);
@@ -88,6 +96,11 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 	public boolean install() {
 		String selectedVersion = (String) versionMenu.getSelectedItem();
 		System.out.println("Selected Version: " + selectedVersion);
+		
+		Config config = Config.getInstance();
+		config.lastSelectedVersion = selectedVersion;
+		config.lastInstallType = INSTALL_TYPE;
+		config.save();
 		
 		JsonObject versionObject = VersionList.getVersion(selectedVersion);
 		
