@@ -16,6 +16,7 @@
 		"bta-1.7.6.2_01.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2_01/bta.jar",
 		"bta-1.7.6.2.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2/bta.jar",
 		"bta-1.7.6.2-pre2.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2-prerelease-2/bta.jar",
+		"bta-1.7.6.2-pre1.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.2-prerelease-1/bta.jar",
 		"bta-1.7.6.1.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6.1/bta.jar",
 		"bta-1.7.6.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6/bta.jar",
 		"bta-1.7.6-pre3.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.6-prerelease-3/bta.jar",
@@ -76,7 +77,7 @@
 				"proxy": false
 			}
 		},
-		"1.7.7.0 Pre-1": {
+		"1.7.7.0 Prerelease 1": {
 			"jar": "bta-1.7.7.0-pre1.jar",
 			"vanilla": {
 				"json": "BTA.json"
@@ -116,8 +117,14 @@
 				"proxy": false
 			}
 		},
-		"1.7.6.2 Pre-2": {
+		"1.7.6.2 Prerelease 2": {
 			"jar": "bta-1.7.6.2-pre2.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			}
+		},
+		"1.7.6.2 Prerelease 1": {
+			"jar": "bta-1.7.6.2-pre1.jar",
 			"vanilla": {
 				"json": "BTA.json"
 			}
