@@ -53,6 +53,13 @@ public class Config {
 		if(key.equals("lastInstallType")) lastInstallType = value;
 	}
 	
+	public String getLastOrNewestVersion() {
+		if(lastSelectedVersion != null) {
+			return lastSelectedVersion;
+		}
+		return VersionList.getAllVersions().get(0);
+	}
+	
 	public void save() {
 		System.out.println("Saving config");
 		StringBuilder str = new StringBuilder();

@@ -1,13 +1,11 @@
 package b100.installer.gui;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.UUID;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import b100.installer.Config;
@@ -26,8 +24,8 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 	
 	public final InstallerGUI installerGUI;
 	
-	public JComboBox<String> versionMenu;
-	public JButton startButton;
+	public VersionComponent versionComponent;
+	public JButton installButton;
 	
 	public VanillaLauncherInstallerGUI(InstallerGUI installerGUI) {
 		this.installerGUI = installerGUI;
@@ -35,30 +33,27 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 		int inset = 4;
 		getGridBagConstraints().insets.set(inset, inset, inset, inset);
 		
-		String[] allVersions = Utils.toArray(VersionList.getAllVersions());
-		versionMenu = new JComboBox<>(allVersions);
-		versionMenu.setPreferredSize(new Dimension(256, 24));
-		int selectedVersionIndex = Utils.indexOf(allVersions, Config.getInstance().lastSelectedVersion);
-		if(selectedVersionIndex > 0) {
-			versionMenu.setSelectedIndex(selectedVersionIndex);
-		}
+		versionComponent = new VersionComponent();
 		
-		startButton = new JButton("Install");
-		startButton.addActionListener(this);
+		installButton = new JButton("Install");
+		installButton.addActionListener(this);
 		
-		add(Utils.createImagePanel("/logo.png"), 0, 0, 1, 1, 2, 1);
-		add(versionMenu, 0, 1, 1, 0);
-		add(startButton, 1, 1, 0, 0);
+		add(Utils.createImagePanel("/logo.png"), 0, 0, 1, 1);
+		add(versionComponent, 0, 1, 1, 0);
+		add(installButton, 0, 2, 1, 0);
+		
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new Thread(this).start();
+		if(e.getSource() == installButton) {
+			new Thread(this).start();
+		}
 	}
 
 	@Override
 	public void run() {
-		startButton.setEnabled(false);
+		installButton.setEnabled(false);
 		installerGUI.showLog();
 		
 		try {
@@ -69,11 +64,11 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 			e.printStackTrace();
 		}
 		
-		startButton.setEnabled(true);
+		installButton.setEnabled(true);
 	}
 	
 	public boolean install() {
-		String selectedVersion = (String) versionMenu.getSelectedItem();
+		String selectedVersion = versionComponent.getVersion();
 		System.out.println("Selected Version: " + selectedVersion);
 		
 		Config config = Config.getInstance();

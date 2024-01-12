@@ -1,7 +1,6 @@
 package b100.installer.gui;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -28,8 +26,8 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 	public static final String INSTALL_TYPE = "betacraft";
 	
 	public final InstallerGUI installerGUI;
-	
-	public JComboBox<String> versionMenu;
+
+	public VersionComponent versionComponent;
 	public JButton startButton;
 	public JTextField betacraftDirectoryTextfield;
 	public JTextField instanceTextfield;
@@ -45,23 +43,17 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		
 		instanceTextfield = new JTextField();
 		instanceTextfield.setText("Better Than Adventure!");
-
-		String[] allVersions = Utils.toArray(VersionList.getAllVersions());
-		versionMenu = new JComboBox<>(allVersions);
-		versionMenu.setPreferredSize(new Dimension(256, 24));
-		int selectedVersionIndex = Utils.indexOf(allVersions, Config.getInstance().lastSelectedVersion);
-		if(selectedVersionIndex > 0) {
-			versionMenu.setSelectedIndex(selectedVersionIndex);
-		}
+		
+		versionComponent = new VersionComponent();
 		
 		startButton = new JButton("Install");
 		startButton.addActionListener(this);
 		
-		add(Utils.createImagePanel("/logo.png"), 0, 0, 1, 1, 2, 1);
-		add(createTitledPanel(betacraftDirectoryTextfield, "BetaCraft Directory"), 0, 1, 0, 0, 2, 1);
-		add(createTitledPanel(instanceTextfield, "Instance"), 0, 2, 0, 0, 2, 1);
-		add(versionMenu, 0, 3, 1, 0);
-		add(startButton, 1, 3, 0, 0);
+		add(Utils.createImagePanel("/logo.png"), 0, 0, 1, 1);
+		add(createTitledPanel(betacraftDirectoryTextfield, "BetaCraft Directory"), 0, 1, 1, 0);
+		add(createTitledPanel(instanceTextfield, "Instance"), 0, 2, 1, 0);
+		add(versionComponent, 0, 3, 1, 0);
+		add(startButton, 0, 4, 1, 0);
 	}
 	
 	public GridPanel createTitledPanel(Component component, String title) {
@@ -94,7 +86,7 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 	}
 	
 	public boolean install() {
-		String selectedVersion = (String) versionMenu.getSelectedItem();
+		String selectedVersion = versionComponent.getVersion();
 		System.out.println("Selected Version: " + selectedVersion);
 		
 		Config config = Config.getInstance();
@@ -112,7 +104,7 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		
 		JsonObject betaCraftObject = versionObject.getObject("betacraft");
 		if(betaCraftObject == null) {
-			JOptionPane.showMessageDialog(this, "The selected version is not compatible with BetaCraft!");
+			JOptionPane.showMessageDialog(this, "Version '" + selectedVersion + "' is not compatible with BetaCraft!");
 			return false;
 		}
 		

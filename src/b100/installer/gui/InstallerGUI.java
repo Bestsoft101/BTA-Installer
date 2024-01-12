@@ -19,16 +19,20 @@ public class InstallerGUI {
 	public JTabbedPane tabs;
 	
 	public VanillaLauncherInstallerGUI vanillaLauncherInstallerGUI;
+	public BetaCraftInstallerGUI betaCraftInstallerGUI;
 	
 	public InstallerGUI() {
 		mainFrame = new JFrame("BTA Installer" + (Installer.isPortable() ? " (Portable Mode)" : ""));
-		mainFrame.setMinimumSize(new Dimension(100, 100));
+		mainFrame.setMinimumSize(new Dimension(400, 320));
 		
 		mainPanel = new GridPanel();
+
+		vanillaLauncherInstallerGUI = new VanillaLauncherInstallerGUI(this);
+		betaCraftInstallerGUI = new BetaCraftInstallerGUI(this);
 		
 		tabs = new JTabbedPane();
-		tabs.addTab("Vanilla Launcher", new VanillaLauncherInstallerGUI(this));
-		tabs.addTab("BetaCraft", new BetaCraftInstallerGUI(this));
+		tabs.addTab("Vanilla Launcher", vanillaLauncherInstallerGUI);
+		tabs.addTab("BetaCraft", betaCraftInstallerGUI);
 		tabs.addTab("Log", new LogGUI());
 		
 		Config config = Config.getInstance();
