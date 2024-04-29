@@ -73,7 +73,7 @@ public class DownloadManager {
 			
 			System.out.println("Finished Downloading!");
 		}catch (Exception e) {
-			throw new RuntimeException("Error downloading file from '" + url + "' to '" + file.getAbsolutePath() + "'!");
+			throw new RuntimeException("Error downloading file from '" + url + "' to '" + file.getAbsolutePath() + "'!", e);
 		}finally {
 			try {
 				connection.disconnect();
