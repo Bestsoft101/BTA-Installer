@@ -14,6 +14,8 @@ import b100.installer.gui.utils.GridPanel;
 
 public class InstallerGUI {
 	
+	public static InstallerGUI instance;
+	
 	public JFrame mainFrame;
 	public GridPanel mainPanel;
 	public JTabbedPane tabs;
@@ -22,6 +24,11 @@ public class InstallerGUI {
 	public BetaCraftInstallerGUI betaCraftInstallerGUI;
 	
 	public InstallerGUI() {
+		if(instance != null) {
+			throw new IllegalStateException("Instance already exists!");
+		}
+		instance = this;
+		
 		mainFrame = new JFrame("BTA Installer" + (Installer.isPortable() ? " (Portable Mode)" : ""));
 		mainFrame.setMinimumSize(new Dimension(400, 320));
 		

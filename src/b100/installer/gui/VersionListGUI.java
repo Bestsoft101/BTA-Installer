@@ -3,19 +3,28 @@ package b100.installer.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import b100.installer.Utils;
 import b100.installer.VersionList;
 import b100.installer.gui.utils.GridPanel;
 
 public class VersionListGUI implements ActionListener {
+	
+	private List<String> versions = new ArrayList<>();
+	private List<ListDataListener> dataListeners = new ArrayList<>();
 	
 	public JFrame frame;
 	public GridPanel mainPanel;
@@ -28,31 +37,27 @@ public class VersionListGUI implements ActionListener {
 	public JButton confirmButton;
 	public JButton cancelButton;
 	
+	private String selectedVersion;
+	
 	public VersionListGUI(Listener listener, String selectedVersion) {
 		this.listener = listener;
-
-		String[] versions = Utils.toArray(VersionList.getAllVersions());
+		this.selectedVersion = selectedVersion;
 		
 		frame = new JFrame("Select Version");
 		
 		mainPanel = new GridPanel();
 		mainPanel.getGridBagConstraints().insets.set(4, 4, 4, 4);
 		
-		versionList = new JList<>(versions);
+		versionList = new JList<>(new ListModelImpl());
 		versionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		versionList.setEnabled(false);
 		
-		if(selectedVersion != null) {
-			int i = Utils.indexOf(versions, selectedVersion);
-			if(i >= 0) {
-				versionList.setSelectedIndex(i);
-			}
-		}
+		setupVersionList();
 		
 		JScrollPane versionListScrollPane = new JScrollPane(versionList);
 		versionListScrollPane.setPreferredSize(new Dimension(300, 300));
 		
 		refreshButton = new JButton("Refresh");
-		refreshButton.setEnabled(false);
 		confirmButton = new JButton("OK");
 		cancelButton = new JButton("Cancel");
 		
@@ -101,6 +106,71 @@ public class VersionListGUI implements ActionListener {
 	}
 	
 	public void refresh() {
+		versionList.setEnabled(false);
+		
+		new Thread(() -> {
+			long startTime = System.currentTimeMillis();
+			
+			try {
+				VersionList.refreshVersionList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Error!");
+				versionList.setEnabled(true);
+			}
+			
+			long updateTime = System.currentTimeMillis() - startTime;
+			long sleepTime = Math.max(0, 1500 - updateTime);
+			if(sleepTime > 0) {
+				try {
+					Thread.sleep(sleepTime);
+				}catch (Exception e) {}
+			}
+			
+			setupVersionList();
+		}).start();
+	}
+	
+	public void setupVersionList() {
+		versions = VersionList.getAllVersions();
+		
+		for(int i=0; i < dataListeners.size(); i++) {
+			dataListeners.get(i).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
+		}
+		
+		versionList.validate();
+		
+		if(selectedVersion != null) {
+			int i = Utils.indexOf(versions, selectedVersion);
+			if(i >= 0) {
+				versionList.setSelectedIndex(i);
+			}
+		}
+		
+		versionList.setEnabled(true);
+	}
+
+	class ListModelImpl implements ListModel<String> {
+
+		@Override
+		public int getSize() {
+			return versions.size();
+		}
+
+		@Override
+		public String getElementAt(int index) {
+			return versions.get(index);
+		}
+
+		@Override
+		public void addListDataListener(ListDataListener l) {
+			dataListeners.add(l);
+		}
+
+		@Override
+		public void removeListDataListener(ListDataListener l) {
+			dataListeners.remove(l);
+		}
 		
 	}
 	

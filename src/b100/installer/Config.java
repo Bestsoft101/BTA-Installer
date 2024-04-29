@@ -17,6 +17,7 @@ public class Config {
 
 	public String lastSelectedVersion;
 	public String lastInstallType;
+	public long lastVersionQueryTime = 0;
 	
 	private Config() {
 		
@@ -49,8 +50,15 @@ public class Config {
 	}
 	
 	public void parseConfig(String key, String value) {
-		if(key.equals("lastSelectedVersion")) lastSelectedVersion = value;
-		if(key.equals("lastInstallType")) lastInstallType = value;
+		if(key.equals("lastSelectedVersion")) {
+			lastSelectedVersion = value;
+		}else if(key.equals("lastInstallType")) {
+			lastInstallType = value;
+		}else if(key.equals("lastVersionQueryTime")) {
+			lastVersionQueryTime = Long.parseLong(value);
+		}else {
+			throw new RuntimeException("Invalid Key: '" + key + "'!");
+		}
 	}
 	
 	public String getLastOrNewestVersion() {
@@ -66,6 +74,7 @@ public class Config {
 		
 		if(lastSelectedVersion != null) str.append("lastSelectedVersion:" + lastSelectedVersion + "\n");
 		if(lastInstallType != null) str.append("lastInstallType:" + lastInstallType + "\n");
+		str.append("lastVersionQueryTime:" + lastVersionQueryTime + "\n");
 		
 		StringUtils.saveStringToFile(configFile, str.toString());
 		System.out.println("Saved!");

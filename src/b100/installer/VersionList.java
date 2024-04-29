@@ -1,31 +1,81 @@
 package b100.installer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import b100.installer.gui.InstallerGUI;
 import b100.installer.gui.VanillaLauncherInstallerGUI;
 import b100.json.JsonParser;
 import b100.json.element.JsonObject;
 
 public class VersionList {
 	
-	private static JsonObject versions = readVersions();
+	public static final int VERSION = 1;
+	public static final String URL = "https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/main/src/versions.json";
+	public static final long QUERYTIME = 24L * 60L * 60L * 1000L;
 	
-	private static JsonObject readVersions() {
-		try {
-			return JsonParser.instance.parseStream(VanillaLauncherInstallerGUI.class.getResourceAsStream("/versions.json"));
-		}catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Could not load versions.json!");
-			e.printStackTrace();
-			System.exit(0);
-			throw new RuntimeException();
-		}
-	}
+	private static File versionListFile = new File(Installer.getInstallerDirectory(), "versions.json");
+	
+	private static boolean loadedVersions = false;
+	
+	private static JsonObject versions;
 	
 	public static JsonObject getVersions() {
+		if(!loadedVersions) {
+			versions = readVersions();
+			loadedVersions = true;
+		}
 		return versions;
+	}
+	
+	public static JsonObject readVersions() {
+		long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime;
+		if(timeSinceLastQuery > QUERYTIME || !versionListFile.exists()) {
+			refreshVersionList();
+		}
+		
+		JsonObject versions = null;
+		if(versionListFile.exists()) {
+			versions = JsonParser.instance.parseFileContent(versionListFile);
+			if(versions.getInt("version") > VERSION) {
+				JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Installer is outdated, version list may be incomplete!");
+				versions = null;
+			}
+		}
+		
+		if(versions == null) {
+			versions = JsonParser.instance.parseStream(VanillaLauncherInstallerGUI.class.getResourceAsStream("/versions.json"));
+			if(versions == null) {
+				throw new NullPointerException("Could not read internal version list!");
+			}
+		}
+		
+		return versions;
+	}
+	
+	public static void refreshVersionList() {
+		Config.getInstance().lastVersionQueryTime = System.currentTimeMillis();
+		Config.getInstance().save();
+		
+		System.out.println("Refreshing version list");
+		
+		if(versionListFile.exists()) {
+			if(!versionListFile.delete()) {
+				throw new RuntimeException("Could not delete old version list!");
+			}
+		}
+		
+		try {
+			DownloadManager.downloadFileAndPrintProgress(URL, versionListFile);
+			
+			loadedVersions = false;
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Could not get the newest version list!");
+			e.printStackTrace();
+		}
 	}
 	
 	public static List<String> getAllVersions() {

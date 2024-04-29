@@ -23,7 +23,7 @@ public class Installer {
 		}
 		
 		if(portable) {
-			installerDirectory = new File(".").getAbsoluteFile();
+			installerDirectory = new File("").getAbsoluteFile();
 		}else {
 			installerDirectory = Utils.getAppDirectory("bta-installer");
 		}

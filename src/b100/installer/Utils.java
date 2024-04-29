@@ -299,7 +299,16 @@ public class Utils {
 	
 	public static <E> int indexOf(E[] array, E obj) {
 		for(int i=0; i < array.length; i++) {
-			if(array[i] != null && array[i].equals(obj)) {
+			if(obj.equals(array[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public static <E> int indexOf(List<E> list, E obj) {
+		for(int i=0; i < list.size(); i++) {
+			if(obj.equals(list.get(i))) {
 				return i;
 			}
 		}
