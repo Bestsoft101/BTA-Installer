@@ -6,6 +6,7 @@
 		"bta-21w36b.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w36b/bta.jar",
 		"bta-21w36a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w36a/bta.jar",
 		"bta-21w34a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w34a/bta.jar",
+		"bta-7.2-pre1.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.2-prerelease-1/bta-7.2-prerelease-1-client.jar",
 		"bta-7.1_01.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.1_01/bta-7.1_01-client.jar",
 		"bta-7.1.jar":			"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.1/bta-7.1-client.jar",
 		"bta-7.1-pre2a.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.1-prerelease-2a/bta-7.1-pre2a-client.jar",
@@ -39,6 +40,16 @@
 		"CustomLaunch.jar":		"https://gitlab.com/bestsoft100/download/-/raw/main/CustomLaunch.jar"
 	},
 	"versions": {
+		"7.2 Prerelease 1": {
+			"jar": "bta-7.2-pre1.jar",
+			"vanilla": {
+				"json": "BTA.json"
+			},
+			"betacraft": {
+				"launch-method": "CustomLaunch",
+				"proxy": false
+			}
+		},
 		"7.1_01": {
 			"jar": "bta-7.1_01.jar",
 			"vanilla": {
