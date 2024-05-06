@@ -13,6 +13,8 @@ import b100.json.element.JsonObject;
 
 public class VersionList {
 	
+	public static boolean useInternalVersionList = false;
+	
 	public static final int VERSION = 1;
 	public static final String URL = "https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/main/src/versions.json";
 	public static final long QUERYTIME = 24L * 60L * 60L * 1000L;
@@ -32,18 +34,22 @@ public class VersionList {
 	}
 	
 	public static JsonObject readVersions() {
-		long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime;
-		if(timeSinceLastQuery > QUERYTIME || !versionListFile.exists()) {
-			refreshVersionList();
-		}
-		
-		JsonObject versions = null;
-		if(versionListFile.exists()) {
-			versions = JsonParser.instance.parseFileContent(versionListFile);
-			if(versions.getInt("version") > VERSION) {
-				JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Installer is outdated, version list may be incomplete!");
-				versions = null;
+		if(!useInternalVersionList) {
+			long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime;
+			if(timeSinceLastQuery > QUERYTIME || !versionListFile.exists()) {
+				refreshVersionList();
 			}
+			
+			JsonObject versions = null;
+			if(versionListFile.exists()) {
+				versions = JsonParser.instance.parseFileContent(versionListFile);
+				if(versions.getInt("version") > VERSION) {
+					JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Installer is outdated, version list may be incomplete!");
+					versions = null;
+				}
+			}
+		}else {
+			System.out.println("Using internal version list!");
 		}
 		
 		if(versions == null) {
