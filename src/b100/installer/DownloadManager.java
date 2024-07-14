@@ -20,7 +20,7 @@ public class DownloadManager {
 	}
 	
 	public static String getDownloadUrl(String filename) {
-		JsonObject downloads = VersionList.getVersions().getObject("downloads");
+		JsonObject downloads = VersionList.getJson().getObject("downloads");
 		
 		return downloads.getString(filename);
 	}
@@ -85,6 +85,10 @@ public class DownloadManager {
 				out.close();
 			}catch (Exception e) {}
 		}
+	}
+	
+	public static File getDownloadDirectory() {
+		return downloadDirectory;
 	}
 
 }

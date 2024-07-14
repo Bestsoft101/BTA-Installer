@@ -13,46 +13,49 @@ import b100.json.element.JsonObject;
 
 public class VersionList {
 	
-	public static boolean useInternalVersionList = false;
-	
-	public static final int VERSION = 1;
+	public static final int VERSION = 2;
 	public static final String URL = "https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/main/src/versions.json";
 	public static final long QUERYTIME = 24L * 60L * 60L * 1000L;
 	
 	private static File versionListFile = new File(Installer.getInstallerDirectory(), "versions.json");
 	
-	private static boolean loadedVersions = false;
-	
 	private static JsonObject versions;
 	
-	public static JsonObject getVersions() {
-		if(!loadedVersions) {
+	public static JsonObject getJson() {
+		if(versions == null) {
 			versions = readVersions();
-			loadedVersions = true;
 		}
 		return versions;
 	}
 	
 	public static JsonObject readVersions() {
-		if(!useInternalVersionList) {
+		if(!Installer.isOffline()) {
 			long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime;
 			if(timeSinceLastQuery > QUERYTIME || !versionListFile.exists()) {
 				refreshVersionList();
 			}
 			
-			JsonObject versions = null;
 			if(versionListFile.exists()) {
 				versions = JsonParser.instance.parseFileContent(versionListFile);
-				if(versions.getInt("version") > VERSION) {
-					JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Installer is outdated, version list may be incomplete!");
+				int version = versions.getInt("version");
+				if(version > VERSION) {
+					JOptionPane.showMessageDialog(null, "Installer is outdated, version list may be incomplete!");
+					System.out.println("Installer is outdated!");
 					versions = null;
+				}else if(version < VERSION) {
+					JOptionPane.showMessageDialog(null, "Version list on the repository is outdated, using internal version list!");
+					System.out.println("Version list is outdated!");
+					versions = null;
+				}else {
+					System.out.println("Using downloaded version list");
 				}
 			}
 		}else {
-			System.out.println("Using internal version list!");
+			System.out.println("Offline mode enabled!");
 		}
 		
 		if(versions == null) {
+			System.out.println("Loading internal version list");
 			versions = JsonParser.instance.parseStream(VanillaLauncherInstallerGUI.class.getResourceAsStream("/versions.json"));
 			if(versions == null) {
 				throw new NullPointerException("Could not read internal version list!");
@@ -76,8 +79,7 @@ public class VersionList {
 		
 		try {
 			DownloadManager.downloadFileAndPrintProgress(URL, versionListFile);
-			
-			loadedVersions = false;
+			versions = null;
 		}catch (Exception e) {
 			JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Could not get the newest version list!");
 			e.printStackTrace();
@@ -87,7 +89,7 @@ public class VersionList {
 	public static List<String> getAllVersions() {
 		List<String> versionList = new ArrayList<>();
 		
-		JsonObject versions = getVersions().getObject("versions");
+		JsonObject versions = getJson().getObject("versions");
 		for(int i=0; i < versions.entryList().size(); i++) {
 			versionList.add(versions.entryList().get(i).name);
 		}
@@ -96,7 +98,7 @@ public class VersionList {
 	}
 	
 	public static JsonObject getVersion(String name) {
-		return getVersions().getObject("versions").getObject(name);
+		return getJson().getObject("versions").getObject(name);
 	}
 
 }

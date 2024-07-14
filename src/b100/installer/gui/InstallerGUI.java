@@ -29,7 +29,7 @@ public class InstallerGUI {
 		}
 		instance = this;
 		
-		mainFrame = new JFrame("BTA Installer" + (Installer.isPortable() ? " (Portable Mode)" : ""));
+		mainFrame = new JFrame("BTA Installer" + (Installer.isPortable() ? " (Portable Mode)" : "") + (Installer.isOffline() ? " (Offline Mode)" : ""));
 		mainFrame.setMinimumSize(new Dimension(400, 320));
 		
 		mainPanel = new GridPanel();

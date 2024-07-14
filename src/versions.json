@@ -1,5 +1,5 @@
 {
-	"version": 1,
+	"version": 2,
 	"downloads": {
 		"bta-21w47a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w47a/bta.jar",
 		"bta-21w46a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w46a/bta.jar",
@@ -41,31 +41,47 @@
 		"bta-1.7.4_01.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_01/bta.jar",
 		"CustomLaunch.jar":		"https://gitlab.com/bestsoft100/download/-/raw/main/CustomLaunch.jar"
 	},
+	"asmloader": {
+		"filename": "ASMLoader-v2-DEV-2024-06-22.jar",
+		"url": "https://github.com/Bestsoft101/ASMLoader/releases/download/v2-DEV-2024-06-22/ASMLoader-v2-DEV-2024-06-22.jar"
+	},
 	"versions": {
 		"7.2 Prerelease 2": {
 			"jar": "bta-7.2-pre2.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.2-pre2"
 			}
 		},
 		"7.2 Prerelease 1": {
 			"jar": "bta-7.2-pre1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.2-pre1"
 			}
 		},
 		"7.1_01": {
 			"jar": "bta-7.1_01.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
@@ -75,7 +91,9 @@
 		"7.1": {
 			"jar": "bta-7.1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
@@ -85,47 +103,69 @@
 		"7.1 Prerelease 2a": {
 			"jar": "bta-7.1-pre2a.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.1-pre2a"
 			}
 		},
 		"7.1 Prerelease 2": {
 			"jar": "bta-7.1-pre2.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.1-pre2"
 			}
 		},
 		"7.1 Prerelease 1a": {
 			"jar": "bta-7.1-pre1a.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.1-pre1a"
 			}
 		},
 		"7.1 Prerelease 1": {
 			"jar": "bta-7.1-pre1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.1-pre1"
 			}
 		},
 		"1.7.7.0_02": {
 			"jar": "bta-1.7.7.0_02.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
@@ -135,7 +175,9 @@
 		"1.7.7.0_01": {
 			"jar": "bta-1.7.7.0_01.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
@@ -145,7 +187,8 @@
 		"1.7.7.0": {
 			"jar": "bta-1.7.7.0.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
@@ -155,17 +198,24 @@
 		"1.7.7.0 Prerelease 1": {
 			"jar": "bta-1.7.7.0-pre1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.7.0-pre1"
 			}
 		},
 		"1.7.6.2_02": {
 			"jar": "bta-1.7.6.2_02.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -175,7 +225,9 @@
 		"1.7.6.2_01": {
 			"jar": "bta-1.7.6.2_01.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -185,7 +237,9 @@
 		"1.7.6.2": {
 			"jar": "bta-1.7.6.2.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -195,19 +249,31 @@
 		"1.7.6.2 Prerelease 2": {
 			"jar": "bta-1.7.6.2-pre2.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
+			},
+			"fabric": {
+				"version-name-override": "1.7.6.2-pre2"
 			}
 		},
 		"1.7.6.2 Prerelease 1": {
 			"jar": "bta-1.7.6.2-pre1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
+			},
+			"fabric": {
+				"version-name-override": "1.7.6.2-pre1"
 			}
 		},
 		"1.7.6.1": {
 			"jar": "bta-1.7.6.1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -217,27 +283,39 @@
 		"1.7.7 Snapshot 21w47a": {
 			"jar": "bta-21w47a.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "21w47a"
 			}
 		},
 		"1.7.7 Snapshot 21w46a": {
 			"jar": "bta-21w46a.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "21w46a"
 			}
 		},
 		"1.7.6_01": {
 			"jar": "bta-1.7.6_01.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -247,7 +325,9 @@
 		"1.7.6": {
 			"jar": "bta-1.7.6.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -257,87 +337,129 @@
 		"1.7.6 Prerelease 3": {
 			"jar": "bta-1.7.6-pre3.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.6-pre3"
 			}
 		},
 		"1.7.6 Prerelease 2c": {
 			"jar": "bta-1.7.6-pre2c.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.6-pre2v"
 			}
 		},
 		"1.7.6 Prerelease 2b": {
 			"jar": "bta-1.7.6-pre2b.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.6-pre2b"
 			}
 		},
 		"1.7.6 Prerelease 2": {
 			"jar": "bta-1.7.6-pre2.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.6-pre2"
 			}
 		},
 		"1.7.6 Prerelease 1": {
 			"jar": "bta-1.7.6-pre1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.6-pre1"
 			}
 		},
 		"1.7.6 Snapshot 21w36b": {
 			"jar": "bta-21w36b.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "21w36b"
 			}
 		},
 		"1.7.6 Snapshot 21w36a": {
 			"jar": "bta-21w36a.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "21w36a"
 			}
 		},
 		"1.7.6 Snapshot 21w34a": {
 			"jar": "bta-21w34a.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "21w34a"
 			}
 		},
 		"1.7.5_01": {
 			"jar": "bta-1.7.5_01.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -347,7 +469,9 @@
 		"1.7.5": {
 			"jar": "bta-1.7.5.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -357,37 +481,54 @@
 		"1.7.5 Prerelease 3": {
 			"jar": "bta-1.7.5-pre3.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.5-pre3"
 			}
 		},
 		"1.7.5 Prerelease 2": {
 			"jar": "bta-1.7.5-pre2.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.5-pre2"
 			}
 		},
 		"1.7.5 Prerelease 1": {
 			"jar": "bta-1.7.5-pre1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "1.7.5-pre1"
 			}
 		},
 		"1.7.4_02": {
 			"jar": "bta-1.7.4_02.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -397,7 +538,9 @@
 		"1.7.4_01_1": {
 			"jar": "bta-1.7.4_01_1.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",
@@ -407,7 +550,9 @@
 		"1.7.4_01": {
 			"jar": "bta-1.7.4_01.jar",
 			"vanilla": {
-				"json": "BTA.json"
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
 			},
 			"betacraft": {
 				"launch-method": "default",

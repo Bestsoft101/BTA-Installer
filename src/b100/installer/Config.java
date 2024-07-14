@@ -17,6 +17,8 @@ public class Config {
 
 	public String lastSelectedVersion;
 	public String lastInstallType;
+	public String lastMinecraftDirectory;
+	public String lastBetaCraftDirectory;
 	public long lastVersionQueryTime = 0;
 	
 	private Config() {
@@ -56,6 +58,10 @@ public class Config {
 			lastInstallType = value;
 		}else if(key.equals("lastVersionQueryTime")) {
 			lastVersionQueryTime = Long.parseLong(value);
+		}else if(key.equals("lastMinecraftDirectory")) {
+			lastMinecraftDirectory = value;
+		}else if(key.equals("lastBetaCraftDirectory")) {
+			lastBetaCraftDirectory = value;
 		}else {
 			throw new RuntimeException("Invalid Key: '" + key + "'!");
 		}
@@ -74,6 +80,8 @@ public class Config {
 		
 		if(lastSelectedVersion != null) str.append("lastSelectedVersion:" + lastSelectedVersion + "\n");
 		if(lastInstallType != null) str.append("lastInstallType:" + lastInstallType + "\n");
+		if(lastMinecraftDirectory != null) str.append("lastMinecraftDirectory:" + lastMinecraftDirectory + "\n");
+		if(lastBetaCraftDirectory != null) str.append("lastBetaCraftDirectory:" + lastBetaCraftDirectory + "\n");
 		str.append("lastVersionQueryTime:" + lastVersionQueryTime + "\n");
 		
 		StringUtils.saveStringToFile(configFile, str.toString());

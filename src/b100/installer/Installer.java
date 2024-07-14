@@ -7,20 +7,11 @@ public class Installer {
 	
 	private static File installerDirectory;
 	private static boolean portable;
+	private static boolean offline;
 	
 	static {
-		InputStream stream = null;
-		try {
-			stream = Installer.class.getResourceAsStream("/portable");
-			
-			portable = stream != null;
-		}catch (Exception e) {
-			portable = false;
-		}finally {
-			try {
-				stream.close();
-			}catch (Exception e) {}
-		}
+		portable = checkFileExists("portable");
+		offline = checkFileExists("offline");
 		
 		if(portable) {
 			installerDirectory = new File("").getAbsoluteFile();
@@ -30,10 +21,44 @@ public class Installer {
 		
 		System.out.println("Installer Directory: '" + installerDirectory.getAbsolutePath() + "'");
 		System.out.println("Portable Mode: " + portable);
+		System.out.println("Offline Mode: " + offline);
+	}
+	
+	private static boolean checkFileExists(String name) {
+		InputStream stream = null;
+		try {
+			stream = Installer.class.getResourceAsStream("/" + name);
+			if(stream != null) {
+				return true;
+			}
+		}catch (Exception e) {
+		}finally {
+			try {
+				stream.close();
+			}catch (Exception e) {}
+		}
+		
+		try {
+			stream = Installer.class.getResourceAsStream("/" + name + ".txt");
+			if(stream != null) {
+				return true;
+			}
+		}catch (Exception e) {
+		}finally {
+			try {
+				stream.close();
+			}catch (Exception e) {}
+		}
+		
+		return false;
 	}
 	
 	public static boolean isPortable() {
 		return portable;
+	}
+	
+	public static boolean isOffline() {
+		return offline;
 	}
 	
 	public static File getInstallerDirectory() {

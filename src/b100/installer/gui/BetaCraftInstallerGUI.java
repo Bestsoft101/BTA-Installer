@@ -1,22 +1,25 @@
 package b100.installer.gui;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
 import b100.installer.Config;
 import b100.installer.DownloadManager;
+import b100.installer.ModLoader;
 import b100.installer.Utils;
 import b100.installer.VersionList;
 import b100.installer.gui.utils.GridPanel;
+import b100.installer.gui.utils.GuiUtils;
+import b100.installer.gui.utils.VersionComponent;
 import b100.json.element.JsonObject;
 import b100.utils.StringUtils;
 
@@ -39,31 +42,25 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		getGridBagConstraints().insets.set(inset, inset, inset, inset);
 		
 		betacraftDirectoryTextfield = new JTextField();
-		betacraftDirectoryTextfield.setText(getBetacraftDirectory().getAbsolutePath());
+		betacraftDirectoryTextfield.setText(getBetaCraftDirectory());
 		
 		instanceTextfield = new JTextField();
 		instanceTextfield.setText("Better Than Adventure!");
 		
-		versionComponent = new VersionComponent();
+		List<ModLoader> modLoaders = new ArrayList<>();
+		modLoaders.add(ModLoader.None);
+		versionComponent = new VersionComponent(modLoaders, (version, modLoader) -> modLoader == ModLoader.None);
 		
 		startButton = new JButton("Install");
 		startButton.addActionListener(this);
 		
-		add(Utils.createImagePanel("/logo.png"), 0, 0, 1, 1);
-		add(createTitledPanel(betacraftDirectoryTextfield, "BetaCraft Directory"), 0, 1, 1, 0);
-		add(createTitledPanel(instanceTextfield, "Instance"), 0, 2, 1, 0);
+		add(GuiUtils.createImagePanel("/logo.png"), 0, 0, 1, 1);
+		add(GuiUtils.createTitledPanel(betacraftDirectoryTextfield, "BetaCraft Directory"), 0, 1, 1, 0);
+		add(GuiUtils.createTitledPanel(instanceTextfield, "Instance"), 0, 2, 1, 0);
 		add(versionComponent, 0, 3, 1, 0);
 		add(startButton, 0, 4, 1, 0);
 	}
 	
-	public GridPanel createTitledPanel(Component component, String title) {
-		GridPanel panel = new GridPanel();
-		panel.setBorder(new TitledBorder(title));
-		panel.getGridBagConstraints().insets.set(4, 4, 4, 4);
-		panel.add(component, 0, 0, 1, 1);
-		return panel;
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		new Thread(this).start();
@@ -86,22 +83,30 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 	}
 	
 	public boolean install() {
-		String selectedVersion = versionComponent.getVersion();
-		System.out.println("Selected Version: " + selectedVersion);
+		String selectedVersion = versionComponent.getSelectedVersion();
+		ModLoader loader = versionComponent.getSelectedLoader();
+		File betacraftDirectory = new File(betacraftDirectoryTextfield.getText());
 		
+		System.out.println("Selected Version: " + selectedVersion);
+		System.out.println("Selected Mod Loader: " + loader);
+		System.out.println("BetaCraft Directory: " + betacraftDirectory.getAbsolutePath());
+
+		// Update config
 		Config config = Config.getInstance();
 		config.lastSelectedVersion = selectedVersion;
 		config.lastInstallType = INSTALL_TYPE;
+		config.lastBetaCraftDirectory = betacraftDirectory.getAbsolutePath();
 		config.save();
 		
-		JsonObject versionObject = VersionList.getVersion(selectedVersion);
-		
-		File betacraftDirectory = new File(betacraftDirectoryTextfield.getText());
+		// Validate path
 		if(!betacraftDirectory.exists() || !betacraftDirectory.isDirectory()) {
 			JOptionPane.showMessageDialog(this, "Invalid BetaCraft Directory: '" + betacraftDirectory.getAbsolutePath() + "'!");
+			config.lastBetaCraftDirectory = null;
+			config.save();
 			return false;
 		}
-		
+
+		JsonObject versionObject = VersionList.getVersion(selectedVersion);
 		JsonObject betaCraftObject = versionObject.getObject("betacraft");
 		if(betaCraftObject == null) {
 			JOptionPane.showMessageDialog(this, "Version '" + selectedVersion + "' is not compatible with BetaCraft!");
@@ -183,7 +188,15 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		return true;
 	}
 	
-	public static File getBetacraftDirectory() {
+	public String getBetaCraftDirectory() {
+		String last = Config.getInstance().lastBetaCraftDirectory;
+		if(last != null) {
+			return last;
+		}
+		return getDefaultBetacraftDirectory().getAbsolutePath();
+	}
+	
+	public static File getDefaultBetacraftDirectory() {
 		String folder = null;
 		
 		String os = System.getProperty("os.name").toLowerCase();

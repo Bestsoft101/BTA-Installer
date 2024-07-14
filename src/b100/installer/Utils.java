@@ -21,12 +21,11 @@ import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 
-import b100.installer.gui.utils.ImagePanel;
 import b100.utils.FileUtils;
 import b100.utils.StreamUtils;
 import b100.utils.StringUtils;
 
-public class Utils {
+public abstract class Utils {
 	
 	public static final int OS_WINDOWS = 0;
 	public static final int OS_MAC = 1;
@@ -234,14 +233,6 @@ public class Utils {
 		}
 	}
 	
-	public static ImagePanel createImagePanel(String path) {
-		BufferedImage image = readImage(path);
-		if(image == null) {
-			throw new NullPointerException("Image is null!");
-		}
-		return new ImagePanel(image);
-	}
-	
 	public static void copyFile(File from, File to) {
 		InputStream in = null;
 		OutputStream out = null;
@@ -276,6 +267,20 @@ public class Utils {
 			properties.put(line.substring(0, j), line.substring(j + 1));
 		}
 		return properties;
+	}
+	
+	public static String combineStringsSeperatedWithSpaces(List<String> list) {
+		if(list == null || list.size() == 0) {
+			return "";
+		}
+		StringBuilder argsStr = new StringBuilder();
+		for(int i=0; i < list.size(); i++) {
+			if(i > 0) {
+				argsStr.append(' ');
+			}
+			argsStr.append(list.get(i));
+		}
+		return argsStr.toString();
 	}
 	
 	public static void saveProperties(File file, Map<String, String> properties) {
