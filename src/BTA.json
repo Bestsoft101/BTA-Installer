@@ -275,7 +275,7 @@
 		}
 	],
 	"mainClass": "net.minecraft.client.Minecraft",
-	"minecraftArguments": "${auth_player_name} ${auth_session} --gameDir ${game_directory} --assetsDir ${game_assets}",
+	"minecraftArguments": "${auth_player_name} ${auth_session} --gameDir ${game_directory} --assetsDir ${game_assets} --username ${auth_player_name}",
 	"minimumLauncherVersion": 7,
 	"releaseTime": "2011-07-07T22:00:00+00:00",
 	"time": "2011-07-07T22:00:00+00:00",
