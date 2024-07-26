@@ -6,6 +6,7 @@
 		"bta-21w36b.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w36b/bta.jar",
 		"bta-21w36a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w36a/bta.jar",
 		"bta-21w34a.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/21w34a/bta.jar",
+		"bta-7.2.jar":			"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.2/bta-7.2-client.jar",
 		"bta-7.2-pre2.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.2-prerelease-2/bta-7.2-prerelease-2-client.jar",
 		"bta-7.2-pre1.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.2-prerelease-1/bta-7.2-prerelease-1-client.jar",
 		"bta-7.1_01.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v7.1_01/bta-7.1_01-client.jar",
@@ -46,6 +47,21 @@
 		"url": "https://github.com/Bestsoft101/ASMLoader/releases/download/v2-DEV-2024-06-22/ASMLoader-v2-DEV-2024-06-22.jar"
 	},
 	"versions": {
+		"7.2": {
+			"jar": "bta-7.2.jar",
+			"vanilla": {
+				"json": "BTA.json",
+				"json-fabric": "BTA Fabric.json",
+				"json-babric": "BTA Babric.json"
+			},
+			"betacraft": {
+				"launch-method": "CustomLaunch",
+				"proxy": false
+			},
+			"fabric": {
+				"version-name-override": "7.2"
+			}
+		},
 		"7.2 Prerelease 2": {
 			"jar": "bta-7.2-pre2.jar",
 			"vanilla": {
