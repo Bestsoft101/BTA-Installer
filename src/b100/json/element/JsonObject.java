@@ -65,12 +65,29 @@ public class JsonObject implements JsonElement, Iterable<JsonEntry>{
 		
 		int i=0;
 		for(JsonEntry entry : entries) {
-			if(!isCompact()) writer.write('\n');
-			else writer.write(' ');
+			if(!isCompact()) {
+				writer.write('\n');
+			} else {
+				writer.write(' ');
+			}
+			
 			new JsonString(entry.name).write(writer);
+			
 			writer.write(": ");
-			entry.value.write(writer);
-			if(i < entries.size() - 1) writer.write(',');
+			
+			if(entry.value == null) {
+				throw new NullPointerException("Value of entry '" + entry.name + "' is null!");
+			}
+			
+			try {
+				entry.value.write(writer);
+			}catch (Exception e) {
+				throw new RuntimeException("Writing entry '" + entry.name + "'", e);
+			}
+			
+			if(i < entries.size() - 1) {
+				writer.write(',');
+			}
 			i++;
 		}
 		
@@ -235,6 +252,9 @@ public class JsonObject implements JsonElement, Iterable<JsonEntry>{
 	// Setters
 	
 	public JsonObject set(String id, JsonElement element) {
+		if(element == null) {
+			throw new NullPointerException();
+		}
 		getOrCreateEntry(id).value = element;
 		return this;
 	}

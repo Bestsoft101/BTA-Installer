@@ -4,7 +4,7 @@ import b100.utils.InvalidCharacterException;
 import b100.utils.StringReader;
 import b100.utils.StringWriter;
 
-public class JsonString implements JsonElement{
+public class JsonString implements JsonElement {
 	
 	public String value;
 	
@@ -25,10 +25,31 @@ public class JsonString implements JsonElement{
 				reader.next();
 				char next = reader.get();
 				if(next == 'n' || next == 'N') {
+					// New line
 					builder.append('\n');
-				} else if(next == '\\'){
+					
+				} else if(next == 'u' || next == 'U') {
+					// Unicode hex
+					reader.next();
+					
+					String hex = reader.get(4);
+					int charIndex;
+					
+					try {
+						charIndex = Integer.parseInt(hex, 16);	
+					}catch (NumberFormatException e) {
+						throw new InvalidCharacterException(reader, "Invalid hex code \"" + hex + "\"");
+					}
+					
+					builder.append((char) charIndex);
+					reader.skip(4);
+					
+					continue;
+				} else if(next == '\\') {
+					// Backslash
 					builder.append('\\');
-				}else {
+					
+				} else {
 					throw new InvalidCharacterException(reader);
 				}
 				reader.next();

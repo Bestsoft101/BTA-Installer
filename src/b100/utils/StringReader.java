@@ -18,6 +18,10 @@ public class StringReader {
 		return string.charAt(i);
 	}
 	
+	public String get(int count) {
+		return string.substring(i, i + count);
+	}
+	
 	public void skipWhitespace() {
 		while(i < string.length() && isWhitespace(get())) i++;
 	}
@@ -26,6 +30,12 @@ public class StringReader {
 		char c = get();
 		next();
 		return c;
+	}
+	
+	public String getAndSkip(int count) {
+		String str = get(count);
+		i += count;
+		return str;
 	}
 	
 	public void expectAndSkip(char c) {

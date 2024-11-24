@@ -9,11 +9,18 @@ public class InvalidCharacterException extends RuntimeException{
 
 	private StringReader reader;
 	
+	private String message;
+	
 	private int line = 1;
 	private int column = 1;
 	
 	public InvalidCharacterException(StringReader stringReader) {
+		this(stringReader, null);
+	}
+	
+	public InvalidCharacterException(StringReader stringReader, String message) {
 		this.reader = stringReader;
+		this.message = message;
 		
 		String string = reader.string();
 		for(int i=0; i < reader.position(); i++) {
@@ -60,7 +67,11 @@ public class InvalidCharacterException extends RuntimeException{
 	}
 	
 	public String getMessage() {
-		return "Invalid character \""+getPrintChar(reader.get(), false)+"\" at line "+line+" column "+column+" (index "+reader.position()+")";
+		if(message != null) {
+			return message + " at line " + line + " column " + column + " (index " + reader.position() + ")";
+		}else {
+			return "Invalid character \"" + getPrintChar(reader.get(), false) + "\" at line " + line + " column " + column + " (index " + reader.position() + ")";	
+		}
 	}
 	
 	public static String getPrintChar(char c, boolean a) {
