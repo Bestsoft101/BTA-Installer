@@ -167,13 +167,13 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 				JOptionPane.showMessageDialog(this, "The selected version does not support " + loader.name() + "!");
 				return false;
 			}
-			jsonPath = "/" + jsonFabric.getAsString().value;
+			jsonPath = jsonFabric.getAsString().value;
 		}else {
-			jsonPath = "/" + vanillaObject.getString("json");
+			jsonPath = vanillaObject.getString("json");
 		}
 		
 		// Copy json file into instance folder and set id
-		JsonObject json = JsonParser.instance.parseStream(VanillaLauncherInstallerGUI.class.getResourceAsStream(jsonPath));
+		JsonObject json = JsonParser.instance.parseFileContent(DownloadManager.getFile(jsonPath));
 		json.set("id", versionName);
 		StringUtils.saveStringToFile(new File(versionFolder, versionName + ".json"),  json.toString());
 		

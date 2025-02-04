@@ -42,7 +42,12 @@
 		"bta-1.7.4_02.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_02/bta.jar",
 		"bta-1.7.4_01_1.jar":	"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_01_1/bta.jar",
 		"bta-1.7.4_01.jar":		"https://github.com/Better-than-Adventure/bta-download-repo/releases/download/v1.7.4_01/bta.jar",
-		"CustomLaunch.jar":		"https://gitlab.com/bestsoft100/download/-/raw/main/CustomLaunch.jar"
+		"CustomLaunch.jar":		"https://gitlab.com/bestsoft100/download/-/raw/main/CustomLaunch.jar",
+		"BTA.json":				"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA.json",
+		"BTA LWJGL3.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20LWJGL3.json",
+		"BTA Babric.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20Babric.json",
+		"BTA Fabric.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20Fabric.json"
+		
 	},
 	"asmloader": {
 		"filename": "ASMLoader-v2-DEV-2024-06-22.jar",
