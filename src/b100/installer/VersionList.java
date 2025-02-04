@@ -13,13 +13,17 @@ import b100.json.element.JsonObject;
 
 public class VersionList {
 	
-	public static final int VERSION = 2;
+	public static final int VERSION = 3;
 	public static final String URL = "https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/main/src/versions.json";
 	public static final long QUERYTIME = 24L * 60L * 60L * 1000L;
 	
 	private static File versionListFile = new File(Installer.getInstallerDirectory(), "versions.json");
 	
 	private static JsonObject versions;
+	
+	public static boolean validateVersion() {
+		return getJson().getInt("version") == VERSION;
+	}
 	
 	public static JsonObject getJson() {
 		if(versions == null) {

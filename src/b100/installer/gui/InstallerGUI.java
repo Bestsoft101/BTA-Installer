@@ -10,6 +10,7 @@ import javax.swing.UIManager;
 
 import b100.installer.Config;
 import b100.installer.Installer;
+import b100.installer.VersionList;
 import b100.installer.gui.utils.GridPanel;
 
 public class InstallerGUI {
@@ -67,6 +68,11 @@ public class InstallerGUI {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		if(!VersionList.validateVersion()) {
+			JOptionPane.showMessageDialog(null, "Internal version list contains wrong version number! This is a bug!");
+			return;
 		}
 		
 		File file = Installer.getInstallerDirectory();
