@@ -34,7 +34,7 @@ public class VersionList {
 	
 	public static JsonObject readVersions() {
 		if(!Installer.isOffline()) {
-			long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime;
+			long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime.value;
 			if(timeSinceLastQuery > QUERYTIME || !versionListFile.exists()) {
 				refreshVersionList();
 			}
@@ -70,7 +70,7 @@ public class VersionList {
 	}
 	
 	public static void refreshVersionList() {
-		Config.getInstance().lastVersionQueryTime = System.currentTimeMillis();
+		Config.getInstance().lastVersionQueryTime.value = System.currentTimeMillis();
 		Config.getInstance().save();
 		
 		System.out.println("Refreshing version list");

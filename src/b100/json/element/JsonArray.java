@@ -25,6 +25,10 @@ public class JsonArray implements JsonElement, Iterable<JsonElement>{
 		this.elements = elements;
 	}
 	
+	public JsonArray(List<JsonElement> list) {
+		this.elements = Utils.toArray(JsonElement.class, list);
+	}
+	
 	public JsonArray(StringReader reader) {
 		List<JsonElement> elementsList = new ArrayList<>();
 		

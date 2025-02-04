@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import b100.json.element.JsonObject;
+import b100.utils.FileUtils;
 
 public class DownloadManager {
 	
@@ -37,6 +38,8 @@ public class DownloadManager {
 	}
 	
 	public static void downloadFileAndPrintProgress(String url, File file) {
+		FileUtils.createFolderForFile(file);
+		
 		HttpURLConnection connection = null;
 		BufferedInputStream in = null;
 		BufferedOutputStream out = null;

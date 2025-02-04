@@ -2,90 +2,36 @@ package b100.installer;
 
 import java.io.File;
 
-import b100.utils.StringUtils;
+import b100.installer.config.ConfigFile;
+import b100.installer.config.LongProperty;
+import b100.installer.config.StringProperty;
 
-public class Config {
-	
-	private static final Config instance = new Config();
+public class Config extends ConfigFile {
+
+	public static final File CONFIG_FOLDER = Installer.getInstallerDirectory();
+	public static final File CONFIG_FILE = new File(CONFIG_FOLDER, "installer.txt");
+	private static final Config INSTANCE = new Config(CONFIG_FILE);
 	
 	public static Config getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
-	public File configFolder = Installer.getInstallerDirectory();
-	public File configFile = new File(configFolder, "installer.txt");
-
-	public String lastSelectedVersion;
-	public String lastInstallType;
-	public String lastMinecraftDirectory;
-	public String lastBetaCraftDirectory;
-	public long lastVersionQueryTime = 0;
+	public StringProperty lastSelectedVersion = register("lastSelectedVersion", new StringProperty());
+	public StringProperty lastInstallType = register("lastInstallType", new StringProperty());
+	public StringProperty lastMinecraftDirectory = register("lastMinecraftDirectory", new StringProperty());
+	public StringProperty lastBetaCraftDirectory = register("lastBetaCraftDirectory", new StringProperty());
+	public StringProperty lastMultimcDirectory = register("lastMultimcDirectory", new StringProperty());
+	public LongProperty lastVersionQueryTime = register("lastVersionQueryTime", new LongProperty(0));
 	
-	private Config() {
-		
-	}
-	
-	public void load() {
-		if(!configFile.exists()) {
-			return;
-		}
-		String string = StringUtils.getFileContentAsString(configFile);
-		String[] lines = string.split("\n");
-		
-		for(int i=0; i < lines.length; i++) {
-			String line = lines[i];
-			int j = line.indexOf(':');
-			if(j == -1 || j >= line.length() - 1) {
-				continue;
-			}
-			
-			String key = line.substring(0, j);
-			String value = line.substring(j + 1);
-			
-			try {
-				parseConfig(key, value);
-			}catch (Exception e) {
-				System.err.println("Error parsing config line: '" + line + "'");
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void parseConfig(String key, String value) {
-		if(key.equals("lastSelectedVersion")) {
-			lastSelectedVersion = value;
-		}else if(key.equals("lastInstallType")) {
-			lastInstallType = value;
-		}else if(key.equals("lastVersionQueryTime")) {
-			lastVersionQueryTime = Long.parseLong(value);
-		}else if(key.equals("lastMinecraftDirectory")) {
-			lastMinecraftDirectory = value;
-		}else if(key.equals("lastBetaCraftDirectory")) {
-			lastBetaCraftDirectory = value;
-		}else {
-			throw new RuntimeException("Invalid Key: '" + key + "'!");
-		}
+	private Config(File file) {
+		super(file);
 	}
 	
 	public String getLastOrNewestVersion() {
-		if(lastSelectedVersion != null) {
-			return lastSelectedVersion;
+		if(lastSelectedVersion.value != null) {
+			return lastSelectedVersion.value;
 		}
 		return VersionList.getAllVersions().get(0);
-	}
-	
-	public void save() {
-		System.out.println("Saving config");
-		StringBuilder str = new StringBuilder();
-		
-		if(lastSelectedVersion != null) str.append("lastSelectedVersion:" + lastSelectedVersion + "\n");
-		if(lastInstallType != null) str.append("lastInstallType:" + lastInstallType + "\n");
-		if(lastMinecraftDirectory != null) str.append("lastMinecraftDirectory:" + lastMinecraftDirectory + "\n");
-		if(lastBetaCraftDirectory != null) str.append("lastBetaCraftDirectory:" + lastBetaCraftDirectory + "\n");
-		str.append("lastVersionQueryTime:" + lastVersionQueryTime + "\n");
-		
-		StringUtils.saveStringToFile(configFile, str.toString());
-		System.out.println("Saved!");
 	}
 
 }

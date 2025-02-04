@@ -46,7 +46,9 @@
 		"BTA.json":				"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA.json",
 		"BTA LWJGL3.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20LWJGL3.json",
 		"BTA Babric.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20Babric.json",
-		"BTA Fabric.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20Fabric.json"
+		"BTA Fabric.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/BTA%20Fabric.json",
+		"multimc/patches/lwjgl3.json":		"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/multimc/patches/lwjgl3.json",
+		"multimc/patches/minecraft.json":	"https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/refs/heads/resources/multimc/patches/minecraft.json"
 		
 	},
 	"asmloader": {
@@ -58,6 +60,9 @@
 			"jar": "bta-7.3.jar",
 			"vanilla": {
 				"json": "BTA LWJGL3.json",
+			},
+			"multimc": {
+				"type": "lwjgl3"
 			}
 		},
 		"7.2_01": {
@@ -73,6 +78,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.2_01"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.2": {
@@ -88,6 +96,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.2"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.2 Prerelease 2": {
@@ -103,6 +114,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.2-pre2"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.2 Prerelease 1": {
@@ -118,6 +132,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.2-pre1"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.1_01": {
@@ -130,6 +147,9 @@
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.1": {
@@ -142,6 +162,9 @@
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.1 Prerelease 2a": {
@@ -157,6 +180,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.1-pre2a"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.1 Prerelease 2": {
@@ -172,6 +198,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.1-pre2"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.1 Prerelease 1a": {
@@ -187,6 +216,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.1-pre1a"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"7.1 Prerelease 1": {
@@ -202,6 +234,9 @@
 			},
 			"fabric": {
 				"version-name-override": "7.1-pre1"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"1.7.7.0_02": {
@@ -214,6 +249,9 @@
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"1.7.7.0_01": {
@@ -226,6 +264,9 @@
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"1.7.7.0": {
@@ -237,6 +278,9 @@
 			"betacraft": {
 				"launch-method": "CustomLaunch",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"1.7.7.0 Prerelease 1": {
@@ -252,6 +296,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.7.0-pre1"
+			},
+			"multimc": {
+				"type": "noawt"
 			}
 		},
 		"1.7.6.2_02": {
@@ -264,6 +311,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6.2_01": {
@@ -276,6 +326,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6.2": {
@@ -288,6 +341,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6.2 Prerelease 2": {
@@ -299,6 +355,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6.2-pre2"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6.2 Prerelease 1": {
@@ -310,6 +369,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6.2-pre1"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6.1": {
@@ -322,6 +384,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.7 Snapshot 21w47a": {
@@ -337,6 +402,9 @@
 			},
 			"fabric": {
 				"version-name-override": "21w47a"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.7 Snapshot 21w46a": {
@@ -352,6 +420,9 @@
 			},
 			"fabric": {
 				"version-name-override": "21w46a"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6_01": {
@@ -364,6 +435,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6": {
@@ -376,6 +450,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Prerelease 3": {
@@ -391,6 +468,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6-pre3"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Prerelease 2c": {
@@ -406,6 +486,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6-pre2v"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Prerelease 2b": {
@@ -421,6 +504,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6-pre2b"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Prerelease 2": {
@@ -436,6 +522,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6-pre2"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Prerelease 1": {
@@ -451,6 +540,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.6-pre1"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Snapshot 21w36b": {
@@ -466,6 +558,9 @@
 			},
 			"fabric": {
 				"version-name-override": "21w36b"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Snapshot 21w36a": {
@@ -481,6 +576,9 @@
 			},
 			"fabric": {
 				"version-name-override": "21w36a"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.6 Snapshot 21w34a": {
@@ -496,6 +594,9 @@
 			},
 			"fabric": {
 				"version-name-override": "21w34a"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.5_01": {
@@ -508,6 +609,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.5": {
@@ -520,6 +624,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.5 Prerelease 3": {
@@ -535,6 +642,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.5-pre3"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.5 Prerelease 2": {
@@ -550,6 +660,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.5-pre2"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.5 Prerelease 1": {
@@ -565,6 +678,9 @@
 			},
 			"fabric": {
 				"version-name-override": "1.7.5-pre1"
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.4_02": {
@@ -577,6 +693,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.4_01_1": {
@@ -589,6 +708,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		},
 		"1.7.4_01": {
@@ -601,6 +723,9 @@
 			"betacraft": {
 				"launch-method": "default",
 				"proxy": false
+			},
+			"multimc": {
+				"type": "jarmod"
 			}
 		}
 	}

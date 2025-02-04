@@ -1,7 +1,5 @@
 package b100.installer.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,6 @@ import b100.installer.ModLoader;
 import b100.installer.Utils;
 import b100.installer.VersionList;
 import b100.installer.gui.VersionListGUI.VersionFilter;
-import b100.installer.gui.utils.GridPanel;
 import b100.installer.gui.utils.GuiUtils;
 import b100.installer.gui.utils.VersionComponent;
 import b100.json.JsonParser;
@@ -26,18 +23,14 @@ import b100.json.element.JsonObject;
 import b100.utils.StringUtils;
 
 @SuppressWarnings("serial")
-public class VanillaLauncherInstallerGUI extends GridPanel implements ActionListener, Runnable, VersionFilter {
+public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements VersionFilter {
 	
 	public static final String INSTALL_TYPE = "vanilla";
 	
-	public final InstallerGUI installerGUI;
-	
-	public VersionComponent versionComponent;
-	public JButton installButton;
 	public JTextField minecraftDirectoryTextfield;
 	
 	public VanillaLauncherInstallerGUI(InstallerGUI installerGUI) {
-		this.installerGUI = installerGUI;
+		super(installerGUI);
 		
 		int inset = 4;
 		getGridBagConstraints().insets.set(inset, inset, inset, inset);
@@ -61,28 +54,6 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == installButton) {
-			new Thread(this).start();
-		}
-	}
-	
-	@Override
-	public void run() {
-		installButton.setEnabled(false);
-		installerGUI.showLog();
-		
-		try {
-			install();
-		}catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Failure!");
-			
-			e.printStackTrace();
-		}
-		
-		installButton.setEnabled(true);
-	}
-	
 	public boolean install() {
 		String selectedVersion = versionComponent.getSelectedVersion();
 		ModLoader loader = versionComponent.getSelectedLoader();
@@ -94,9 +65,9 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 		
 		// Update config
 		Config config = Config.getInstance();
-		config.lastSelectedVersion = selectedVersion;
-		config.lastInstallType = INSTALL_TYPE;
-		config.lastMinecraftDirectory = minecraftDirectory.getAbsolutePath();
+		config.lastSelectedVersion.value = selectedVersion;
+		config.lastInstallType.value = INSTALL_TYPE;
+		config.lastMinecraftDirectory.value = minecraftDirectory.getAbsolutePath();
 		config.save();
 
 		// Validate path
@@ -249,7 +220,7 @@ public class VanillaLauncherInstallerGUI extends GridPanel implements ActionList
 	}
 	
 	public String getMinecraftDirectory() {
-		String last = Config.getInstance().lastMinecraftDirectory;
+		String last = Config.getInstance().lastMinecraftDirectory.value;
 		if(last != null) {
 			return last;
 		}

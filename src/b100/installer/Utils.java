@@ -234,6 +234,8 @@ public abstract class Utils {
 	}
 	
 	public static void copyFile(File from, File to) {
+		FileUtils.createFolderForFile(to);
+		
 		InputStream in = null;
 		OutputStream out = null;
 		try {
@@ -281,25 +283,6 @@ public abstract class Utils {
 			argsStr.append(list.get(i));
 		}
 		return argsStr.toString();
-	}
-	
-	public static void saveProperties(File file, Map<String, String> properties) {
-		List<String> keys = new ArrayList<>(properties.keySet());
-		keys.sort(String.CASE_INSENSITIVE_ORDER);
-		
-		StringBuilder string = new StringBuilder();
-		
-		for(int i=0; i < keys.size(); i++) {
-			String key = keys.get(i);
-			String value = properties.get(key);
-			
-			if(i > 0) {
-				string.append('\n');
-			}
-			string.append(key).append(':').append(value);
-		}
-		
-		StringUtils.saveStringToFile(file, string.toString());
 	}
 	
 	public static <E> int indexOf(E[] array, E obj) {

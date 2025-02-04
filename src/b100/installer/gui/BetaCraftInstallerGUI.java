@@ -1,7 +1,5 @@
 package b100.installer.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,26 +15,22 @@ import b100.installer.DownloadManager;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
 import b100.installer.VersionList;
-import b100.installer.gui.utils.GridPanel;
+import b100.installer.config.ConfigUtil;
 import b100.installer.gui.utils.GuiUtils;
 import b100.installer.gui.utils.VersionComponent;
 import b100.json.element.JsonObject;
 import b100.utils.StringUtils;
 
 @SuppressWarnings("serial")
-public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, Runnable {
+public class BetaCraftInstallerGUI extends BaseInstallerGUI {
 
 	public static final String INSTALL_TYPE = "betacraft";
 	
-	public final InstallerGUI installerGUI;
-
-	public VersionComponent versionComponent;
-	public JButton startButton;
 	public JTextField betacraftDirectoryTextfield;
 	public JTextField instanceTextfield;
 	
 	public BetaCraftInstallerGUI(InstallerGUI installerGUI) {
-		this.installerGUI = installerGUI;
+		super(installerGUI);
 		
 		int inset = 4;
 		getGridBagConstraints().insets.set(inset, inset, inset, inset);
@@ -51,35 +45,14 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		modLoaders.add(ModLoader.None);
 		versionComponent = new VersionComponent(modLoaders, (version, modLoader) -> modLoader == ModLoader.None && isVersionSupported(version));
 		
-		startButton = new JButton("Install");
-		startButton.addActionListener(this);
+		installButton = new JButton("Install");
+		installButton.addActionListener(this);
 		
 		add(GuiUtils.createImagePanel("/logo.png"), 0, 0, 1, 1);
 		add(GuiUtils.createTitledPanel(betacraftDirectoryTextfield, "BetaCraft Directory"), 0, 1, 1, 0);
 		add(GuiUtils.createTitledPanel(instanceTextfield, "Instance"), 0, 2, 1, 0);
 		add(versionComponent, 0, 3, 1, 0);
-		add(startButton, 0, 4, 1, 0);
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		new Thread(this).start();
-	}
-
-	@Override
-	public void run() {
-		startButton.setEnabled(false);
-		installerGUI.showLog();
-		
-		try {
-			install();
-		}catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Failure!");
-			
-			e.printStackTrace();
-		}
-		
-		startButton.setEnabled(true);
+		add(installButton, 0, 4, 1, 0);
 	}
 	
 	public boolean isVersionSupported(String version) {
@@ -87,7 +60,8 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		JsonObject betaCraftObject = versionObject.getObject("betacraft");
 		return betaCraftObject != null;
 	}
-	
+
+	@Override
 	public boolean install() {
 		String selectedVersion = versionComponent.getSelectedVersion();
 		ModLoader loader = versionComponent.getSelectedLoader();
@@ -99,9 +73,9 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 
 		// Update config
 		Config config = Config.getInstance();
-		config.lastSelectedVersion = selectedVersion;
-		config.lastInstallType = INSTALL_TYPE;
-		config.lastBetaCraftDirectory = betacraftDirectory.getAbsolutePath();
+		config.lastSelectedVersion.value = selectedVersion;
+		config.lastInstallType.value = INSTALL_TYPE;
+		config.lastBetaCraftDirectory.value = betacraftDirectory.getAbsolutePath();
 		config.save();
 		
 		// Validate path
@@ -188,14 +162,14 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		properties.put("proxy", String.valueOf(useProxy));
 		properties.put("version", versionName);
 		
-		Utils.saveProperties(instanceFile, properties);
+		ConfigUtil.saveProperties(instanceFile, properties, ':');
 		
 		JOptionPane.showMessageDialog(this, "Done!");
 		return true;
 	}
 	
 	public String getBetaCraftDirectory() {
-		String last = Config.getInstance().lastBetaCraftDirectory;
+		String last = Config.getInstance().lastBetaCraftDirectory.value;
 		if(last != null) {
 			return last;
 		}
