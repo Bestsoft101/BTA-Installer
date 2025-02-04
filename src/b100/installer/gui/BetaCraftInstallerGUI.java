@@ -49,7 +49,7 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		
 		List<ModLoader> modLoaders = new ArrayList<>();
 		modLoaders.add(ModLoader.None);
-		versionComponent = new VersionComponent(modLoaders, (version, modLoader) -> modLoader == ModLoader.None);
+		versionComponent = new VersionComponent(modLoaders, (version, modLoader) -> modLoader == ModLoader.None && isVersionSupported(version));
 		
 		startButton = new JButton("Install");
 		startButton.addActionListener(this);
@@ -80,6 +80,12 @@ public class BetaCraftInstallerGUI extends GridPanel implements ActionListener, 
 		}
 		
 		startButton.setEnabled(true);
+	}
+	
+	public boolean isVersionSupported(String version) {
+		JsonObject versionObject = VersionList.getVersion(version);
+		JsonObject betaCraftObject = versionObject.getObject("betacraft");
+		return betaCraftObject != null;
 	}
 	
 	public boolean install() {
