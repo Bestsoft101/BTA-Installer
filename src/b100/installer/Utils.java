@@ -225,7 +225,8 @@ public abstract class Utils {
 		try {
 			return ImageIO.read(stream = Utils.class.getResourceAsStream(path));
 		}catch (Exception e) {
-			throw new RuntimeException("Reading image: '" + path + "'!");
+			e.printStackTrace();
+			return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		}finally {
 			try {
 				stream.close();
