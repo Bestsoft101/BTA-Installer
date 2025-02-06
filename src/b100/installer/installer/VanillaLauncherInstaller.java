@@ -1,63 +1,31 @@
-package b100.installer.gui;
+package b100.installer.installer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import b100.installer.Config;
 import b100.installer.DownloadManager;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
 import b100.installer.VersionList;
-import b100.installer.gui.VersionListGUI.VersionFilter;
-import b100.installer.gui.utils.GuiUtils;
-import b100.installer.gui.utils.VersionComponent;
+import b100.installer.gui.classic.VanillaLauncherInstallerGUI;
 import b100.json.JsonParser;
 import b100.json.element.JsonElement;
 import b100.json.element.JsonObject;
 import b100.utils.StringUtils;
 
-@SuppressWarnings("serial")
-public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements VersionFilter {
-	
-	public static final String INSTALL_TYPE = "vanilla";
-	
-	public JTextField minecraftDirectoryTextfield;
-	
-	public VanillaLauncherInstallerGUI(InstallerGUI installerGUI) {
-		super(installerGUI);
-		
-		int inset = 4;
-		getGridBagConstraints().insets.set(inset, inset, inset, inset);
-		
-		minecraftDirectoryTextfield = new JTextField();
-		minecraftDirectoryTextfield.setText(getMinecraftDirectory());
+public class VanillaLauncherInstaller implements Installer {
 
-		List<ModLoader> modLoaders = new ArrayList<>();
-		modLoaders.add(ModLoader.None);
-		modLoaders.add(ModLoader.ASMLoader);
-		modLoaders.add(ModLoader.Babric);
-		versionComponent = new VersionComponent(modLoaders, this);
-		
-		installButton = new JButton("Install");
-		installButton.addActionListener(this);
-		
-		add(GuiUtils.createImagePanel("/logo.png"), 0, 0, 1, 1);
-		add(GuiUtils.createTitledPanel(minecraftDirectoryTextfield, "Minecraft Directory"), 0, 1, 1, 0);
-		add(versionComponent, 0, 2, 1, 0);
-		add(installButton, 0, 3, 1, 0);
-	}
-	
 	@Override
-	public boolean install() {
-		String selectedVersion = versionComponent.getSelectedVersion();
-		ModLoader loader = versionComponent.getSelectedLoader();
-		File minecraftDirectory = new File(minecraftDirectoryTextfield.getText());
+	public boolean install(Map<String, Object> parameters) {
+		String selectedVersion = (String) parameters.get("version");
+		ModLoader loader = (ModLoader) parameters.get("loader");
+		File minecraftDirectory = new File((String) parameters.get("mcdir"));
 		
 		System.out.println("Selected Version: " + selectedVersion);
 		System.out.println("Selected Mod Loader: " + loader);
@@ -66,13 +34,13 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 		// Update config
 		Config config = Config.getInstance();
 		config.lastSelectedVersion.value = selectedVersion;
-		config.lastInstallType.value = INSTALL_TYPE;
+		config.lastInstallType.value = VanillaLauncherInstallerGUI.INSTALL_TYPE;
 		config.lastMinecraftDirectory.value = minecraftDirectory.getAbsolutePath();
 		config.save();
 
 		// Validate path
 		if(!minecraftDirectory.exists() || !minecraftDirectory.isDirectory()) {
-			JOptionPane.showMessageDialog(this, "Invalid Minecraft Directory: '" + minecraftDirectory.getAbsolutePath() + "'!");
+			JOptionPane.showMessageDialog(null, "Invalid Minecraft Directory: '" + minecraftDirectory.getAbsolutePath() + "'!");
 			config.lastMinecraftDirectory = null;
 			config.save();
 			return false;
@@ -105,7 +73,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 			}
 			
 			if(fabricVersionOverride == null) {
-				JOptionPane.showMessageDialog(this, "The selected version does not support Fabric!");
+				JOptionPane.showMessageDialog(null, "The selected version does not support Fabric!");
 				return false;
 			}
 		}
@@ -121,7 +89,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 			System.out.println("Version is not installed");
 			File minecraftJar = new File(minecraftDirectory, "versions/b1.7.3/b1.7.3.jar");
 			if(!minecraftJar.exists()) {
-				JOptionPane.showMessageDialog(this, "Please start Beta 1.7.3 once before installing!");
+				JOptionPane.showMessageDialog(null, "Please start Beta 1.7.3 once before installing!");
 				return false;
 			}
 
@@ -135,7 +103,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 		if(loader == ModLoader.Fabric || loader == ModLoader.Babric) {
 			JsonElement jsonFabric = vanillaObject.get("json-" + loader.name().substring(0, 1).toLowerCase() + "abric");
 			if(jsonFabric == null) {
-				JOptionPane.showMessageDialog(this, "The selected version does not support " + loader.name() + "!");
+				JOptionPane.showMessageDialog(null, "The selected version does not support " + loader.name() + "!");
 				return false;
 			}
 			jsonPath = jsonFabric.getAsString().value;
@@ -151,7 +119,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 		// Setup Launcher Profile
 		updateLauncherProfile(minecraftDirectory, profileName, versionName, loader, fabricVersionOverride);
 		
-		JOptionPane.showMessageDialog(this, "Done!");
+		JOptionPane.showMessageDialog(null, "Done!");
 		return true;
 	}
 	
@@ -218,14 +186,6 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 		
 		StringUtils.saveStringToFile(launcherProfilesFile, root.toString());
 	}
-	
-	public String getMinecraftDirectory() {
-		String last = Config.getInstance().lastMinecraftDirectory.value;
-		if(last != null) {
-			return last;
-		}
-		return Utils.getMinecraftDirectory().getAbsolutePath();
-	}
 
 	@Override
 	public boolean isCompatible(String version, ModLoader loader) {
@@ -249,5 +209,5 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI implements Ver
 		}
 		return false;
 	}
-
+	
 }

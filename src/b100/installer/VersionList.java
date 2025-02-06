@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import b100.installer.gui.InstallerGUI;
-import b100.installer.gui.VanillaLauncherInstallerGUI;
+import b100.installer.gui.classic.ClassicInstallerGUI;
+import b100.installer.gui.classic.VanillaLauncherInstallerGUI;
 import b100.json.JsonParser;
 import b100.json.element.JsonObject;
 
@@ -17,7 +17,7 @@ public class VersionList {
 	public static final String URL = "https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/main/src/versions.json";
 	public static final long QUERYTIME = 24L * 60L * 60L * 1000L;
 	
-	private static File versionListFile = new File(Installer.getInstallerDirectory(), "versions.json");
+	private static File versionListFile = new File(Global.getInstallerDirectory(), "versions.json");
 	
 	private static JsonObject versions;
 	
@@ -33,7 +33,7 @@ public class VersionList {
 	}
 	
 	public static JsonObject readVersions() {
-		if(!Installer.isOffline()) {
+		if(!Global.isOffline()) {
 			long timeSinceLastQuery = System.currentTimeMillis() - Config.getInstance().lastVersionQueryTime.value;
 			if(timeSinceLastQuery > QUERYTIME || !versionListFile.exists()) {
 				refreshVersionList();
@@ -85,7 +85,7 @@ public class VersionList {
 			DownloadManager.downloadFileAndPrintProgress(URL, versionListFile);
 			versions = null;
 		}catch (Exception e) {
-			JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Could not get the newest version list!");
+			JOptionPane.showMessageDialog(ClassicInstallerGUI.instance.mainFrame, "Could not get the newest version list!");
 			e.printStackTrace();
 		}
 	}

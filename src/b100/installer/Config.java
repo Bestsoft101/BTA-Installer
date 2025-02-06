@@ -8,7 +8,7 @@ import b100.installer.config.StringProperty;
 
 public class Config extends ConfigFile {
 
-	public static final File CONFIG_FOLDER = Installer.getInstallerDirectory();
+	public static final File CONFIG_FOLDER = Global.getInstallerDirectory();
 	public static final File CONFIG_FILE = new File(CONFIG_FOLDER, "installer.txt");
 	private static final Config INSTANCE = new Config(CONFIG_FILE);
 	

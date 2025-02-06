@@ -1,4 +1,4 @@
-package b100.installer.gui;
+package b100.installer.gui.classic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,18 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import b100.installer.gui.utils.GridPanel;
-import b100.installer.gui.utils.VersionComponent;
-
 @SuppressWarnings("serial")
 public abstract class BaseInstallerGUI extends GridPanel implements ActionListener, Runnable {
 
-	public final InstallerGUI installerGUI;
+	public final ClassicInstallerGUI installerGUI;
 
 	public VersionComponent versionComponent;
 	public JButton installButton;
 	
-	public BaseInstallerGUI(InstallerGUI installerGUI) {
+	public BaseInstallerGUI(ClassicInstallerGUI installerGUI) {
 		this.installerGUI = installerGUI;
 	}
 	

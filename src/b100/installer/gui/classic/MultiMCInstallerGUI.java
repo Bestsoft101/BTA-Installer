@@ -1,4 +1,4 @@
-package b100.installer.gui;
+package b100.installer.gui.classic;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,9 +15,7 @@ import b100.installer.ModLoader;
 import b100.installer.Utils;
 import b100.installer.VersionList;
 import b100.installer.config.ConfigUtil;
-import b100.installer.gui.VersionListGUI.VersionFilter;
-import b100.installer.gui.utils.GuiUtils;
-import b100.installer.gui.utils.VersionComponent;
+import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;
 import b100.json.element.JsonElement;
@@ -32,7 +30,7 @@ public class MultiMCInstallerGUI extends BaseInstallerGUI implements VersionFilt
 	
 	public JTextField multimcDirectoryTextfield;
 	
-	public MultiMCInstallerGUI(InstallerGUI installerGUI) {
+	public MultiMCInstallerGUI(ClassicInstallerGUI installerGUI) {
 		super(installerGUI);
 
 		int inset = 4;

@@ -1,4 +1,4 @@
-package b100.installer.gui;
+package b100.installer.gui.classic;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -18,12 +18,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import b100.installer.Installer;
+import b100.installer.Global;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
 import b100.installer.VersionList;
-import b100.installer.gui.utils.ComboBoxData;
-import b100.installer.gui.utils.GridPanel;
 
 public class VersionListGUI implements ActionListener {
 	
@@ -78,7 +76,7 @@ public class VersionListGUI implements ActionListener {
 		
 		GridPanel buttonPanel = new GridPanel();
 		buttonPanel.getGridBagConstraints().insets.set(0, 4, 4, 4);
-		if(!Installer.isOffline()) {
+		if(!Global.isOffline()) {
 			buttonPanel.add(refreshButton, 0, 0, 0, 1);
 		}
 		buttonPanel.add(new JPanel(), 1, 0, 1, 1);
@@ -145,7 +143,7 @@ public class VersionListGUI implements ActionListener {
 				VersionList.refreshVersionList();
 			}catch (Exception e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(InstallerGUI.instance.mainFrame, "Error!");
+				JOptionPane.showMessageDialog(ClassicInstallerGUI.instance.mainFrame, "Error!");
 				versionList.setEnabled(true);
 			}
 			

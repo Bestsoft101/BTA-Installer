@@ -3,7 +3,7 @@ package b100.installer;
 import java.io.File;
 import java.io.InputStream;
 
-public class Installer {
+public class Global {
 	
 	private static File installerDirectory;
 	private static boolean portable;
@@ -27,7 +27,7 @@ public class Installer {
 	private static boolean checkFileExists(String name) {
 		InputStream stream = null;
 		try {
-			stream = Installer.class.getResourceAsStream("/" + name);
+			stream = Global.class.getResourceAsStream("/" + name);
 			if(stream != null) {
 				return true;
 			}
@@ -39,7 +39,7 @@ public class Installer {
 		}
 		
 		try {
-			stream = Installer.class.getResourceAsStream("/" + name + ".txt");
+			stream = Global.class.getResourceAsStream("/" + name + ".txt");
 			if(stream != null) {
 				return true;
 			}

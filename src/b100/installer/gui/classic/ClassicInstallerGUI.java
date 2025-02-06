@@ -1,4 +1,4 @@
-package b100.installer.gui;
+package b100.installer.gui.classic;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -9,13 +9,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
 import b100.installer.Config;
-import b100.installer.Installer;
+import b100.installer.Global;
 import b100.installer.VersionList;
-import b100.installer.gui.utils.GridPanel;
 
-public class InstallerGUI {
+public class ClassicInstallerGUI {
 	
-	public static InstallerGUI instance;
+	public static ClassicInstallerGUI instance;
 	
 	public JFrame mainFrame;
 	public GridPanel mainPanel;
@@ -25,13 +24,13 @@ public class InstallerGUI {
 	public BetaCraftInstallerGUI betaCraftInstallerGUI;
 	public MultiMCInstallerGUI multiMCInstallerGUI;
 	
-	public InstallerGUI() {
+	public ClassicInstallerGUI() {
 		if(instance != null) {
 			throw new IllegalStateException("Instance already exists!");
 		}
 		instance = this;
 		
-		mainFrame = new JFrame("BTA Installer" + (Installer.isPortable() ? " (Portable Mode)" : "") + (Installer.isOffline() ? " (Offline Mode)" : ""));
+		mainFrame = new JFrame("BTA Installer" + (Global.isPortable() ? " (Portable Mode)" : "") + (Global.isOffline() ? " (Offline Mode)" : ""));
 		mainFrame.setMinimumSize(new Dimension(400, 320));
 		
 		mainPanel = new GridPanel();
@@ -79,8 +78,8 @@ public class InstallerGUI {
 			return;
 		}
 		
-		File file = Installer.getInstallerDirectory();
-		boolean portable = Installer.isPortable();
+		File file = Global.getInstallerDirectory();
+		boolean portable = Global.isPortable();
 		
 		if(!file.exists() && !portable) {
 			if(!portable) {
@@ -95,7 +94,7 @@ public class InstallerGUI {
 		
 		Config.getInstance().load();
 		
-		new InstallerGUI();
+		new ClassicInstallerGUI();
 	}
 	
 }

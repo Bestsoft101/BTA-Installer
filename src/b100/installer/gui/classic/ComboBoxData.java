@@ -1,4 +1,4 @@
-package b100.installer.gui.utils;
+package b100.installer.gui.classic;
 
 import java.util.ArrayList;
 import java.util.List;

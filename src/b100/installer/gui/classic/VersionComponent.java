@@ -1,4 +1,4 @@
-package b100.installer.gui.utils;
+package b100.installer.gui.classic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +9,7 @@ import javax.swing.JLabel;
 
 import b100.installer.Config;
 import b100.installer.ModLoader;
-import b100.installer.gui.VersionListGUI;
-import b100.installer.gui.VersionListGUI.VersionFilter;
+import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 
 @SuppressWarnings("serial")
 public class VersionComponent extends GridPanel implements ActionListener {

@@ -12,7 +12,7 @@ import b100.utils.FileUtils;
 
 public class DownloadManager {
 	
-	private static File downloadDirectory = new File(Installer.getInstallerDirectory(), "downloads");
+	private static File downloadDirectory = new File(Global.getInstallerDirectory(), "downloads");
 	
 	static {
 		if(!downloadDirectory.exists()) {

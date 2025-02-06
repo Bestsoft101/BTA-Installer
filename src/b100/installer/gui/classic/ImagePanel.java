@@ -1,4 +1,4 @@
-package b100.installer.gui.utils;
+package b100.installer.gui.classic;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

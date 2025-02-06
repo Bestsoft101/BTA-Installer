@@ -1,4 +1,4 @@
-package b100.installer.gui;
+package b100.installer.gui.classic;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -8,9 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
-
-import b100.installer.gui.utils.GridPanel;
-import b100.installer.gui.utils.GuiPrintStream;
 
 @SuppressWarnings("serial")
 public class LogGUI extends GridPanel implements ActionListener {
