@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 public class Global {
 	
+	public static final String MULTIMC_INSTANCE_FOLDER_NAME = "BTA_MANAGED_INSTANCE";
+	
 	private static File installerDirectory;
 	private static boolean portable;
 	private static boolean offline;

@@ -9,12 +9,12 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("serial")
 public abstract class BaseInstallerGUI extends GridPanel implements ActionListener, Runnable {
 
-	public final ClassicInstallerGUI installerGUI;
+	public final InstallerGuiClassic installerGUI;
 
 	public VersionComponent versionComponent;
 	public JButton installButton;
 	
-	public BaseInstallerGUI(ClassicInstallerGUI installerGUI) {
+	public BaseInstallerGUI(InstallerGuiClassic installerGUI) {
 		this.installerGUI = installerGUI;
 	}
 	

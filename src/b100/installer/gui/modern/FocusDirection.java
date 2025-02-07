@@ -42,7 +42,7 @@ public enum FocusDirection {
 	}
 	
 	public static FocusDirection get(int keyCode) {
-		boolean shift = ModernInstallerGUI.getInstance().isKeyPressed(KeyEvent.VK_SHIFT);
+		boolean shift = InstallerGuiModern.getInstance().isKeyPressed(KeyEvent.VK_SHIFT);
 		
 		if(keyCode == KeyEvent.VK_TAB) return shift ? PREV_ELEMENT : NEXT_ELEMENT;
 		if(keyCode == KeyEvent.VK_UP) return UP;

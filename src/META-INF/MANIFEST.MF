@@ -1,3 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: b100.installer.gui.InstallerGUI
-
+Main-Class: b100.installer.gui.modern.InstallerGuiModern

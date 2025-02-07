@@ -22,7 +22,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI {
 	
 	public VanillaLauncherInstaller vanillaLauncherInstaller = new VanillaLauncherInstaller();
 	
-	public VanillaLauncherInstallerGUI(ClassicInstallerGUI installerGUI) {
+	public VanillaLauncherInstallerGUI(InstallerGuiClassic installerGUI) {
 		super(installerGUI);
 		
 		int inset = 4;

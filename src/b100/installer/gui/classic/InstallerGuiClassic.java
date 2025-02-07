@@ -12,9 +12,9 @@ import b100.installer.Config;
 import b100.installer.Global;
 import b100.installer.VersionList;
 
-public class ClassicInstallerGUI {
+public class InstallerGuiClassic {
 	
-	public static ClassicInstallerGUI instance;
+	public static InstallerGuiClassic instance;
 	
 	public JFrame mainFrame;
 	public GridPanel mainPanel;
@@ -22,9 +22,9 @@ public class ClassicInstallerGUI {
 	
 	public VanillaLauncherInstallerGUI vanillaLauncherInstallerGUI;
 	public BetaCraftInstallerGUI betaCraftInstallerGUI;
-	public MultiMCInstallerGUI multiMCInstallerGUI;
+	public MultiMcInstallerGUI multiMCInstallerGUI;
 	
-	public ClassicInstallerGUI() {
+	public InstallerGuiClassic() {
 		if(instance != null) {
 			throw new IllegalStateException("Instance already exists!");
 		}
@@ -37,7 +37,7 @@ public class ClassicInstallerGUI {
 
 		vanillaLauncherInstallerGUI = new VanillaLauncherInstallerGUI(this);
 		betaCraftInstallerGUI = new BetaCraftInstallerGUI(this);
-		multiMCInstallerGUI = new MultiMCInstallerGUI(this);
+		multiMCInstallerGUI = new MultiMcInstallerGUI(this);
 		
 		tabs = new JTabbedPane();
 		tabs.addTab("Vanilla Launcher", vanillaLauncherInstallerGUI);
@@ -50,7 +50,7 @@ public class ClassicInstallerGUI {
 		if(lastInstallType != null) {
 			if(lastInstallType.equalsIgnoreCase(VanillaLauncherInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(0);
 			if(lastInstallType.equalsIgnoreCase(BetaCraftInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(1);
-			if(lastInstallType.equalsIgnoreCase(MultiMCInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(2);
+			if(lastInstallType.equalsIgnoreCase(MultiMcInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(2);
 		}
 		
 		mainPanel.add(tabs, 0, 1, 1, 1);
@@ -94,7 +94,7 @@ public class ClassicInstallerGUI {
 		
 		Config.getInstance().load();
 		
-		new ClassicInstallerGUI();
+		new InstallerGuiClassic();
 	}
 	
 }

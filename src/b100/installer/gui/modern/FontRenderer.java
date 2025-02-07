@@ -2,6 +2,8 @@ package b100.installer.gui.modern;
 
 import java.awt.image.BufferedImage;
 
+import b100.installer.Utils;
+
 public class FontRenderer {
 	
 	public static FontRenderer instance;
@@ -56,9 +58,15 @@ public class FontRenderer {
 		drawString(string, x, y, 0xFFFFFF, true);
 	}
 	
+	public void drawCenteredString(String string, int x, int y, int color, boolean shadow) {
+		int width = getStringWidth(string);
+		
+		drawString(string, x - width / 2, y, color, shadow);
+	}
+	
 	public void drawString(String string, int x, int y, int color, boolean shadow) {
 		if(shadow) {
-			drawString(string, x + 1, y + 1, DefaultRenderer.multiplyRGB(color, 0.25));
+			drawString(string, x + 1, y + 1, Utils.multiplyRGB(color, 0.25));
 		}
 		drawString(string, x, y, color);
 	}

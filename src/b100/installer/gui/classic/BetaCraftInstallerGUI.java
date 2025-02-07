@@ -26,7 +26,7 @@ public class BetaCraftInstallerGUI extends BaseInstallerGUI {
 	
 	public BetaCraftInstaller betacraftInstaller = new BetaCraftInstaller();
 	
-	public BetaCraftInstallerGUI(ClassicInstallerGUI installerGUI) {
+	public BetaCraftInstallerGUI(InstallerGuiClassic installerGUI) {
 		super(installerGUI);
 		
 		int inset = 4;

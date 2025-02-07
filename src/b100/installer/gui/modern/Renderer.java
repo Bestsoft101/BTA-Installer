@@ -16,6 +16,8 @@ public abstract class Renderer {
 	
 	public abstract void drawSubImage(BufferedImage image, int x, int y, int w, int h, int sx, int sy);
 	
+	public abstract void drawRectangle(int x, int y, int w, int h);
+	
 	public abstract void setColor(int color);
 	
 	public void resetColor() {

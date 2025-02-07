@@ -167,7 +167,7 @@ public abstract class GuiScreen extends GuiContainer implements FocusListener, C
 	}
 	
 	public void setScreen(GuiScreen screen) {
-		ModernInstallerGUI.getInstance().setScreen(screen);
+		InstallerGuiModern.getInstance().setScreen(screen);
 	}
 	
 	public void onScreenOpened() {

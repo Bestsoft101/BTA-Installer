@@ -21,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 
+import b100.installer.installer.MultiMcInstaller;
 import b100.utils.FileUtils;
 import b100.utils.StreamUtils;
 import b100.utils.StringUtils;
@@ -31,6 +32,8 @@ public abstract class Utils {
 	public static final int OS_MAC = 1;
 	public static final int OS_LINUX = 2;
 	public static final int OS_UNKNOWN = 3;
+	
+	public static File multiMcInstanceFolderOverride = null;
 	
 	public static File getMinecraftDirectory() {
 		return getAppDirectory("minecraft");
@@ -301,6 +304,90 @@ public abstract class Utils {
 			}
 		}
 		return -1;
+	}
+	
+	public static File getMultiMCInstancesFolder() {
+		if(multiMcInstanceFolderOverride != null) {
+			return multiMcInstanceFolderOverride;
+		}
+		File runDirectory = new File(".").getAbsoluteFile();
+		for(int i=0; i < 10; i++) {
+			runDirectory = runDirectory.getParentFile();
+			if(runDirectory == null) {
+				break;
+			}
+			if(MultiMcInstaller.isInstancesFolder(runDirectory)) {
+				return runDirectory;
+			}
+		}
+		return null;
+	}
+	
+	// Math
+	
+	public static int floor(double d) {
+		return (int) Math.floor(d);
+	}
+	
+	public static int ceil(double d) {
+		return (int) Math.ceil(d);
+	}
+	
+	public static int ceilDiv(int a, int b) {
+		return (int) Math.ceil(a / (double) b);
+	}
+	
+	public static int clamp(int val, int min, int max) {
+		if(val < min) return min;
+		if(val > max) return max;
+		return val;
+	}
+	
+	public static double clamp(double val, double min, double max) {
+		if(val < min) return min;
+		if(val > max) return max;
+		return val;
+	}
+	
+	public static int multiplyRGB(int color, double mul) {
+		int a = (color >> 24) & 0xFF;
+		int r = (color >> 16) & 0xFF;
+		int g = (color >> 8) & 0xFF;
+		int b = (color >> 0) & 0xFF;
+
+		r = (int) (r * mul);
+		g = (int) (g * mul);
+		b = (int) (b * mul);
+
+		a = clamp(a, 0, 255);
+		r = clamp(r, 0, 255);
+		g = clamp(g, 0, 255);
+		b = clamp(b, 0, 255);
+		
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+	
+	public static int mixARGB(int color1, int color2, float factor) {
+		int a1 = (color1 >> 24) & 0xFF;
+		int r1 = (color1 >> 16) & 0xFF;
+		int g1 = (color1 >>  8) & 0xFF;
+		int b1 = (color1 >>  0) & 0xFF;
+
+		int a2 = (color2 >> 24) & 0xFF;
+		int r2 = (color2 >> 16) & 0xFF;
+		int g2 = (color2 >>  8) & 0xFF;
+		int b2 = (color2 >>  0) & 0xFF;
+		
+		int a = mix(a1, a2, factor);
+		int r = mix(r1, r2, factor);
+		int g = mix(g1, g2, factor);
+		int b = mix(b1, b2, factor);
+		
+		return a << 24 | r << 16 | g << 8 | b;
+	}
+	
+	public static int mix(int a, int b, float factor) {
+		return (int) (a * (1.0f - factor) + b * factor);
 	}
 
 }

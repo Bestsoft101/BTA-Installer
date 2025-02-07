@@ -6,8 +6,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import b100.installer.gui.classic.ClassicInstallerGUI;
+import b100.installer.gui.classic.InstallerGuiClassic;
 import b100.installer.gui.classic.VanillaLauncherInstallerGUI;
+import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 import b100.json.JsonParser;
 import b100.json.element.JsonObject;
 
@@ -66,6 +67,9 @@ public class VersionList {
 			}
 		}
 		
+		int versionCount = versions.getObject("versions").entryList().size();
+		System.out.println("Version list contains " + versionCount + " versions");
+		
 		return versions;
 	}
 	
@@ -85,7 +89,7 @@ public class VersionList {
 			DownloadManager.downloadFileAndPrintProgress(URL, versionListFile);
 			versions = null;
 		}catch (Exception e) {
-			JOptionPane.showMessageDialog(ClassicInstallerGUI.instance.mainFrame, "Could not get the newest version list!");
+			JOptionPane.showMessageDialog(InstallerGuiClassic.instance.mainFrame, "Could not get the newest version list!");
 			e.printStackTrace();
 		}
 	}
@@ -99,6 +103,23 @@ public class VersionList {
 		}
 		
 		return versionList;
+	}
+	
+	public static List<String> getAllVersions(VersionFilter filter, ModLoader loader) {
+		if(loader == null) {
+			throw new NullPointerException("ModLoader is null!");
+		}
+		
+		List<String> allVersions = getAllVersions();
+		List<String> filteredVersions = new ArrayList<>();
+
+		for(String version : allVersions) {
+			if(filter.isCompatible(version, loader)) {
+				filteredVersions.add(version);
+			}
+		}
+		
+		return filteredVersions;
 	}
 	
 	public static JsonObject getVersion(String name) {

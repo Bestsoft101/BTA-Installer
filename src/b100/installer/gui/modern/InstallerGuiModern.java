@@ -10,15 +10,23 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class ModernInstallerGUI implements MouseListener, MouseMotionListener, KeyListener {
+import b100.installer.Utils;
+import b100.installer.gui.modern.multimc.GuiInstallMultiMc;
+
+public class InstallerGuiModern {
 	
-	private static ModernInstallerGUI instance;
+	private static InstallerGuiModern instance;
 	
-	public static ModernInstallerGUI getInstance() {
+	public static InstallerGuiModern getInstance() {
 		return instance;
 	}
 	
@@ -29,29 +37,39 @@ public class ModernInstallerGUI implements MouseListener, MouseMotionListener, K
 	
 	public GuiScreen screen;
 	
-	private volatile boolean repaint = false;
-	
 	private Runnable tickHandler = new TickHandler();
+	private Listeners listeners = new Listeners();
+
+	private volatile boolean repaint = false;
+	private volatile boolean running = false;
 	
-	private ModernInstallerGUI() {
+	private InstallerGuiModern() {
 		if(instance != null) {
 			throw new IllegalStateException("Instance already exists!");
 		}
 		instance = this;
-
+		
 		renderer = new DefaultRenderer();
 		
 		Renderer.instance = renderer;
 		FontRenderer.instance = new FontRenderer(renderer);
 		
 		initFrame();
-		
-		setScreen(null);
+
+		File instancesFolder = Utils.getMultiMCInstancesFolder();
+		if(instancesFolder != null) {
+			System.out.println("Found Instances Folder: " + instancesFolder);	
+			
+			setScreen(new GuiInstallMultiMc(null, instancesFolder));
+		}else {
+			setScreen(null);
+		}
 		
 		long lastTick = System.currentTimeMillis();
 		long tickTime = 1000 / 60;
 		
-		while(true) {
+		running = true;
+		while(running) {
 			long now = System.currentTimeMillis();
 			long delta = now - lastTick;
 			lastTick = now;
@@ -71,7 +89,10 @@ public class ModernInstallerGUI implements MouseListener, MouseMotionListener, K
 
 		@Override
 		public void run() {
-			if(screen != null && screen.isInitialized()) {
+			if(screen != null) {
+				if(!screen.isInitialized()) {
+					screen.init();
+				}
 				screen.tick();
 			}
 			if(repaint) {
@@ -94,11 +115,13 @@ public class ModernInstallerGUI implements MouseListener, MouseMotionListener, K
 		panel.setFocusable(false);
 		panel.setDoubleBuffered(true);
 		
-		// Input Listeners
-		panel.addMouseMotionListener(this);
-		frame.setFocusTraversalKeysEnabled(false);	// Must be set otherwise pressing tab doesn't fire a key event
-		frame.addKeyListener(this);
-		panel.addMouseListener(this);
+		// Listeners
+		panel.addMouseMotionListener(listeners);
+		frame.setFocusTraversalKeysEnabled(false);	// Must be set to false, otherwise pressing tab doesn't fire a key event
+		frame.addKeyListener(listeners);
+		panel.addMouseListener(listeners);
+		frame.addWindowListener(listeners);
+		frame.addMouseWheelListener(listeners);
 		
 		// Finish Frame
 		frame.add(panel);
@@ -168,7 +191,7 @@ public class ModernInstallerGUI implements MouseListener, MouseMotionListener, K
 	}
 	
 	public static void main(String[] args) {
-		new ModernInstallerGUI();
+		new InstallerGuiModern();
 	}
 	
 	private void mouseMoved(int x, int y) {
@@ -193,64 +216,124 @@ public class ModernInstallerGUI implements MouseListener, MouseMotionListener, K
 			screen.mouseX = mouseX;
 			screen.mouseY = mouseY;
 			
-			screen.mouseEvent(button, pressed, mouseX, mouseY);
+			if(screen.isInitialized()) {
+				screen.mouseEvent(button, pressed, mouseX, mouseY);	
+			}
 		}
 	}
 	
 	private void keyEvent(int key, boolean pressed) {
-		if(screen != null) {
+		if(screen != null && screen.isInitialized()) {
 			screen.keyEvent(key, pressed);
 		}
 	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		mouseMoved(e.getX(), e.getY());
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		mouseMoved(e.getX(), e.getY());
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		mouseEvent(e.getX(), e.getY(), e.getButton(), true);
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		mouseEvent(e.getX(), e.getY(), e.getButton(), false);
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		keyEvent(e.getKeyCode(), true);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		keyEvent(e.getKeyCode(), false);
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
+	
+	private void scrollEvent(double verticalAmount, int x, int y) {
+		if(screen != null && screen.isInitialized()) {
+			double scale = renderer.getScale();
+			
+			double mouseX = x / scale;
+			double mouseY = y / scale;
+			
+			screen.scrollEvent(-verticalAmount, mouseX, mouseY);
+		}
 	}
 	
+	private void close() {
+		running = false;
+		
+		frame.dispose();
+	}
+	
+	class Listeners implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener, WindowListener {
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			InstallerGuiModern.this.mouseMoved(e.getX(), e.getY());
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			InstallerGuiModern.this.mouseMoved(e.getX(), e.getY());
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			InstallerGuiModern.this.mouseEvent(e.getX(), e.getY(), e.getButton(), true);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			InstallerGuiModern.this.mouseEvent(e.getX(), e.getY(), e.getButton(), false);
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			InstallerGuiModern.this.keyEvent(e.getKeyCode(), true);
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			InstallerGuiModern.this.keyEvent(e.getKeyCode(), false);
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			InstallerGuiModern.this.close();
+		}
+
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			InstallerGuiModern.this.scrollEvent(e.getPreciseWheelRotation(), e.getX(), e.getY());
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			
+		}
+	}
 }

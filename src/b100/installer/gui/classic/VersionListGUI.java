@@ -25,7 +25,6 @@ import b100.installer.VersionList;
 
 public class VersionListGUI implements ActionListener {
 	
-	private List<String> allVersions = new ArrayList<>();
 	private List<String> filteredVersions = new ArrayList<>();
 	private List<ListDataListener> dataListeners = new ArrayList<>();
 	
@@ -143,7 +142,7 @@ public class VersionListGUI implements ActionListener {
 				VersionList.refreshVersionList();
 			}catch (Exception e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(ClassicInstallerGUI.instance.mainFrame, "Error!");
+				JOptionPane.showMessageDialog(InstallerGuiClassic.instance.mainFrame, "Error!");
 				versionList.setEnabled(true);
 			}
 			
@@ -160,14 +159,7 @@ public class VersionListGUI implements ActionListener {
 	}
 	
 	public void setupVersionList() {
-		allVersions = VersionList.getAllVersions();
-		
-		filteredVersions.clear();
-		for(String version : allVersions) {
-			if(filter.isCompatible(version, selectedLoader)) {
-				filteredVersions.add(version);
-			}
-		}
+		filteredVersions = VersionList.getAllVersions(filter, selectedLoader);
 		
 		for(int i=0; i < dataListeners.size(); i++) {
 			dataListeners.get(i).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));

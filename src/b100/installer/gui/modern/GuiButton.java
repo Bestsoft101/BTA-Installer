@@ -55,7 +55,7 @@ public class GuiButton extends GuiElement implements Focusable {
 		if(state != newState) {
 			state = newState;
 			
-			ModernInstallerGUI.getInstance().scheduleRepaint();
+			InstallerGuiModern.getInstance().scheduleRepaint();
 		}
 	}
 	
