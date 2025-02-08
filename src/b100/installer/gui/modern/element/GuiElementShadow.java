@@ -1,4 +1,4 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.element;
 
 import java.awt.image.BufferedImage;
 

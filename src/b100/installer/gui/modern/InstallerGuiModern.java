@@ -20,7 +20,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import b100.installer.Utils;
-import b100.installer.gui.modern.multimc.GuiInstallMultiMc;
+import b100.installer.gui.modern.render.DefaultRenderer;
+import b100.installer.gui.modern.render.FontRenderer;
+import b100.installer.gui.modern.render.Renderer;
+import b100.installer.gui.modern.screen.GuiMainMenu;
+import b100.installer.gui.modern.screen.GuiScreen;
+import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
 
 public class InstallerGuiModern {
 	

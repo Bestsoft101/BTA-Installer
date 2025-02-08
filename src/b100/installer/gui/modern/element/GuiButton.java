@@ -1,9 +1,16 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.element;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import b100.installer.Utils;
+import b100.installer.gui.modern.InstallerGuiModern;
+import b100.installer.gui.modern.render.Textures;
+import b100.installer.gui.modern.screen.GuiScreen;
+import b100.installer.gui.modern.util.ActionListener;
+import b100.installer.gui.modern.util.FocusListener;
+import b100.installer.gui.modern.util.Focusable;
+import b100.installer.gui.modern.util.ListenerList;
 
 public class GuiButton extends GuiElement implements Focusable {
 	

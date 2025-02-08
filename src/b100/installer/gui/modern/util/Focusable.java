@@ -1,6 +1,9 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.util;
 
 import java.util.function.Function;
+
+import b100.installer.gui.modern.element.GuiContainer;
+import b100.installer.gui.modern.element.GuiElement;
 
 public interface Focusable {
 	
@@ -57,7 +60,7 @@ public interface Focusable {
 		}
 		
 		// When using arrow keys and reaching the end of a list, do nothing
-		if(direction.isArrowKey() && container.isList) {
+		if(direction.isArrowKey() && container.isListContainer()) {
 			throw new CancelAction();
 		}
 		

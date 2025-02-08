@@ -1,8 +1,14 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.screen;
 
-import b100.installer.gui.modern.GuiElementShadow.Position;
-import b100.installer.gui.modern.GuiScrollableList.Layout;
-import b100.installer.gui.modern.GuiScrollableList.ListLayout;
+import b100.installer.gui.modern.element.GuiBackground;
+import b100.installer.gui.modern.element.GuiElement;
+import b100.installer.gui.modern.element.GuiElementShadow;
+import b100.installer.gui.modern.element.GuiScrollBar;
+import b100.installer.gui.modern.element.GuiScrollableList;
+import b100.installer.gui.modern.element.GuiElementShadow.Position;
+import b100.installer.gui.modern.element.GuiScrollableList.Layout;
+import b100.installer.gui.modern.element.GuiScrollableList.ListLayout;
+import b100.installer.gui.modern.render.Textures;
 
 public abstract class GuiScrollListScreen extends GuiScreen {
 

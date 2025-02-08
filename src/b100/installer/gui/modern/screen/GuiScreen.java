@@ -1,6 +1,16 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.screen;
 
 import java.awt.event.KeyEvent;
+
+import b100.installer.gui.modern.InstallerGuiModern;
+import b100.installer.gui.modern.element.GuiContainer;
+import b100.installer.gui.modern.element.GuiElement;
+import b100.installer.gui.modern.util.ContainerListener;
+import b100.installer.gui.modern.util.FocusDirection;
+import b100.installer.gui.modern.util.FocusListener;
+import b100.installer.gui.modern.util.Focusable;
+import b100.installer.gui.modern.util.ListenerList;
+import b100.installer.gui.modern.util.ScreenListener;
 
 public abstract class GuiScreen extends GuiContainer implements FocusListener, ContainerListener {
 	

@@ -1,4 +1,4 @@
-package b100.installer.gui.modern.multimc;
+package b100.installer.gui.modern.screen.multimc;
 
 import java.awt.EventQueue;
 import java.io.File;
@@ -8,14 +8,14 @@ import java.util.Map;
 import b100.installer.Global;
 import b100.installer.Utils;
 import b100.installer.VersionList;
-import b100.installer.gui.modern.ActionListener;
-import b100.installer.gui.modern.GuiBackground;
-import b100.installer.gui.modern.GuiButton;
-import b100.installer.gui.modern.GuiCheckbox;
-import b100.installer.gui.modern.GuiElement;
-import b100.installer.gui.modern.GuiScreen;
-import b100.installer.gui.modern.GuiSelectVersion;
-import b100.installer.gui.modern.Textures;
+import b100.installer.gui.modern.element.GuiBackground;
+import b100.installer.gui.modern.element.GuiButton;
+import b100.installer.gui.modern.element.GuiCheckbox;
+import b100.installer.gui.modern.element.GuiElement;
+import b100.installer.gui.modern.render.Textures;
+import b100.installer.gui.modern.screen.GuiScreen;
+import b100.installer.gui.modern.screen.GuiSelectVersion;
+import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.installer.MultiMcInstaller;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;

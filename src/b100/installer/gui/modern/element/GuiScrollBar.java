@@ -1,4 +1,6 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.element;
+
+import b100.installer.gui.modern.screen.GuiScreen;
 
 public class GuiScrollBar extends GuiElement {
 

@@ -1,8 +1,10 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.util;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
+
+import b100.installer.gui.modern.element.GuiElement;
 
 public final class ListenerList<ListenerType> {
 	

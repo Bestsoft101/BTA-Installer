@@ -1,8 +1,14 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.element;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import b100.installer.gui.modern.util.ContainerListener;
+import b100.installer.gui.modern.util.FocusDirection;
+import b100.installer.gui.modern.util.FocusListener;
+import b100.installer.gui.modern.util.Focusable;
+import b100.installer.gui.modern.util.ListenerList;
 
 public class GuiContainer extends GuiElement implements FocusListener {
 	
@@ -221,6 +227,10 @@ public class GuiContainer extends GuiElement implements FocusListener {
 				lastFocusedElement = focusable;
 			}
 		}
+	}
+	
+	public boolean isListContainer() {
+		return isList;
 	}
 	
 	@Override

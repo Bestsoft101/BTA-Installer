@@ -1,4 +1,6 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.element;
+
+import b100.installer.gui.modern.render.Textures;
 
 public class GuiBackground extends GuiElement {
 

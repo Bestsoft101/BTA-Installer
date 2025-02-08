@@ -1,4 +1,6 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.screen;
+
+import b100.installer.gui.modern.element.GuiBackground;
 
 public class GuiTest extends GuiScreen {
 

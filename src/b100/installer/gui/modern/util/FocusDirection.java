@@ -1,6 +1,8 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.util;
 
 import java.awt.event.KeyEvent;
+
+import b100.installer.gui.modern.InstallerGuiModern;
 
 public enum FocusDirection {
 	

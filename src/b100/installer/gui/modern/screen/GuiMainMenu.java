@@ -1,6 +1,9 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.screen;
 
-import b100.installer.gui.modern.multimc.GuiInstallMultiMc;
+import b100.installer.gui.modern.element.GuiBackground;
+import b100.installer.gui.modern.element.GuiButton;
+import b100.installer.gui.modern.render.Textures;
+import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
 
 public class GuiMainMenu extends GuiScreen {
 	

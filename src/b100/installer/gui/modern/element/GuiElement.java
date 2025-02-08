@@ -1,4 +1,7 @@
-package b100.installer.gui.modern;
+package b100.installer.gui.modern.element;
+
+import b100.installer.gui.modern.render.FontRenderer;
+import b100.installer.gui.modern.render.Renderer;
 
 public abstract class GuiElement {
 	
