@@ -60,6 +60,10 @@ public class MultiMcInstaller implements Installer {
 		File patchesFolder = new File(instanceFolder, "patches");
 		
 		JsonObject versionObject = VersionList.getVersion(version);
+		if(versionObject == null) {
+			JOptionPane.showMessageDialog(null, "Version '" + version + "' does not exist!");
+			return false;
+		}
 		JsonObject multimcObject = versionObject.getObject("multimc");
 		String installType = multimcObject.getString("type");
 		String versionFileName = versionObject.getString("jar");
@@ -206,6 +210,25 @@ public class MultiMcInstaller implements Installer {
 			return instanceCfg.isFile() && mmcPack.isFile();
 		}
 		return false;
+	}
+	
+	public static String getInstanceName(File instanceFolder) {
+		File instanceCfg = new File(instanceFolder, "instance.cfg");
+		
+		Map<String, String> properties = ConfigUtil.loadPropertiesFile(instanceCfg, '=');
+		return properties.get("name");
+	}
+	
+	public static String getLatestVersion() {
+		String url = "https://downloads.betterthanadventure.net/bta-client/release/versions.json";
+		File btaVersionsFile = new File(Global.getInstallerDirectory(), "bta-versions.json");
+		DownloadManager.downloadFileAndPrintProgress(url, btaVersionsFile);
+		JsonObject obj = JsonParser.instance.parseFileContent(btaVersionsFile);
+		String latestVersion = obj.getString("default");
+		if(latestVersion.startsWith("v")) {
+			latestVersion = latestVersion.substring(1);
+		}
+		return latestVersion;
 	}
 	
 }

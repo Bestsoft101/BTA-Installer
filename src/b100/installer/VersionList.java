@@ -14,7 +14,7 @@ import b100.json.element.JsonObject;
 
 public class VersionList {
 	
-	public static final int VERSION = 3;
+	public static final int VERSION = 4;
 	public static final String URL = "https://raw.githubusercontent.com/Bestsoft101/BTA-Installer/main/src/versions.json";
 	public static final long QUERYTIME = 24L * 60L * 60L * 1000L;
 	
@@ -92,6 +92,10 @@ public class VersionList {
 			JOptionPane.showMessageDialog(InstallerGuiClassic.instance.mainFrame, "Could not get the newest version list!");
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getLatestVersion() {
+		return getJson().getObject("latest").getString("stable");
 	}
 	
 	public static List<String> getAllVersions() {

@@ -43,6 +43,8 @@ public class InstallerGuiModern {
 	private volatile boolean repaint = false;
 	private volatile boolean running = false;
 	
+	private boolean holdingShift = false;
+	
 	private InstallerGuiModern() {
 		if(instance != null) {
 			throw new IllegalStateException("Instance already exists!");
@@ -169,10 +171,11 @@ public class InstallerGuiModern {
 		scheduleRepaint();
 	}
 	
-	public boolean isKeyPressed(int key) {
-		// Needed for Shift + Tab to cycle backwards
-		// TODO
-		return false;
+	/**
+	 * Good enough
+	 */
+	public boolean isShiftPressed() {
+		return holdingShift;
 	}
 	
 	public void scheduleRepaint() {
@@ -268,11 +271,19 @@ public class InstallerGuiModern {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				holdingShift = true;
+			}
+			
 			InstallerGuiModern.this.keyEvent(e.getKeyCode(), true);
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				holdingShift = false;
+			}
+			
 			InstallerGuiModern.this.keyEvent(e.getKeyCode(), false);
 		}
 

@@ -61,6 +61,7 @@ public class GuiScrollBar extends GuiElement {
 		renderer.drawRectangle(posX, posY + scrollerOffset, width, scrollerHeight);
 		renderer.setColor(0xc0c0c0);
 		renderer.drawRectangle(posX, posY + scrollerOffset, width - 1, scrollerHeight - 1);
+		renderer.setColor(0xFFFFFF);
 	}
 	
 	@Override

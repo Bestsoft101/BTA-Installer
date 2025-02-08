@@ -27,7 +27,12 @@ public abstract class GuiScreen extends GuiContainer implements FocusListener, C
 	
 	public final void init() {
 		if(initialized) {
-			return;
+			initialized = false;
+			
+			removeAll();
+			
+			width = 0;
+			height = 0;
 		}
 		
 		onInit();

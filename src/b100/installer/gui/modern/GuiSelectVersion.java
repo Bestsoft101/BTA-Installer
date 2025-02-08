@@ -12,31 +12,29 @@ public class GuiSelectVersion extends GuiScrollListScreen implements ActionListe
 	public VersionFilter versionFilter;
 	public Consumer<String> consumer;
 	
+	public GuiButton selectButton;
+	
 	public String selectedVersion = null;
 	
-	public GuiButton buttonSelect;
-	
-	public String selection;
-	
-	public GuiSelectVersion(GuiScreen parentScreen, VersionFilter versionFilter, Consumer<String> consumer, String selection) {
+	public GuiSelectVersion(GuiScreen parentScreen, VersionFilter versionFilter, Consumer<String> consumer, String initialSelection) {
 		super(parentScreen);
 		
 		this.versionFilter = versionFilter;
 		this.consumer = consumer;
-		this.selection = selection;
+		this.selectedVersion = initialSelection;
 		
 		this.title = "Select Version";
 	}
 	
 	@Override
 	protected void onInit() {
-		buttonSelect = new GuiButton(this, "Select");
-		buttonSelect.setClickable(selectedVersion != null);
-		buttonSelect.addActionListener(this);
+		selectButton = new GuiButton(this, "Select");
+		selectButton.setClickable(selectedVersion != null);
+		selectButton.addActionListener(this);
 		
 		super.onInit();
 		
-		add(buttonSelect);
+		add(selectButton);
 	}
 	
 	@Override
@@ -49,7 +47,7 @@ public class GuiSelectVersion extends GuiScrollListScreen implements ActionListe
 			GuiListButton button = new GuiListButton(this);
 			button.text = version;
 			button.addFocusListener(this);
-			if(version.equals(selection)) {
+			if(version.equals(selectedVersion)) {
 				button.setFocused(true);
 			}
 			
@@ -64,12 +62,14 @@ public class GuiSelectVersion extends GuiScrollListScreen implements ActionListe
 		int x1 = width / 2 - 100;
 		int y1 = height - headerSize / 2 - 10;
 		
-		buttonSelect.setPosition(x1, y1);
+		selectButton.setPosition(x1, y1);
 	}
 
 	@Override
 	public void actionPerformed(GuiElement source) {
-		consumer.accept(selectedVersion);
+		if(source == selectButton) {
+			consumer.accept(selectedVersion);
+		}
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class GuiSelectVersion extends GuiScrollListScreen implements ActionListe
 			GuiListButton listButton = (GuiListButton) focusable;
 			
 			selectedVersion = listButton.text;
-			buttonSelect.setClickable(selectedVersion != null);
+			selectButton.setClickable(selectedVersion != null);
 			
 			System.out.println("Selected Version: " + selectedVersion);
 		}

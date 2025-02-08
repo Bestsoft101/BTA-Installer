@@ -28,7 +28,7 @@ public class GuiMainMenu extends GuiScreen {
 		int x = (renderer.getWidth() - Textures.logo.getWidth()) / 2;
 		int y = 30;
 		
-		renderer.drawImage(Textures.logo, x, y);
+		renderer.drawImage(Textures.logo, x, y + 8);
 		fontRenderer.drawString("Better Than Adventure! Installer", 2, 2, 0x505050, true);
 	}
 	
@@ -38,9 +38,9 @@ public class GuiMainMenu extends GuiScreen {
 		int y1 = height / 4;
 		int p = 24;
 		
-		buttonMultiMc.setPosition(x1, y1 + p * 2);
-		buttonBetaCraft.setPosition(x1, y1 + p * 3);
-		buttonVanillaLauncher.setPosition(x1, y1 + p * 4);
+		buttonMultiMc.setPosition(x1, y1 + p * 3);
+		buttonBetaCraft.setPosition(x1, y1 + p * 4);
+		buttonVanillaLauncher.setPosition(x1, y1 + p * 5);
 	}
 	
 }

@@ -33,7 +33,7 @@ public class FontRenderer {
 			
 			if(charIndex == ' ') {
 				charWidths[charIndex] = 5;
-			}else if(charIndex < 32 || charIndex >= 176) {
+			}else if(charIndex < 32 || (charIndex >= 176 && charIndex < 255)) {
 				charWidths[charIndex] = 8;
 			}else {
 				for(int i=0; i < charSize; i++) {
@@ -113,17 +113,18 @@ public class FontRenderer {
 	}
 	
 	public void drawCharacter(char c, int x, int y) {
-		int cx = c & 0xF;
-		int cy = c >> 4;
+		int ic = c;
+		
+		ic = Math.min(ic, 255);
+		
+		int cx = ic & 0xF;
+		int cy = ic >> 4;
 		
 		renderer.drawSubImage(Textures.font, x, y, 8, 8, cx * 8, cy * 8);
 	}
 	
 	public int getCharacterWidth(char c) {
-		if(c < 256) {
-			return charWidths[c];
-		}
-		return 8;
+		return charWidths[Math.min((int) c, charWidths.length - 1)];
 	}
 	
 }

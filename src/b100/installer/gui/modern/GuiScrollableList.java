@@ -139,6 +139,15 @@ public class GuiScrollableList extends GuiContainer {
 
 	@Override
 	public void focusChanged(Focusable focusable) {
+		scrollToElement(focusable);
+		
+		super.focusChanged(focusable);
+	}
+	
+	public boolean scrollToElement(Focusable focusable) {
+		if(focusable == null) {
+			return false;
+		}
 		GuiElement element = (GuiElement) focusable;
 		if(focusable.isFocused() && contains(element)) {
 			int offset = 0;
@@ -151,8 +160,9 @@ public class GuiScrollableList extends GuiContainer {
 			if(offset != 0) {
 				scroll(offset);
 			}
+			return true;
 		}
-		super.focusChanged(focusable);
+		return false;
 	}
 	
 	public static class ListLayout implements Layout {

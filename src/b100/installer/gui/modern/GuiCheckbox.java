@@ -1,42 +1,48 @@
 package b100.installer.gui.modern;
 
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
 import b100.installer.Utils;
 
-public class GuiButton extends GuiElement implements Focusable {
+public class GuiCheckbox extends GuiElement implements Focusable {
 	
 	/**
-	 * The screen that is button is in
+	 * The screen that this checkbox is in
 	 */
 	public GuiScreen screen;
-	
+
 	/**
-	 * The text of this button. Can be null.
+	 * The text of this checkbox. Can be null.
 	 */
 	public String text;
-	
+
 	/**
-	 * Should the button be clickable or not. When it is not clickable, its still visible but grayed out
+	 * Should the checkbox be clickable or not. When it is not clickable, its still visible but grayed out
 	 */
 	private boolean clickable = true;
-	
+
 	/**
-	 * When the button is focused it can be clicked with Space and Enter
+	 * When the checkbox is focused it can be clicked with Space and Enter
 	 */
 	private boolean focused = false;
-	
+
+	private boolean checked = false;
+
 	public final ListenerList<ActionListener> actionListeners = new ListenerList<>(this);
 	public final ListenerList<FocusListener> focusListeners = new ListenerList<>(this);
-	
+
 	private int previousState = 1;
 	
-	public GuiButton(GuiScreen screen, String text) {
+	public GuiCheckbox(GuiScreen screen, String text) {
+		this(screen, text, false);
+	}
+	
+	public GuiCheckbox(GuiScreen screen, String text, boolean checked) {
 		this.screen = screen;
 		this.text = text;
+		this.checked = checked;
 		
-		this.width = 200;
+		this.width = 100;
 		this.height = 20;
 	}
 	
@@ -63,30 +69,42 @@ public class GuiButton extends GuiElement implements Focusable {
 	
 	@Override
 	public void draw() {
-		BufferedImage texture;
-		int fontColor;
+		int buttonSize = 20;
+		int border = (height - buttonSize) / 2;
 		
-		if(previousState == 2) {
-			texture = Textures.button_hover;
-			fontColor = 0xFFFF80;
-		}else if(previousState == 1) {
-			texture = Textures.button;
-			fontColor = 0xFFFFFF;
-		}else {
-			texture = Textures.button_disabled;
-			fontColor = 0x808080;
+		// Top left corner of the button
+		int x1 = posX + border;
+		int y1 = posY + border;
+		
+		renderer.drawSubImage(Textures.button_disabled, x1, y1, 10, height, 0, 0);
+		renderer.drawSubImage(Textures.button_disabled, x1 + 10, y1, 10, height, Textures.button_disabled.getWidth() - 10, 0);	
+		
+		// Center of the button
+		int x2 = x1 + buttonSize / 2;
+		int y2 = y1 + buttonSize / 2;
+		
+		if(checked) {
+			int x3 = x2 - Textures.checkmark.getWidth() / 2;
+			int y3 = y2 - Textures.checkmark.getHeight() / 2;
+			
+			renderer.drawImage(Textures.checkmark, x3, y3);
 		}
 		
-		// TODO
-		renderer.drawImage(texture, posX, posY);
-		
-		renderer.setColor(0xff0000);
-		
 		if(text != null) {
-			int textWidth = fontRenderer.getStringWidth(text);
-			int textX = posX + (width - textWidth) / 2;
-			int textY = posY + height / 2 - 4;
-			fontRenderer.drawString(text, textX, textY, fontColor, true);
+			int fontColor;
+			
+			if(previousState == 2) {
+				fontColor = 0xFFFF80;
+			}else if(previousState == 1) {
+				fontColor = 0xFFFFFF;
+			}else {
+				fontColor = 0x808080;
+			}
+			
+			int x4 = posX + border + buttonSize + 4;
+			int y4 = posY + height / 2 - 4;
+			
+			fontRenderer.drawString(text, x4, y4, fontColor, true);
 		}
 	}
 	
@@ -110,19 +128,19 @@ public class GuiButton extends GuiElement implements Focusable {
 	}
 	
 	public void clickButton() {
+		checked = !checked;
+		
 		Utils.click();
 		
 		actionListeners.forEach((listener) -> listener.actionPerformed(this));
+		
+		InstallerGuiModern.getInstance().scheduleRepaint();
 	}
 	
-	public void setClickable(boolean clickable) {
-		this.clickable = clickable;
+	public boolean isChecked() {
+		return checked;
 	}
-	
-	public boolean isClickable() {
-		return clickable;
-	}
-	
+
 	@Override
 	public void setFocused(boolean focused) {
 		if(focused != this.focused) {
@@ -150,7 +168,7 @@ public class GuiButton extends GuiElement implements Focusable {
 		return actionListeners;
 	}
 	
-	public GuiButton addActionListener(ActionListener actionListener) {
+	public GuiCheckbox addActionListener(ActionListener actionListener) {
 		actionListeners.add(actionListener);
 		return this;
 	}
@@ -159,9 +177,4 @@ public class GuiButton extends GuiElement implements Focusable {
 		return actionListeners.remove(actionListener);
 	}
 	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "[x=" + posX + ",y=" + posY + ",w=" + width + ",h=" + height + ",text=" + text + "]";
-	}
-
 }

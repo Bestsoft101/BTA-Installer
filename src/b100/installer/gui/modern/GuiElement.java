@@ -9,14 +9,14 @@ public abstract class GuiElement {
 	public int posY;
 	public int width;
 	public int height;
+
+	private GuiContainer container;
 	
 	public void tick() {
 		
 	}
 	
 	public abstract void draw();
-	
-	private GuiContainer container;
 	
 	public boolean keyEvent(int key, boolean pressed) {
 		return false;
