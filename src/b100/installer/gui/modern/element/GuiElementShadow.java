@@ -28,7 +28,7 @@ public class GuiElementShadow extends GuiElement {
 			}
 		}
 		
-		renderer.drawImage(image, posX, posY, width, height);
+		renderer.drawImageStretched(image, posX, posY, width, height);
 	}
 	
 	public static enum Position {

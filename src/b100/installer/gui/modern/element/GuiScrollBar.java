@@ -17,6 +17,8 @@ public class GuiScrollBar extends GuiElement {
 	public GuiScrollBar(GuiScreen screen, GuiScrollableList list) {
 		this.screen = screen;
 		this.list = list;
+		
+		width = 6;
 	}
 	
 	@Override

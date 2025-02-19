@@ -19,6 +19,7 @@ import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import b100.installer.Global;
 import b100.installer.Utils;
 import b100.installer.gui.modern.render.DefaultRenderer;
 import b100.installer.gui.modern.render.FontRenderer;
@@ -49,6 +50,7 @@ public class InstallerGuiModern {
 	private volatile boolean running = false;
 	
 	private boolean holdingShift = false;
+	private boolean holdingAlt = false;
 	
 	private InstallerGuiModern() {
 		if(instance != null) {
@@ -183,6 +185,10 @@ public class InstallerGuiModern {
 		return holdingShift;
 	}
 	
+	public boolean isAltPressed() {
+		return holdingAlt;
+	}
+	
 	public void scheduleRepaint() {
 		repaint = true;
 	}
@@ -196,10 +202,6 @@ public class InstallerGuiModern {
 			render(this, g);
 		}
 		
-	}
-	
-	public static void main(String[] args) {
-		new InstallerGuiModern();
 	}
 	
 	private void mouseMoved(int x, int y) {
@@ -231,6 +233,12 @@ public class InstallerGuiModern {
 	}
 	
 	private void keyEvent(int key, boolean pressed) {
+		if(key == KeyEvent.VK_SHIFT) {
+			holdingShift = pressed;
+		}
+		if(key == KeyEvent.VK_ALT) {
+			holdingAlt = pressed;
+		}
 		if(screen != null && screen.isInitialized()) {
 			screen.keyEvent(key, pressed);
 		}
@@ -276,19 +284,11 @@ public class InstallerGuiModern {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				holdingShift = true;
-			}
-			
 			InstallerGuiModern.this.keyEvent(e.getKeyCode(), true);
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				holdingShift = false;
-			}
-			
 			InstallerGuiModern.this.keyEvent(e.getKeyCode(), false);
 		}
 
@@ -350,6 +350,12 @@ public class InstallerGuiModern {
 		@Override
 		public void windowDeactivated(WindowEvent e) {
 			
+		}
+	}
+	
+	public static void main(String[] args) {
+		if(Global.setup(args)) {
+			new InstallerGuiModern();			
 		}
 	}
 }

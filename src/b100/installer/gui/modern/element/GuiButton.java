@@ -27,17 +27,17 @@ public class GuiButton extends GuiElement implements Focusable {
 	/**
 	 * Should the button be clickable or not. When it is not clickable, its still visible but grayed out
 	 */
-	private boolean clickable = true;
+	protected boolean clickable = true;
 	
 	/**
 	 * When the button is focused it can be clicked with Space and Enter
 	 */
-	private boolean focused = false;
+	protected boolean focused = false;
 	
 	public final ListenerList<ActionListener> actionListeners = new ListenerList<>(this);
 	public final ListenerList<FocusListener> focusListeners = new ListenerList<>(this);
 	
-	private int previousState = 1;
+	protected int state = 1;
 	
 	public GuiButton(GuiScreen screen, String text) {
 		this.screen = screen;
@@ -61,8 +61,8 @@ public class GuiButton extends GuiElement implements Focusable {
 			newState = 0;
 		}
 		
-		if(previousState != newState) {
-			previousState = newState;
+		if(state != newState) {
+			state = newState;
 			
 			InstallerGuiModern.getInstance().scheduleRepaint();
 		}
@@ -73,10 +73,10 @@ public class GuiButton extends GuiElement implements Focusable {
 		BufferedImage texture;
 		int fontColor;
 		
-		if(previousState == 2) {
+		if(state == 2) {
 			texture = Textures.button_hover;
 			fontColor = 0xFFFF80;
-		}else if(previousState == 1) {
+		}else if(state == 1) {
 			texture = Textures.button;
 			fontColor = 0xFFFFFF;
 		}else {

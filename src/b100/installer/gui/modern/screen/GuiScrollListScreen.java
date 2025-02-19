@@ -58,10 +58,9 @@ public abstract class GuiScrollListScreen extends GuiScreen {
 	
 	@Override
 	public void onResize() {
-		final int scrollBarWidth = 6;
 		scrollList.setPosition(0, headerSize).setSize(this.width, this.height - (headerSize + footerSize));
 		int contentWidth = listLayout.getContentWidth(scrollList);
-		scrollBar.setPosition(scrollList.posX + scrollList.width / 2 + contentWidth / 2 + 16, scrollList.posY).setSize(scrollBarWidth, scrollList.height);
+		scrollBar.setPosition(scrollList.posX + scrollList.width / 2 + contentWidth / 2 + 16, scrollList.posY).setSize(scrollBar.width, scrollList.height);
 		
 		header.setPosition(0, 0).setSize(width, headerSize);
 		footer.setPosition(0, height - footerSize).setSize(width, footerSize);

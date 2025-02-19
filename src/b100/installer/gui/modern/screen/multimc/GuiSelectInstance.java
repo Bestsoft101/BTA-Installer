@@ -40,6 +40,8 @@ public class GuiSelectInstance extends GuiScrollListScreen implements ActionList
 		this.instancesFolder = instancesFolder;
 		this.consumer = consumer;
 		this.selectedInstance = initialSelection;
+		
+		this.title = "Select Instance";
 	}
 	
 	@Override

@@ -161,6 +161,10 @@ public abstract class GuiScreen extends GuiContainer implements FocusListener, C
 		focusListeners.forEach((listener) -> listener.focusChanged(focusable));
 	}
 	
+	public Focusable getFocusedElement() {
+		return focusedElement;
+	}
+	
 	public GuiElement getMouseOver() {
 		return getClickElementAt(mouseX, mouseY);
 	}

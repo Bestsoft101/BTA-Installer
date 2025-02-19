@@ -34,23 +34,25 @@ public abstract class ImageUtils {
 			throw new RuntimeException("Not a file: "+file.getAbsolutePath());
 		}
 		
-		FileInputStream stream;
+		FileInputStream stream = null;
 		try {
 			stream = new FileInputStream(file);
+			BufferedImage image;
+			try {
+				image = ImageIO.read(stream);
+			}catch (Exception e) {
+				throw new RuntimeException("Could not read Image", e);
+			}finally {
+				StreamUtils.close(stream);
+			}
+			return image;
 		}catch (Exception e) {
 			throw new RuntimeException("Could not open file", e);
-		}
-		
-		BufferedImage image;
-		try {
-			image = ImageIO.read(stream);
-		}catch (Exception e) {
-			throw new RuntimeException("Could not read Image", e);
 		}finally {
-			StreamUtils.close(stream);
+			try {
+				stream.close();
+			}catch (Exception e) {}
 		}
-		
-		return image;
 	}
 	
 	public static void saveExternalImage(BufferedImage image, String path) {

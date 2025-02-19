@@ -34,7 +34,7 @@ public class GuiBackground extends GuiElement {
 		
 		for(int i=0; i < tilesX; i++) {
 			for(int j=0; j < tilesY; j++) {
-				renderer.drawImage(Textures.background, posX + i * tileSize, posY + j * tileSize, tileSize, tileSize);
+				renderer.drawImageStretched(Textures.background, posX + i * tileSize, posY + j * tileSize, tileSize, tileSize);
 			}
 		}
 		

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import b100.installer.Global;
-import b100.installer.Utils;
 import b100.installer.VersionList;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
@@ -44,11 +43,7 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		super(parentScreen);
 		
 		if(instancesFolder == null) {
-			if(Utils.multiMcInstanceFolderOverride != null) {
-				instancesFolder = Utils.multiMcInstanceFolderOverride;
-			}else {
-				throw new NullPointerException("Instances folder is null!");	
-			}
+			throw new NullPointerException("Instances folder is null!");
 		}
 		
 		this.instancesFolder = instancesFolder;

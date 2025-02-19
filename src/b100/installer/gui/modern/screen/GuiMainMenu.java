@@ -1,11 +1,15 @@
 package b100.installer.gui.modern.screen;
 
+import b100.installer.Utils;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
+import b100.installer.gui.modern.element.GuiElement;
 import b100.installer.gui.modern.render.Textures;
+import b100.installer.gui.modern.screen.multimc.GuiChooseMultiMcFolder;
 import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
+import b100.installer.gui.modern.util.ActionListener;
 
-public class GuiMainMenu extends GuiScreen {
+public class GuiMainMenu extends GuiScreen implements ActionListener {
 	
 	public GuiButton buttonMultiMc;
 	public GuiButton buttonBetaCraft;
@@ -19,9 +23,12 @@ public class GuiMainMenu extends GuiScreen {
 	protected void onInit() {
 		add(new GuiBackground(this));
 		
-		buttonMultiMc = add(new GuiButton(this, "MultiMC / Prism Launcher").addActionListener((e) -> setScreen(new GuiInstallMultiMc(this, null))));
+		buttonMultiMc = add(new GuiButton(this, "MultiMC / Prism Launcher").addActionListener(this));
 		buttonBetaCraft = add(new GuiButton(this, "BetaCraft"));
 		buttonVanillaLauncher = add(new GuiButton(this, "Vanilla Launcher"));
+		
+		buttonBetaCraft.setClickable(false);
+		buttonVanillaLauncher.setClickable(false);
 	}
 	
 	@Override
@@ -44,6 +51,17 @@ public class GuiMainMenu extends GuiScreen {
 		buttonMultiMc.setPosition(x1, y1 + p * 3);
 		buttonBetaCraft.setPosition(x1, y1 + p * 4);
 		buttonVanillaLauncher.setPosition(x1, y1 + p * 5);
+	}
+
+	@Override
+	public void actionPerformed(GuiElement source) {
+		if(source == buttonMultiMc) {
+			if(Utils.multiMcInstanceFolderOverride != null) {
+				setScreen(new GuiInstallMultiMc(this, Utils.multiMcInstanceFolderOverride));
+			}else {
+				setScreen(new GuiChooseMultiMcFolder(this));
+			}
+		}
 	}
 	
 }

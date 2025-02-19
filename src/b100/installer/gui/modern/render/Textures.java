@@ -16,6 +16,7 @@ public class Textures {
 	public static BufferedImage font = loadTexture("font");
 	public static BufferedImage logo = loadTexture("logo1");
 	public static BufferedImage checkmark = loadTexture("checkmark");
+	public static BufferedImage icons = loadTexture("icons");
 	public static BufferedImage shadow_1 = createGradientImage(1, 6, 0x00000000, 0x80000000);
 	public static BufferedImage shadow_2 = createGradientImage(1, 6, 0x80000000, 0x00000000);
 	

@@ -1,16 +1,13 @@
 package b100.installer.gui.classic;
 
 import java.awt.Dimension;
-import java.io.File;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
 import b100.installer.Config;
 import b100.installer.Global;
-import b100.installer.VersionList;
 
 public class InstallerGuiClassic {
 	
@@ -30,7 +27,7 @@ public class InstallerGuiClassic {
 		}
 		instance = this;
 		
-		mainFrame = new JFrame("BTA Installer" + (Global.isPortable() ? " (Portable Mode)" : "") + (Global.isOffline() ? " (Offline Mode)" : ""));
+		mainFrame = new JFrame("BTA Installer" + (Global.isOffline() ? " (Offline Mode)" : ""));
 		mainFrame.setMinimumSize(new Dimension(400, 320));
 		
 		mainPanel = new GridPanel();
@@ -72,29 +69,9 @@ public class InstallerGuiClassic {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		if(!VersionList.validateVersion()) {
-			JOptionPane.showMessageDialog(null, "Internal version list contains wrong version number! This is a bug!");
-			return;
+		
+		if(Global.setup(args)) {
+			new InstallerGuiClassic();
 		}
-		
-		File file = Global.getInstallerDirectory();
-		boolean portable = Global.isPortable();
-		
-		if(!file.exists() && !portable) {
-			if(!portable) {
-				int response = JOptionPane.showConfirmDialog(null, "Create config directory at '" + file.getAbsolutePath() + "'?", "Installer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if(response != 0) {
-					JOptionPane.showMessageDialog(null, "Can't proceed without a configuration directory! If you want to run the installer in portable mode, add a file named 'portable' into the installer jar!");
-					return;
-				}
-			}
-			file.mkdirs();
-		}
-		
-		Config.getInstance().load();
-		
-		new InstallerGuiClassic();
 	}
-	
 }

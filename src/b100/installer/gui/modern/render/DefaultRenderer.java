@@ -25,6 +25,12 @@ public class DefaultRenderer extends Renderer {
 	
 	private Map<BufferedImage, Map<Integer, BufferedImage>> tintedImageCache = new HashMap<>();
 	
+	private boolean scissorEnabled = false;
+	private int scissorX;
+	private int scissorY;
+	private int scissorWidth;
+	private int scissorHeight;
+	
 	public void update(Component component, Graphics graphics) {
 		if(graphics == null) {
 			throw new NullPointerException("Graphics is null!");
@@ -58,31 +64,42 @@ public class DefaultRenderer extends Renderer {
 		if(image == null) {
 			image = Textures.missingtex;
 		}
-		
-		drawImage(image, x, y, image.getWidth(), image.getHeight());
+		drawSubImage(image, x, y, image.getWidth(), image.getHeight(), 0, 0);
 	}
 
 	@Override
-	public void drawImage(BufferedImage image, int x, int y, int w, int h) {
+	public void drawImageStretched(BufferedImage image, int x, int y, int w, int h) {
 		if(image == null) {
 			image = Textures.missingtex;
 		}
 		image = getTintedImage(image, color);
 		
-		int x1 = x * scale;
-		int y1 = y * scale;
-		int w1 = w * scale;
-		int h1 = h * scale;
-		
-		g.drawImage(image, x1, y1, w1, h1, null);
+		g.drawImage(image, x * scale, y * scale, w * scale, h * scale, null);
 	}
-
+	
 	@Override
 	public void drawSubImage(BufferedImage image, int x, int y, int w, int h, int sx, int sy) {
 		if(image == null) {
 			image = Textures.missingtex;
 		}
 		image = getTintedImage(image, color);
+		
+		if(scissorEnabled) {
+			if(isOutsideScissorArea(x, y, w, h)) {
+				return;
+			}
+			
+			if(y < scissorY) {
+				int offset = scissorY - y;
+				y += offset;
+				sy += offset;
+				h -= offset;
+			}
+			if(y + h >= scissorY + scissorHeight) {
+				int offset = (y + h) - (scissorY + scissorHeight);
+				h -= offset;
+			}
+		}
 		
 		g.drawImage(image, x * scale, y * scale, (x + w) * scale, (y + h) * scale, sx, sy, sx + w, sy + h, null);
 	}
@@ -101,6 +118,28 @@ public class DefaultRenderer extends Renderer {
 		int blue = color & 0xFF;
 		
 		g.setColor(new Color(red, green, blue));
+	}
+
+	@Override
+	public void enableScissor(int x, int y, int w, int h) {
+		scissorEnabled = true;
+		scissorX = x;
+		scissorY = y;
+		scissorWidth = w;
+		scissorHeight = h;
+	}
+
+	@Override
+	public void disableScissor() {
+		scissorEnabled = false;
+	}
+	
+	public boolean isOutsideScissorArea(int x, int y, int w, int h) {
+		if(x + w < scissorX) return true;
+		if(y + h < scissorY) return true;
+		if(x >= scissorX + scissorWidth) return true;
+		if(y >= scissorY + scissorHeight) return true;
+		return false;
 	}
 	
 	///////////////////////////////

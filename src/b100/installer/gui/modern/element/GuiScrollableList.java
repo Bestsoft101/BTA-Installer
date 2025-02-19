@@ -18,6 +18,10 @@ public class GuiScrollableList extends GuiContainer {
 	
 	private boolean scrollAmountChanged = false;
 	
+	public boolean centerElements = true;
+	public boolean useScissor = false;
+	public int scrollToElementOffset = 4;
+	
 	public GuiScrollableList(GuiScreen screen, Layout layout) {
 		this.screen = screen;
 		this.layout = layout;
@@ -35,6 +39,19 @@ public class GuiScrollableList extends GuiContainer {
 		}
 		
 		super.tick();
+	}
+	
+	@Override
+	public void draw() {
+		if(useScissor) {
+			renderer.enableScissor(posX, posY, width, height);	
+		}
+		
+		super.draw();
+		
+		if(useScissor) {
+			renderer.disableScissor();	
+		}
 	}
 	
 	@Override
@@ -63,7 +80,11 @@ public class GuiScrollableList extends GuiContainer {
 	
 	public void setScrollAmount(double newScrollAmount) {
 		if(contentHeight < height) {
-			newScrollAmount = -(height - contentHeight) / 2;
+			if(centerElements) {
+				newScrollAmount = -(height - contentHeight) / 2;	
+			}else {
+				newScrollAmount = 0.0;
+			}
 		}else {
 			newScrollAmount = Utils.clamp(newScrollAmount, 0.0, maxScrollAmount);	
 		}
@@ -156,10 +177,10 @@ public class GuiScrollableList extends GuiContainer {
 		if(focusable.isFocused() && contains(element)) {
 			int offset = 0;
 			if(element.posY < posY) {
-				offset = posY - element.posY + 4;
+				offset = posY - element.posY + scrollToElementOffset;
 			}
 			if(element.posY + element.height > posY + height) {
-				offset = (posY + height) - element.posY - element.height - 4;
+				offset = (posY + height) - element.posY - element.height - scrollToElementOffset;
 			}
 			if(offset != 0) {
 				scroll(offset);

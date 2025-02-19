@@ -3,27 +3,45 @@ package b100.installer;
 import java.io.File;
 import java.io.InputStream;
 
+import javax.swing.JOptionPane;
+
 public class Global {
 	
 	public static final String MULTIMC_INSTANCE_FOLDER_NAME = "BTA_MANAGED_INSTANCE";
 	
 	private static File installerDirectory;
-	private static boolean portable;
 	private static boolean offline;
 	
-	static {
-		portable = checkFileExists("portable");
-		offline = checkFileExists("offline");
+	public static boolean setup(String[] args) {
+		if(args != null) {
+			for(int i=0; i < args.length; i++) {
+				String arg = args[i];
+				
+				if(arg.equals("--run-directory")) {
+					installerDirectory = new File(args[++i]);
+				}else if(arg.equals("--offline")) {
+					offline = true;
+				}
+			}
+		}
 		
-		if(portable) {
-			installerDirectory = new File("").getAbsoluteFile();
-		}else {
+		if(!offline) {
+			offline = checkFileExists("offline");	
+		}
+		if(installerDirectory == null) {
 			installerDirectory = Utils.getAppDirectory("bta-installer");
 		}
 		
 		System.out.println("Installer Directory: '" + installerDirectory.getAbsolutePath() + "'");
-		System.out.println("Portable Mode: " + portable);
 		System.out.println("Offline Mode: " + offline);
+
+		if(!VersionList.validateVersion()) {
+			JOptionPane.showMessageDialog(null, "Internal version list contains wrong version number! This is a bug!");
+			return false;
+		}
+		
+		Config.getInstance().load();
+		return true;
 	}
 	
 	private static boolean checkFileExists(String name) {
@@ -53,10 +71,6 @@ public class Global {
 		}
 		
 		return false;
-	}
-	
-	public static boolean isPortable() {
-		return portable;
 	}
 	
 	public static boolean isOffline() {
