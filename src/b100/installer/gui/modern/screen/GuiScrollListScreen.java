@@ -21,6 +21,7 @@ public abstract class GuiScrollListScreen extends GuiScreen {
 	
 	public String title;
 	
+	private GuiBackground background;
 	private GuiBackground header;
 	private GuiBackground footer;
 
@@ -32,15 +33,18 @@ public abstract class GuiScrollListScreen extends GuiScreen {
 
 	@Override
 	protected void onInit() {
-		add(new GuiBackground(this, 0x202020));
+		background = add(new GuiBackground(this, 0x202020));
 		
 		listLayout = getListLayout();
 		scrollList = add(new GuiScrollableList(this, listLayout));
 		
 		initScrollElements();
 		
-		header = add(new GuiBackground(null));
-		footer = add(new GuiBackground(null));
+		header = new GuiBackground(null);
+		footer = new GuiBackground(null);
+		
+		add(header);
+		add(footer);
 		
 		add(new GuiElementShadow(header, Textures.shadow_2, Position.BELOW_ELEMENT));
 		add(new GuiElementShadow(footer, Textures.shadow_1, Position.ABOVE_ELEMENT));
@@ -50,7 +54,10 @@ public abstract class GuiScrollListScreen extends GuiScreen {
 	
 	@Override
 	public void draw() {
+		background.offset = (int) (scrollList.getScrollAmount() / 2.0);
+		
 		super.draw();
+		
 		if(title != null) {
 			fontRenderer.drawCenteredString(title, width / 2, headerSize / 2 - 4, 0xFFFFFFFF, true);
 		}

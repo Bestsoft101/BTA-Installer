@@ -9,7 +9,7 @@ import b100.installer.util.Utils;
 public class Textures {
 
 	public static BufferedImage missingtex = createMissingTexture();
-	public static BufferedImage background = loadTexture("background");
+	public static BufferedImage background = scale(loadTexture("background"), 2);
 	public static BufferedImage button = loadTexture("button");
 	public static BufferedImage button_disabled = loadTexture("button_disabled");
 	public static BufferedImage button_hover = loadTexture("button_hover");
@@ -61,6 +61,16 @@ public class Textures {
 		}
 		
 		return image;
+	}
+	
+	private static BufferedImage scale(BufferedImage image, int scale) {
+		BufferedImage scaledImage = new BufferedImage(image.getWidth() * scale, image.getHeight() * scale, image.getType());
+		
+		Graphics g = scaledImage.getGraphics();
+		g.drawImage(image, 0, 0, image.getWidth() * scale, image.getHeight() * scale, null);
+		g.dispose();
+		
+		return scaledImage;
 	}
 	
 }

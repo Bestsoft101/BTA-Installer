@@ -68,7 +68,7 @@ public class GuiScrollableList extends GuiContainer {
 	@Override
 	public boolean scrollEvent(double verticalAmount, double mouseX, double mouseY) {
 		if(isInside(mouseX, mouseY)) {
-			scroll(verticalAmount * 16.0);
+			scroll(verticalAmount * 12.0);
 			return true;
 		}
 		return false;
