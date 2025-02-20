@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import b100.installer.Global;
 import b100.installer.Versions;
@@ -94,14 +95,14 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		
 		if(selectedInstance.instanceExists) {
 			if(!advancedMode) {
-				fontRenderer.drawCenteredString("Installed Version: " + selectedInstance.currentVersion.getDisplayName(), x1, y1, 0xFFFFFF, true);
-				if(selectedInstance.currentVersion.equals(latestVersion)) {
+				fontRenderer.drawCenteredString("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion), x1, y1, 0xFFFFFF, true);
+				if(Objects.equals(selectedInstance.currentVersion, latestVersion)) {
 					fontRenderer.drawCenteredString("Up to date!", x1, y1 + 12, 0xFFFF00, true);
 				}else {
 					fontRenderer.drawCenteredString("Update Available: " + latestVersion.getDisplayName(), x1, y1 + 12, 0x00FF00, true);	
 				}
 			}else {
-				fontRenderer.drawCenteredString("Installed Version: " + selectedInstance.currentVersion.getDisplayName(), x1, y1 + 18, 0xFFFFFF, true);
+				fontRenderer.drawCenteredString("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion), x1, y1 + 18, 0xFFFFFF, true);
 			}
 			
 		}else {
@@ -205,13 +206,13 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 			buttonSelectVersion.text = "Version: " + selectedVersion.getDisplayName();
 			buttonSelectInstance.text = "Instance: " + selectedInstance.getName();
 			
-			if(selectedInstance.currentVersion.equals(selectedVersion)) {
+			if(Objects.equals(selectedInstance.currentVersion, selectedVersion)) {
 				buttonInstall.text = "Reinstall";	
 			}else {
 				buttonInstall.text = "Install";
 			}
 		}else {
-			if(selectedInstance.currentVersion.equals(selectedVersion)) {
+			if(Objects.equals(selectedInstance.currentVersion, selectedVersion)) {
 				buttonInstall.text = "Reinstall";	
 			}else {
 				buttonInstall.text = "Update";

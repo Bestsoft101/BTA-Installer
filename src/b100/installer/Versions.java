@@ -130,7 +130,7 @@ public class Versions {
 		}
 	}
 	
-	public class Version {
+	public static class Version {
 		
 		/** The ID does not contain any special characters or spaces, e.g. "7.3-pre1" */
 		public final String id;
@@ -161,6 +161,13 @@ public class Versions {
 		@Override
 		public String toString() {
 			return getDisplayName();
+		}
+		
+		public static String getDisplayName(Version version) {
+			if(version == null) {
+				return "Unknown";
+			}
+			return version.getDisplayName();
 		}
 		
 	}

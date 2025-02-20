@@ -102,6 +102,12 @@ public class InstallerGuiModern {
 		
 		initFrame();
 
+		EventQueue.invokeLater(() -> {
+			Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
+				onCrash(e);
+			});
+		});
+		
 		File instancesFolder = Utils.getMultiMCInstancesFolder();
 		if(instancesFolder != null) {
 			System.out.println("Found Instances Folder: " + instancesFolder);	
@@ -110,12 +116,6 @@ public class InstallerGuiModern {
 		}else {
 			setScreen(null);
 		}
-		
-		EventQueue.invokeLater(() -> {
-			Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
-				onCrash(e);
-			});
-		});
 	}
 	
 	private void run() {
