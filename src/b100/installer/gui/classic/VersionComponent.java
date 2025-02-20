@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import b100.installer.Config;
 import b100.installer.ModLoader;
+import b100.installer.Versions.Version;
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 
 @SuppressWarnings("serial")
@@ -17,7 +18,7 @@ public class VersionComponent extends GridPanel implements ActionListener {
 	public JLabel selectedVersionLabel;
 	public JButton selectVersionButton;
 
-	private String selectedVersion;
+	private Version selectedVersion;
 	private ModLoader selectedLoader;
 	
 	public List<ModLoader> modLoaders;
@@ -39,7 +40,7 @@ public class VersionComponent extends GridPanel implements ActionListener {
 		setVersionAndLoader(Config.getInstance().getLastOrNewestVersion(), ModLoader.None);
 	}
 	
-	public void setVersionAndLoader(String version, ModLoader loader) {
+	public void setVersionAndLoader(Version version, ModLoader loader) {
 		if(version == null) {
 			throw new NullPointerException();
 		}
@@ -48,13 +49,13 @@ public class VersionComponent extends GridPanel implements ActionListener {
 		this.selectedLoader = loader;
 		
 		if(selectedLoader != ModLoader.None) {
-			this.selectedVersionLabel.setText(selectedVersion + " " + selectedLoader.getDisplayName());	
+			this.selectedVersionLabel.setText(selectedVersion.getDisplayName() + " " + selectedLoader.getDisplayName());	
 		}else {
-			this.selectedVersionLabel.setText(selectedVersion);
+			this.selectedVersionLabel.setText(selectedVersion.getDisplayName());
 		}
 	}
 	
-	public String getSelectedVersion() {
+	public Version getSelectedVersion() {
 		return selectedVersion;
 	}
 	

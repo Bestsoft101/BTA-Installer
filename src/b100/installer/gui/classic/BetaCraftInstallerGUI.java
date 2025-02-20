@@ -12,9 +12,9 @@ import javax.swing.JTextField;
 import b100.installer.Config;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
-import b100.installer.VersionList;
+import b100.installer.Versions;
+import b100.installer.Versions.Version;
 import b100.installer.installer.BetaCraftInstaller;
-import b100.json.element.JsonObject;
 
 @SuppressWarnings("serial")
 public class BetaCraftInstallerGUI extends BaseInstallerGUI {
@@ -52,17 +52,17 @@ public class BetaCraftInstallerGUI extends BaseInstallerGUI {
 		add(installButton, 0, 4, 1, 0);
 	}
 	
-	public boolean isVersionSupported(String version) {
-		JsonObject versionObject = VersionList.getVersion(version);
-		JsonObject betaCraftObject = versionObject.getObject("betacraft");
-		return betaCraftObject != null;
+	public boolean isVersionSupported(String versionId) {
+		Version version = Versions.getInstance().get(versionId);
+		
+		return version.manifest.getObject("betacraft") != null;
 	}
 
 	@Override
 	public boolean install() {
 		Map<String, Object> parameters = new HashMap<>();
 		
-		parameters.put("version", versionComponent.getSelectedVersion());
+		parameters.put("version", versionComponent.getSelectedVersion().id);
 		parameters.put("loader", versionComponent.getSelectedLoader());
 		parameters.put("betacraftdir", betacraftDirectoryTextfield.getText());
 		parameters.put("instancename", instanceTextfield.getText());

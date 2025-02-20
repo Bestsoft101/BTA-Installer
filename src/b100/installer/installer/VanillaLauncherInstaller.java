@@ -9,10 +9,11 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 
 import b100.installer.Config;
-import b100.installer.DownloadManager;
+import b100.installer.DownloadHelper;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
-import b100.installer.VersionList;
+import b100.installer.Versions;
+import b100.installer.Versions.Version;
 import b100.installer.gui.classic.VanillaLauncherInstallerGUI;
 import b100.json.JsonParser;
 import b100.json.element.JsonElement;
@@ -46,8 +47,9 @@ public class VanillaLauncherInstaller implements Installer {
 			return false;
 		}
 		
-		JsonObject versionObject = VersionList.getVersion(selectedVersion);
-		JsonObject vanillaObject = versionObject.getObject("vanilla");
+		Version version = Versions.getInstance().get(selectedVersion);
+		JsonObject manifest = version.manifest;
+		JsonObject vanillaObject = manifest.getObject("vanilla");
 		if(vanillaObject == null) {
 			throw new NullPointerException("No vanilla object!");
 		}
@@ -64,7 +66,7 @@ public class VanillaLauncherInstaller implements Installer {
 		
 		String fabricVersionOverride = null;
 		if(loader == ModLoader.Fabric || loader == ModLoader.Babric) {
-			JsonObject fabricObject = versionObject.getObject("fabric");
+			JsonObject fabricObject = manifest.getObject("fabric");
 			
 			if(fabricObject != null && fabricObject.has("version-name-override")) {
 				fabricVersionOverride = fabricObject.getString("version-name-override");	
@@ -92,9 +94,9 @@ public class VanillaLauncherInstaller implements Installer {
 				JOptionPane.showMessageDialog(null, "Please start Beta 1.7.3 once before installing!");
 				return false;
 			}
-
-			File modJarFile = DownloadManager.getFile(versionObject.getString("jar"));
-			Utils.createModdedMinecraftJar(minecraftJar, modJarFile, outputJar);
+			
+			File btaJarFile = version.getFile("client.jar");
+			Utils.createModdedMinecraftJar(minecraftJar, btaJarFile, outputJar);
 		}else {
 			System.out.println("Version is installed");
 		}
@@ -112,7 +114,7 @@ public class VanillaLauncherInstaller implements Installer {
 		}
 		
 		// Copy json file into instance folder and set id
-		JsonObject json = JsonParser.instance.parseFileContent(DownloadManager.getFile(jsonPath));
+		JsonObject json = DownloadHelper.getJson("misc/vanilla/" + jsonPath);
 		json.set("id", versionName);
 		StringUtils.saveStringToFile(new File(versionFolder, versionName + ".json"),  json.toString());
 		
@@ -167,20 +169,22 @@ public class VanillaLauncherInstaller implements Installer {
 		}
 		
 		if(loader == ModLoader.ASMLoader) {
-			JsonObject asmloaderObject = VersionList.getJson().getObject("asmloader");
-			
-			String filename = asmloaderObject.getString("filename");
-			
-			File fileInDownloadDirectory = new File(DownloadManager.getDownloadDirectory(), filename);
-			File fileInMinecraftDirectory = new File(minecraftDirectory, filename);
-			
-			if(!fileInDownloadDirectory.exists()) {
-				DownloadManager.downloadFileAndPrintProgress(asmloaderObject.getString("url"), fileInDownloadDirectory);	
-			}
-			
-			Utils.copyFile(fileInDownloadDirectory, fileInMinecraftDirectory);
-			
-			javaArgs.add("-javaagent:" + filename);
+			// TODO
+//			JsonObject asmloaderObject = VersionList.getJson().getObject("asmloader");
+//			
+//			String filename = asmloaderObject.getString("filename");
+//			
+//			File fileInDownloadDirectory = new File(DownloadManager.getDownloadDirectory(), filename);
+//			File fileInMinecraftDirectory = new File(minecraftDirectory, filename);
+//			
+//			if(!fileInDownloadDirectory.exists()) {
+//				Utils.downloadFileAndPrintProgress(asmloaderObject.getString("url"), fileInDownloadDirectory);	
+//			}
+//			
+//			Utils.copyFile(fileInDownloadDirectory, fileInMinecraftDirectory);
+//			
+//			javaArgs.add("-javaagent:" + filename);
+			JOptionPane.showMessageDialog(null, "ASMLoader installation is currently not implemented!");
 		}
 		profile.set("javaArgs", Utils.combineStringsSeperatedWithSpaces(javaArgs));
 		
@@ -189,8 +193,10 @@ public class VanillaLauncherInstaller implements Installer {
 
 	@Override
 	public boolean isCompatible(String version, ModLoader loader) {
+		JsonObject manifest = Versions.getInstance().get(version).manifest;
+		
 		if(loader == ModLoader.Fabric || loader == ModLoader.Babric) {
-			JsonObject versionObject = VersionList.getJson().getObject("versions").getObject(version);
+			JsonObject versionObject = manifest.getObject(version);
 			if(loader == ModLoader.Babric) {
 				return versionObject.getObject("vanilla").has("json-babric");
 			}else {
@@ -198,11 +204,12 @@ public class VanillaLauncherInstaller implements Installer {
 			}
 		}
 		if(loader == ModLoader.ASMLoader) {
-			JsonObject asmLoaderObject = VersionList.getJson().getObject("asmloader");
-			if(asmLoaderObject == null) {
-				return false;
-			}
-			return asmLoaderObject.has("filename") && asmLoaderObject.has("url");
+//			JsonObject asmLoaderObject = VersionList.getJson().getObject("asmloader");
+//			if(asmLoaderObject == null) {
+//				return false;
+//			}
+//			return asmLoaderObject.has("filename") && asmLoaderObject.has("url");
+			return false;
 		}
 		if(loader == ModLoader.None) {
 			return true;

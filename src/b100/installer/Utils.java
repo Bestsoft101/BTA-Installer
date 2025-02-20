@@ -144,14 +144,8 @@ public abstract class Utils {
 		}
 	}
 	
-	public static void downloadFile(String url, File file) {
-		System.out.println("Downloading: '" + url + "'");
-		try {
-			FileUtils.downloadFile(url, file);
-		}catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		System.out.println("Done!");
+	public static void downloadFileAndPrintProgress(String url, File file) {
+		new Download(url).setPrintProgress(true).downloadIntoFile(file);
 	}
 	
 	public static byte[] readAll(InputStream inputStream) throws IOException {
@@ -328,6 +322,7 @@ public abstract class Utils {
 		return null;
 	}
 	
+	/////////////////////////////////////////
 	// Math
 	
 	public static int floor(double d) {
@@ -394,6 +389,8 @@ public abstract class Utils {
 	public static int mix(int a, int b, float factor) {
 		return (int) (a * (1.0f - factor) + b * factor);
 	}
+
+	/////////////////////////////////////////
 	
 	public static void click() {
 		try(AudioInputStream stream = AudioSystem.getAudioInputStream(Utils.class.getResourceAsStream("/click.wav"))) {

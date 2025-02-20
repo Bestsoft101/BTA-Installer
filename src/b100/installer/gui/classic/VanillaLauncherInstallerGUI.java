@@ -50,7 +50,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI {
 	public boolean install() {
 		Map<String, Object> parameters = new HashMap<>();
 		
-		parameters.put("version", versionComponent.getSelectedVersion());
+		parameters.put("version", versionComponent.getSelectedVersion().id);
 		parameters.put("loader", versionComponent.getSelectedLoader());
 		parameters.put("mcdir", minecraftDirectoryTextfield.getText());
 		

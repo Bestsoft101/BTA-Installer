@@ -8,11 +8,12 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import b100.installer.Config;
-import b100.installer.DownloadManager;
+import b100.installer.DownloadHelper;
 import b100.installer.Global;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
-import b100.installer.VersionList;
+import b100.installer.Versions;
+import b100.installer.Versions.Version;
 import b100.installer.config.ConfigUtil;
 import b100.installer.gui.classic.MultiMcInstallerGUI;
 import b100.json.JsonParser;
@@ -34,14 +35,15 @@ public class MultiMcInstaller implements Installer {
 		
 		System.out.println("Instances folder: " + instancesFolder);
 		
-		String version = (String) parameters.get("version");
+		String versionId = (String) parameters.get("version");
+		Version version = Versions.getInstance().get(versionId);
 		if(version == null) {
 			throw new NullPointerException("Version is null!");
 		}
 		System.out.println("Selected Version: " + version);
 		
 		Config config = Config.getInstance();
-		config.lastSelectedVersion.value = version;
+		config.lastSelectedVersion.value = version.id;
 		config.lastInstallType.value = MultiMcInstallerGUI.INSTALL_TYPE;
 		config.lastMultimcDirectory.value = instancesFolder.getAbsolutePath();
 		config.save();
@@ -59,14 +61,13 @@ public class MultiMcInstaller implements Installer {
 		File jarmodsFolder = new File(instanceFolder, "jarmods");
 		File patchesFolder = new File(instanceFolder, "patches");
 		
-		JsonObject versionObject = VersionList.getVersion(version);
-		if(versionObject == null) {
+		JsonObject manifest = version.manifest;
+		if(manifest == null) {
 			JOptionPane.showMessageDialog(null, "Version '" + version + "' does not exist!");
 			return false;
 		}
-		JsonObject multimcObject = versionObject.getObject("multimc");
+		JsonObject multimcObject = manifest.getObject("multimc");
 		String installType = multimcObject.getString("type");
-		String versionFileName = versionObject.getString("jar");
 		
 		boolean lwjgl3 = installType.equals("lwjgl3");
 		System.out.println("LWJGL 3: " + lwjgl3);
@@ -96,8 +97,7 @@ public class MultiMcInstaller implements Installer {
 		if(lwjgl3) {
 			System.out.println("Setting up LWJGL 3 patch");
 			
-			File file = DownloadManager.getFile("multimc/patches/lwjgl3.json");
-			Utils.copyFile(file, lwjglPatchFile);
+			DownloadHelper.downloadFile("misc/multimc/lwjgl3.json", lwjglPatchFile);
 		}else {
 			lwjglPatchFile.delete();
 		}
@@ -106,9 +106,8 @@ public class MultiMcInstaller implements Installer {
 		File minecraftPatchFile = new File(patchesFolder, "net.minecraft.json");
 		if(noawt) {
 			System.out.println("Settings up minecraft patch");
-
-			File file = DownloadManager.getFile("multimc/patches/minecraft.json");
-			JsonObject minecraftPatch = JsonParser.instance.parseFileContent(file);
+			
+			JsonObject minecraftPatch = DownloadHelper.getJson("misc/multimc/minecraft.json");
 			
 			List<JsonElement> traits = new ArrayList<>();
 			traits.add(new JsonString("texturepacks"));
@@ -128,13 +127,14 @@ public class MultiMcInstaller implements Installer {
 		{
 			System.out.println("Setting up BTA patch");
 			
+			String versionFileName = "bta-" + versionId + ".jar";
+			
 			JsonObject patch = createPatch(btaPatchUid, version, versionFileName);
 			File patchFile = new File(patchesFolder, btaPatchUid + ".json");
 			
 			StringUtils.saveStringToFile(patchFile, patch.toString());
 			
-			File jarFile = new File(jarmodsFolder, versionFileName);
-			Utils.copyFile(DownloadManager.getFile(versionFileName), jarFile);
+			Utils.copyFile(version.getFile("client.jar"), new File(jarmodsFolder, versionFileName));
 		}
 		
 		// mmc-pack.json
@@ -172,14 +172,14 @@ public class MultiMcInstaller implements Installer {
 	}
 
 	@Override
-	public boolean isCompatible(String version, ModLoader loader) {
+	public boolean isCompatible(String versionId, ModLoader loader) {
 		if(loader == ModLoader.None) {
-			return VersionList.getVersion(version).has("multimc");
+			return Versions.getInstance().get(versionId).manifest.has("multimc");
 		}
 		return false;
 	}
 	
-	public JsonObject createPatch(String uid, String version, String versionFile) {
+	public JsonObject createPatch(String uid, Version version, String versionFile) {
 		JsonObject root = new JsonObject();
 		
 		List<JsonElement> jarmods = new ArrayList<>();
@@ -194,7 +194,7 @@ public class MultiMcInstaller implements Installer {
 		root.set("jarMods", new JsonArray(jarmods));
 		root.set("name", "Better Than Adventure!");
 		root.set("uid", uid);
-		root.set("version", version);
+		root.set("version", version.id);
 		
 		return root;
 	}
@@ -222,7 +222,7 @@ public class MultiMcInstaller implements Installer {
 	public static String getLatestVersion() {
 		String url = "https://downloads.betterthanadventure.net/bta-client/release/versions.json";
 		File btaVersionsFile = new File(Global.getInstallerDirectory(), "bta-versions.json");
-		DownloadManager.downloadFileAndPrintProgress(url, btaVersionsFile);
+		Utils.downloadFileAndPrintProgress(url, btaVersionsFile);
 		JsonObject obj = JsonParser.instance.parseFileContent(btaVersionsFile);
 		String latestVersion = obj.getString("default");
 		if(latestVersion.startsWith("v")) {

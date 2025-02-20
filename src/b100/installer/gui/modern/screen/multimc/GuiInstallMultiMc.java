@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import b100.installer.Global;
-import b100.installer.VersionList;
+import b100.installer.Versions;
+import b100.installer.Versions.Version;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiCheckbox;
@@ -31,8 +32,8 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 	
 	public GuiCheckbox checkboxAdvancedMode;
 	
-	public final String latestVersion;
-	public String selectedVersion = null;
+	public final Version latestVersion;
+	public Version selectedVersion = null;
 	public InstanceInfo selectedInstance = null;
 	
 	public MultiMcInstaller multiMcInstaller = new MultiMcInstaller();
@@ -49,7 +50,7 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		this.instancesFolder = instancesFolder;
 		this.instanceFolder = new File(instancesFolder, Global.MULTIMC_INSTANCE_FOLDER_NAME);
 		
-		this.latestVersion = VersionList.getLatestVersion();
+		this.latestVersion = Versions.getInstance().getLatestVersion();
 		System.out.println("Latest BTA Version: " + latestVersion);
 		
 		selectedVersion = latestVersion;
@@ -93,14 +94,14 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		
 		if(selectedInstance.instanceExists) {
 			if(!advancedMode) {
-				fontRenderer.drawCenteredString("Installed Version: " + selectedInstance.currentVersion, x1, y1, 0xFFFFFF, true);
+				fontRenderer.drawCenteredString("Installed Version: " + selectedInstance.currentVersion.getDisplayName(), x1, y1, 0xFFFFFF, true);
 				if(selectedInstance.currentVersion.equals(latestVersion)) {
 					fontRenderer.drawCenteredString("Up to date!", x1, y1 + 12, 0xFFFF00, true);
 				}else {
-					fontRenderer.drawCenteredString("Update Available: " + latestVersion, x1, y1 + 12, 0x00FF00, true);	
+					fontRenderer.drawCenteredString("Update Available: " + latestVersion.getDisplayName(), x1, y1 + 12, 0x00FF00, true);	
 				}
 			}else {
-				fontRenderer.drawCenteredString("Installed Version: " + selectedInstance.currentVersion, x1, y1 + 18, 0xFFFFFF, true);
+				fontRenderer.drawCenteredString("Installed Version: " + selectedInstance.currentVersion.getDisplayName(), x1, y1 + 18, 0xFFFFFF, true);
 			}
 			
 		}else {
@@ -167,7 +168,7 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		final Map<String, Object> parameters = new HashMap<>();
 		
 		parameters.put("instancesfolder", instancesFolder.getAbsolutePath());
-		parameters.put("version", selectedVersion);
+		parameters.put("version", selectedVersion.id);
 		parameters.put("instancename", selectedInstance.getInstanceFolderName());
 		
 		Runnable runnable = () -> {
@@ -201,7 +202,7 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		}
 		
 		if(advancedMode) {
-			buttonSelectVersion.text = "Version: " + selectedVersion;
+			buttonSelectVersion.text = "Version: " + selectedVersion.getDisplayName();
 			buttonSelectInstance.text = "Instance: " + selectedInstance.getName();
 			
 			if(selectedInstance.currentVersion.equals(selectedVersion)) {
@@ -227,7 +228,7 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		public final boolean instanceExists;
 		
 		/** The version of BTA installed in this instance. Contains null if the instance doesn't exist, or the version couldn't be read. */
-		public final String currentVersion;
+		public final Version currentVersion;
 		
 		/** The BTA jar. May be null if the instance doesn't exist or the file couldn't be found */
 		public final File oldBtaJarFile;
@@ -275,7 +276,8 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 			if(existingBtaPatchName != null) {
 				File btaPatchFile = new File(patchesFolder, existingBtaPatchName + ".json");
 				JsonObject btaPatch = JsonParser.instance.parseFileContent(btaPatchFile);
-				currentVersion = btaPatch.getString("version");
+				String versionName = btaPatch.getString("version");
+				currentVersion = Versions.getInstance().get(versionName);
 				JsonArray jarMods = btaPatch.getArray("jarMods");
 				JsonObject btaJarMod = jarMods.get(0).getAsObject();
 				String filename = btaJarMod.getString("MMC-filename");

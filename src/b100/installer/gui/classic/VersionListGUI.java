@@ -21,11 +21,12 @@ import javax.swing.event.ListDataListener;
 import b100.installer.Global;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
-import b100.installer.VersionList;
+import b100.installer.Versions;
+import b100.installer.Versions.Version;
 
 public class VersionListGUI implements ActionListener {
 	
-	private List<String> filteredVersions = new ArrayList<>();
+	private List<Version> filteredVersions = new ArrayList<>();
 	private List<ListDataListener> dataListeners = new ArrayList<>();
 	
 	public JFrame frame;
@@ -40,13 +41,13 @@ public class VersionListGUI implements ActionListener {
 	public JButton confirmButton;
 	public JButton cancelButton;
 
-	private String selectedVersion;
+	private Version selectedVersion;
 	private ModLoader selectedLoader;
 
 	public ComboBoxData<ModLoader> modLoaderSelectionData;
 	public VersionFilter filter;
 	
-	public VersionListGUI(Listener listener, String selectedVersion, ModLoader selectedLoader, List<ModLoader> modLoaders, VersionFilter filter) {
+	public VersionListGUI(Listener listener, Version selectedVersion, ModLoader selectedLoader, List<ModLoader> modLoaders, VersionFilter filter) {
 		this.listener = listener;
 		this.selectedVersion = selectedVersion;
 		this.selectedLoader = selectedLoader;
@@ -101,13 +102,13 @@ public class VersionListGUI implements ActionListener {
 	
 	public static interface Listener {
 		
-		public void onVersionSelected(String string, ModLoader loader);
+		public void onVersionSelected(Version string, ModLoader loader);
 		
 	}
 	
 	public static interface VersionFilter {
 		
-		public boolean isCompatible(String version, ModLoader loader);
+		public boolean isCompatible(String versionId, ModLoader loader);
 		
 	}
 	
@@ -122,8 +123,9 @@ public class VersionListGUI implements ActionListener {
 		}
 		if(e.getSource() == confirmButton) {
 			String selection = versionList.getSelectedValue();
-			if(selection != null) {
-				listener.onVersionSelected(selection, selectedLoader);
+			Version selectedVersion = Versions.getInstance().get(selection);
+			if(selectedVersion != null) {
+				listener.onVersionSelected(selectedVersion, selectedLoader);
 			}
 			frame.dispose();
 		}
@@ -139,7 +141,7 @@ public class VersionListGUI implements ActionListener {
 			long startTime = System.currentTimeMillis();
 			
 			try {
-				VersionList.refreshVersionList();
+				// TODO
 			}catch (Exception e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(InstallerGuiClassic.instance.mainFrame, "Error!");
@@ -159,7 +161,7 @@ public class VersionListGUI implements ActionListener {
 	}
 	
 	public void setupVersionList() {
-		filteredVersions = VersionList.getAllVersions(filter, selectedLoader);
+		filteredVersions = Versions.getInstance().getAllVersions(filter, selectedLoader);
 		
 		for(int i=0; i < dataListeners.size(); i++) {
 			dataListeners.get(i).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
@@ -187,7 +189,7 @@ public class VersionListGUI implements ActionListener {
 
 		@Override
 		public String getElementAt(int index) {
-			return filteredVersions.get(index);
+			return filteredVersions.get(index).getDisplayName();
 		}
 
 		@Override

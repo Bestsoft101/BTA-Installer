@@ -7,10 +7,11 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import b100.installer.Config;
-import b100.installer.DownloadManager;
+import b100.installer.DownloadHelper;
 import b100.installer.ModLoader;
 import b100.installer.Utils;
-import b100.installer.VersionList;
+import b100.installer.Versions;
+import b100.installer.Versions.Version;
 import b100.installer.config.ConfigUtil;
 import b100.installer.gui.classic.BetaCraftInstallerGUI;
 import b100.json.element.JsonObject;
@@ -42,9 +43,10 @@ public class BetaCraftInstaller implements Installer {
 			config.save();
 			return false;
 		}
-
-		JsonObject versionObject = VersionList.getVersion(selectedVersion);
-		JsonObject betaCraftObject = versionObject.getObject("betacraft");
+		
+		Version version = Versions.getInstance().get(selectedVersion);
+		JsonObject manifest = version.manifest;
+		JsonObject betaCraftObject = manifest.getObject("betacraft");
 		if(betaCraftObject == null) {
 			JOptionPane.showMessageDialog(null, "Version '" + selectedVersion + "' is not compatible with BetaCraft!");
 			return false;
@@ -62,9 +64,9 @@ public class BetaCraftInstaller implements Installer {
 				JOptionPane.showMessageDialog(null, "Please start Beta 1.7.3 once before installing!");
 				return false;
 			}
-
-			File modJarFile = DownloadManager.getFile(versionObject.getString("jar"));
-			Utils.createModdedMinecraftJar(minecraftJar, modJarFile, outputJar);
+			
+			File btaJarFile = version.getFile("client.jar");
+			Utils.createModdedMinecraftJar(minecraftJar, btaJarFile, outputJar);
 		}else {
 			System.out.println("Version is installed");
 		}
@@ -78,10 +80,9 @@ public class BetaCraftInstaller implements Installer {
 			// Put CustomLaunch jar into launch-methods folder
 			if(!installedLaunchMethod.exists()) {
 				System.out.println("Installing launch method");
-				File launchMethodJar = DownloadManager.getFile(launchMethod + ".jar");
 				
-				installedLaunchMethod.getParentFile().mkdirs();
-				Utils.copyFile(launchMethodJar, installedLaunchMethod);
+				File cachedFile = DownloadHelper.getFile("misc/betacraft/" + launchMethod + ".jar");
+				Utils.copyFile(cachedFile, installedLaunchMethod);
 			}else {
 				System.out.println("Launch method is installed");
 			}

@@ -2,6 +2,7 @@ package b100.installer;
 
 import java.io.File;
 
+import b100.installer.Versions.Version;
 import b100.installer.config.ConfigFile;
 import b100.installer.config.LongProperty;
 import b100.installer.config.StringProperty;
@@ -27,11 +28,14 @@ public class Config extends ConfigFile {
 		super(file);
 	}
 	
-	public String getLastOrNewestVersion() {
+	public Version getLastOrNewestVersion() {
 		if(lastSelectedVersion.value != null) {
-			return lastSelectedVersion.value;
+			Version version = Versions.getInstance().get(lastSelectedVersion.value);
+			if(version != null) {
+				return version;
+			}
 		}
-		return VersionList.getAllVersions().get(0);
+		return Versions.getInstance().getLatestVersion();
 	}
 
 }

@@ -3,14 +3,13 @@ package b100.installer;
 import java.io.File;
 import java.io.InputStream;
 
-import javax.swing.JOptionPane;
-
 public class Global {
 	
 	public static final String MULTIMC_INSTANCE_FOLDER_NAME = "BTA_MANAGED_INSTANCE";
 	
 	private static File installerDirectory;
 	private static boolean offline;
+	private static String downloadUrl = "https://downloads.betterthanadventure.net/";
 	
 	public static boolean setup(String[] args) {
 		if(args != null) {
@@ -21,6 +20,8 @@ public class Global {
 					installerDirectory = new File(args[++i]);
 				}else if(arg.equals("--offline")) {
 					offline = true;
+				}else if(arg.equals("--download-url")) {
+					downloadUrl = args[++i];
 				}
 			}
 		}
@@ -34,11 +35,6 @@ public class Global {
 		
 		System.out.println("Installer Directory: '" + installerDirectory.getAbsolutePath() + "'");
 		System.out.println("Offline Mode: " + offline);
-
-		if(!VersionList.validateVersion()) {
-			JOptionPane.showMessageDialog(null, "Internal version list contains wrong version number! This is a bug!");
-			return false;
-		}
 		
 		Config.getInstance().load();
 		return true;
@@ -79,6 +75,10 @@ public class Global {
 	
 	public static File getInstallerDirectory() {
 		return installerDirectory;
+	}
+	
+	public static String getDownloadUrl() {
+		return downloadUrl;
 	}
 
 }
