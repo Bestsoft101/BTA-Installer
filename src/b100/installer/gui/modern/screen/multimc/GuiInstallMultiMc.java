@@ -9,6 +9,7 @@ import java.util.Objects;
 import b100.installer.Global;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
+import b100.installer.gui.modern.InstallerGuiModern;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiCheckbox;
@@ -106,7 +107,11 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 			}
 			
 		}else {
-			fontRenderer.drawCenteredString("Not installed!", x1, y1, 0xFFFFFF, true);
+			if(advancedMode) {
+				fontRenderer.drawCenteredString("Not installed!", x1, y1 + 18, 0xFFFFFF, true);
+			}else {
+				fontRenderer.drawCenteredString("Not installed!", x1, y1 + 12, 0xFFFFFF, true);
+			}
 		}
 	}
 	
@@ -173,13 +178,17 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		parameters.put("instancename", selectedInstance.getInstanceFolderName());
 		
 		Runnable runnable = () -> {
-			multiMcInstaller.install(parameters);
-			
-			EventQueue.invokeLater(() -> {
-				buttonInstall.setClickable(true);
+			try {
+				multiMcInstaller.install(parameters);
 				
-				refresh();
-			});
+				EventQueue.invokeLater(() -> {
+					buttonInstall.setClickable(true);
+					
+					refresh();
+				});
+			}catch (Exception e) {
+				InstallerGuiModern.getInstance().onCrash(e);
+			}
 		};
 		
 		Thread thread = new Thread(runnable);
@@ -214,8 +223,10 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		}else {
 			if(Objects.equals(selectedInstance.currentVersion, selectedVersion)) {
 				buttonInstall.text = "Reinstall";	
-			}else {
+			}else if(selectedInstance.instanceExists) {
 				buttonInstall.text = "Update";
+			}else {
+				buttonInstall.text = "Install";
 			}
 		}
 	}
@@ -245,11 +256,14 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 			this.instanceFolder = instanceFolder;
 			this.instanceExists = MultiMcInstaller.isInstance(instanceFolder);
 			
-			if(MultiMcInstaller.isInstance(instanceFolder)) {
-				displayName = MultiMcInstaller.getInstanceName(instanceFolder);
-			}else {
+			if(!MultiMcInstaller.isInstance(instanceFolder)) {
 				displayName = null;
+				oldBtaJarFile = null;
+				currentVersion = null;
+				return;
 			}
+			
+			displayName = MultiMcInstaller.getInstanceName(instanceFolder);
 			
 			File mmcPackFile = new File(instanceFolder, "mmc-pack.json");
 			File patchesFolder = new File(instanceFolder, "patches");

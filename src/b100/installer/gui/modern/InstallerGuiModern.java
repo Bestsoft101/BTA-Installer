@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,6 +59,8 @@ public class InstallerGuiModern {
 	
 	public volatile Crash crash;
 	
+	public UncaughtExceptionHandler uncaughtExceptionHandler = (t, e) -> onCrash(e);
+	
 	private InstallerGuiModern() {
 		if(instance != null) {
 			throw new IllegalStateException("Instance already exists!");
@@ -96,9 +99,7 @@ public class InstallerGuiModern {
 		Sound.init();
 
 		EventQueue.invokeLater(() -> {
-			Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
-				onCrash(e);
-			});
+			Thread.currentThread().setUncaughtExceptionHandler(uncaughtExceptionHandler);
 		});
 		
 		renderer = new DefaultRenderer();
