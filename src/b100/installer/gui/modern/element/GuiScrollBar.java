@@ -53,6 +53,10 @@ public class GuiScrollBar extends GuiElement {
 	
 	@Override
 	public void draw() {
+		if(!isSolid()) {
+			return;
+		}
+		
 		int scrollerHeight = getScrollerHeight();
 		
 		float scrollFactor = (float) (list.getScrollAmount() / list.getMaxScrollAmount());

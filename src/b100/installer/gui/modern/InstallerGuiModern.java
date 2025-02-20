@@ -94,6 +94,12 @@ public class InstallerGuiModern {
 	
 	private void init() {
 		Sound.init();
+
+		EventQueue.invokeLater(() -> {
+			Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
+				onCrash(e);
+			});
+		});
 		
 		renderer = new DefaultRenderer();
 		
@@ -101,12 +107,6 @@ public class InstallerGuiModern {
 		FontRenderer.instance = new FontRenderer(renderer);
 		
 		initFrame();
-
-		EventQueue.invokeLater(() -> {
-			Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
-				onCrash(e);
-			});
-		});
 		
 		File instancesFolder = Utils.getMultiMCInstancesFolder();
 		if(instancesFolder != null) {
@@ -119,26 +119,35 @@ public class InstallerGuiModern {
 	}
 	
 	private void run() {
-		long lastTick = System.currentTimeMillis();
-		long tickTime = 1000 / 60;
+		final int targetFPS = 60;
+		final int tickTime = 1000 / targetFPS;
+		long totalDelta = 0;
 		
 		running = true;
 		while(running) {
-			long now = System.currentTimeMillis();
-			long delta = now - lastTick;
-			lastTick = now;
+			long tickStart = System.nanoTime();
 			
-			long sleepTime = tickTime - delta;
-			if(sleepTime > 0) {
-				try {
-					Thread.sleep(sleepTime);
-				}catch (Exception e) {}
-			}
+			//////////////
 			
 			EventQueue.invokeLater(tickHandler);
 			
 			if(crash != null) {
 				throw new RuntimeException("Exception in thread \"" + crash.thread.getName() + "\"", crash.cause);
+			}
+			
+			//////////////
+			
+			long tickEnd = System.nanoTime();
+			long delta = tickEnd - tickStart;
+			totalDelta += delta;
+			
+			long deltaMs = totalDelta / 1000000;
+			totalDelta -= deltaMs * 1000000;
+			long sleep = tickTime - deltaMs;
+			if(sleep > 0) {
+				try {
+					Thread.sleep(sleep);
+				}catch (Exception e) {}
 			}
 		}
 	}
@@ -194,8 +203,7 @@ public class InstallerGuiModern {
 		if(g == null) {
 			return;
 		}
-		
-//		System.out.println("Repaint!");
+
 		repaint = false;
 		
 		renderer.update(component, g);

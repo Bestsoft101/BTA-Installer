@@ -47,6 +47,9 @@ public abstract class GuiScreen extends GuiContainer implements FocusListener, C
 		
 		onInit();
 		
+		setSize(renderer.getWidth(), renderer.getHeight());
+		onResize();
+		
 		initialized = true;
 	}
 	

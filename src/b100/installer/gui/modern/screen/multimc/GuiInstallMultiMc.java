@@ -220,7 +220,7 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		}
 	}
 	
-	class InstanceInfo {
+	public static class InstanceInfo {
 		
 		/** The folder of the instance. Cannot be null */
 		public final File instanceFolder;
@@ -288,9 +288,6 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 				currentVersion = null;
 				oldBtaJarFile = null;
 			}
-			
-			System.out.println("Version: " + currentVersion);
-			System.out.println("Old BTA jar: " + oldBtaJarFile);
 		}
 		
 		/**
