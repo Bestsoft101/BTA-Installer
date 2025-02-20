@@ -19,10 +19,10 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import b100.installer.Global;
-import b100.installer.ModLoader;
-import b100.installer.Utils;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
+import b100.installer.util.ModLoader;
+import b100.installer.util.Utils;
 
 public class VersionListGUI implements ActionListener {
 	

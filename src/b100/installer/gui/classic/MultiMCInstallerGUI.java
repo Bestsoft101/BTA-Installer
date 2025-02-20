@@ -10,8 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import b100.installer.Config;
-import b100.installer.ModLoader;
 import b100.installer.installer.MultiMcInstaller;
+import b100.installer.util.ModLoader;
 
 @SuppressWarnings("serial")
 public class MultiMcInstallerGUI extends BaseInstallerGUI {

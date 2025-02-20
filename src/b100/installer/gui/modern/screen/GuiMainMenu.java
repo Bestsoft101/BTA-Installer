@@ -1,6 +1,5 @@
 package b100.installer.gui.modern.screen;
 
-import b100.installer.Utils;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiElement;
@@ -8,6 +7,7 @@ import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.multimc.GuiChooseMultiMcFolder;
 import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
 import b100.installer.gui.modern.util.ActionListener;
+import b100.installer.util.Utils;
 
 public class GuiMainMenu extends GuiScreen implements ActionListener {
 	

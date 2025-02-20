@@ -10,11 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import b100.installer.Config;
-import b100.installer.ModLoader;
-import b100.installer.Utils;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.installer.BetaCraftInstaller;
+import b100.installer.util.ModLoader;
+import b100.installer.util.Utils;
 
 @SuppressWarnings("serial")
 public class BetaCraftInstallerGUI extends BaseInstallerGUI {

@@ -9,6 +9,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 
+import b100.installer.util.Utils;
+
 public class Sound {
 	
 	private byte[] data;

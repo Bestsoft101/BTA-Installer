@@ -2,7 +2,7 @@ package b100.installer.gui.modern.render;
 
 import java.awt.image.BufferedImage;
 
-import b100.installer.Utils;
+import b100.installer.util.Utils;
 
 public class FontRenderer {
 	

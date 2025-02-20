@@ -1,4 +1,4 @@
-package b100.installer;
+package b100.installer.util;
 
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
@@ -21,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 
+import b100.installer.Download;
 import b100.installer.installer.MultiMcInstaller;
 import b100.utils.FileUtils;
 import b100.utils.StreamUtils;

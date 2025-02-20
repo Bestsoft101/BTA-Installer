@@ -9,9 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import b100.installer.Config;
-import b100.installer.ModLoader;
-import b100.installer.Utils;
 import b100.installer.installer.VanillaLauncherInstaller;
+import b100.installer.util.ModLoader;
+import b100.installer.util.Utils;
 
 @SuppressWarnings("serial")
 public class VanillaLauncherInstallerGUI extends BaseInstallerGUI {

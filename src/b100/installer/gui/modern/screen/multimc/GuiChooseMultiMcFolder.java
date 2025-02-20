@@ -1,10 +1,10 @@
 package b100.installer.gui.modern.screen.multimc;
 
-import b100.installer.Utils;
 import b100.installer.gui.modern.element.GuiElement;
 import b100.installer.gui.modern.screen.GuiFileChooser;
 import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.util.ActionListener;
+import b100.installer.util.Utils;
 
 public class GuiChooseMultiMcFolder extends GuiFileChooser implements ActionListener {
 

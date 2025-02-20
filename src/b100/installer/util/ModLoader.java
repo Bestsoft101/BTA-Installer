@@ -1,4 +1,4 @@
-package b100.installer;
+package b100.installer.util;
 
 public enum ModLoader {
 	None, Babric, Fabric, ASMLoader;

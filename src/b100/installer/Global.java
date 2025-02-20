@@ -3,6 +3,9 @@ package b100.installer;
 import java.io.File;
 import java.io.InputStream;
 
+import b100.installer.util.Log;
+import b100.installer.util.Utils;
+
 public class Global {
 	
 	public static final String MULTIMC_INSTANCE_FOLDER_NAME = "BTA_MANAGED_INSTANCE";
@@ -10,8 +13,9 @@ public class Global {
 	private static File installerDirectory;
 	private static boolean offline;
 	private static String downloadUrl = "https://downloads.betterthanadventure.net/";
+	private static File logFile;
 	
-	public static boolean setup(String[] args) {
+	public static void setup(String[] args) {
 		if(args != null) {
 			for(int i=0; i < args.length; i++) {
 				String arg = args[i];
@@ -33,11 +37,14 @@ public class Global {
 			installerDirectory = Utils.getAppDirectory("bta-installer");
 		}
 		
+		logFile = new File(installerDirectory, "installer.log");
+		Log.setup(logFile);
+		Log.enable();
+		
 		System.out.println("Installer Directory: '" + installerDirectory.getAbsolutePath() + "'");
 		System.out.println("Offline Mode: " + offline);
 		
 		Config.getInstance().load();
-		return true;
 	}
 	
 	private static boolean checkFileExists(String name) {
@@ -79,6 +86,10 @@ public class Global {
 	
 	public static String getDownloadUrl() {
 		return downloadUrl;
+	}
+	
+	public static File getLogFile() {
+		return logFile;
 	}
 
 }

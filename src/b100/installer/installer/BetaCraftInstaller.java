@@ -8,12 +8,12 @@ import javax.swing.JOptionPane;
 
 import b100.installer.Config;
 import b100.installer.DownloadHelper;
-import b100.installer.ModLoader;
-import b100.installer.Utils;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.config.ConfigUtil;
 import b100.installer.gui.classic.BetaCraftInstallerGUI;
+import b100.installer.util.ModLoader;
+import b100.installer.util.Utils;
 import b100.json.element.JsonObject;
 import b100.utils.StringUtils;
 

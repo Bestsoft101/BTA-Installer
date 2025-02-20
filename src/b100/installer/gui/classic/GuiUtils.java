@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.border.TitledBorder;
 
-import b100.installer.Utils;
+import b100.installer.util.Utils;
 
 public abstract class GuiUtils {
 	

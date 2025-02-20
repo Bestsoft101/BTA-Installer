@@ -70,8 +70,8 @@ public class InstallerGuiClassic {
 			e.printStackTrace();
 		}
 		
-		if(Global.setup(args)) {
-			new InstallerGuiClassic();
-		}
+		Global.setup(args);
+		
+		new InstallerGuiClassic();
 	}
 }

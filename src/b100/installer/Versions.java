@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
+import b100.installer.util.ModLoader;
 import b100.json.element.JsonArray;
 import b100.json.element.JsonEntry;
 import b100.json.element.JsonObject;

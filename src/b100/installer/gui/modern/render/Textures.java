@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import b100.installer.Utils;
+import b100.installer.util.Utils;
 
 public class Textures {
 

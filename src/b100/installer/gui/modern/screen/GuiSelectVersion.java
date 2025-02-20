@@ -3,7 +3,6 @@ package b100.installer.gui.modern.screen;
 import java.util.List;
 import java.util.function.Consumer;
 
-import b100.installer.ModLoader;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
@@ -13,6 +12,7 @@ import b100.installer.gui.modern.element.GuiListButton;
 import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.gui.modern.util.FocusListener;
 import b100.installer.gui.modern.util.Focusable;
+import b100.installer.util.ModLoader;
 
 public class GuiSelectVersion extends GuiScrollListScreen implements ActionListener, FocusListener {
 	

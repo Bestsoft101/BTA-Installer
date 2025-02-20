@@ -18,16 +18,19 @@ import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import b100.installer.Global;
 import b100.installer.Sound;
-import b100.installer.Utils;
 import b100.installer.gui.modern.render.DefaultRenderer;
 import b100.installer.gui.modern.render.FontRenderer;
 import b100.installer.gui.modern.render.Renderer;
 import b100.installer.gui.modern.screen.GuiMainMenu;
 import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
+import b100.installer.util.Crash;
+import b100.installer.util.CrashHandler;
+import b100.installer.util.Utils;
 
 public class InstallerGuiModern {
 	
@@ -53,12 +56,43 @@ public class InstallerGuiModern {
 	private boolean holdingShift = false;
 	private boolean holdingAlt = false;
 	
+	public volatile Crash crash;
+	
 	private InstallerGuiModern() {
 		if(instance != null) {
 			throw new IllegalStateException("Instance already exists!");
 		}
 		instance = this;
 		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			init();
+			run();
+		}catch (Throwable e) {
+			e.printStackTrace();
+			
+			try {
+				frame.dispose();
+			}catch (Exception e1) {}
+			
+			StringBuilder msg = new StringBuilder();
+			
+			msg.append("The installer has crashed!\n\n");
+			
+			CrashHandler.createErrorLog(msg, e);
+			
+			msg.append("\n\nThe full log has been saved at " + Global.getLogFile().getAbsolutePath());
+			
+			new CrashHandler(msg.toString(), null);
+		}
+	}
+	
+	private void init() {
 		Sound.init();
 		
 		renderer = new DefaultRenderer();
@@ -77,6 +111,14 @@ public class InstallerGuiModern {
 			setScreen(null);
 		}
 		
+		EventQueue.invokeLater(() -> {
+			Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
+				onCrash(e);
+			});
+		});
+	}
+	
+	private void run() {
 		long lastTick = System.currentTimeMillis();
 		long tickTime = 1000 / 60;
 		
@@ -94,6 +136,10 @@ public class InstallerGuiModern {
 			}
 			
 			EventQueue.invokeLater(tickHandler);
+			
+			if(crash != null) {
+				throw new RuntimeException("Exception in thread \"" + crash.thread.getName() + "\"", crash.cause);
+			}
 		}
 	}
 	
@@ -264,10 +310,14 @@ public class InstallerGuiModern {
 		frame.dispose();
 	}
 	
+	public void onCrash(Throwable throwable) {
+		crash = new Crash(throwable, Thread.currentThread());
+	}
+	
 	class Listeners implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener, WindowListener {
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			InstallerGuiModern.this.mouseMoved(e.getX(), e.getY());
+			InstallerGuiModern.this.mouseMoved(e.getX(), e.getY());	
 		}
 
 		@Override
@@ -357,8 +407,8 @@ public class InstallerGuiModern {
 	}
 	
 	public static void main(String[] args) {
-		if(Global.setup(args)) {
-			new InstallerGuiModern();			
-		}
+		Global.setup(args);
+		
+		new InstallerGuiModern();
 	}
 }

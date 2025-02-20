@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import b100.installer.Utils;
+import b100.installer.util.Utils;
 
 public class DefaultRenderer extends Renderer {
 	
