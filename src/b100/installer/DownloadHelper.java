@@ -8,13 +8,21 @@ import b100.utils.FileUtils;
 
 public class DownloadHelper {
 	
+	private static File localResourcesFolder;
+	
+	private static File getLocalResourcesFolder() {
+		if(localResourcesFolder == null) {
+			localResourcesFolder = new File(Global.getInstallerDirectory(), "resources");
+		}
+		return localResourcesFolder;
+	}
+	
 	/**
 	 * Get the file from the cache if it exists, or download it
 	 */
 	public static File getFile(String path) {
 		if(Global.isOffline()) {
-			File downloadsFolder = new File("downloads");
-			File localFile = new File(downloadsFolder, path);
+			File localFile = new File(getLocalResourcesFolder(), path);
 			
 			return localFile;
 		}
@@ -34,8 +42,7 @@ public class DownloadHelper {
 	 */
 	public static void downloadFile(String path, File target) {
 		if(Global.isOffline()) {
-			File downloadsFolder = new File("downloads");
-			File localFile = new File(downloadsFolder, path);
+			File localFile = new File(getLocalResourcesFolder(), path);
 			
 			FileUtils.copy(localFile, target);
 			return;
@@ -46,8 +53,7 @@ public class DownloadHelper {
 	
 	public static JsonObject getJson(String path) {
 		if(Global.isOffline()) {
-			File downloadsFolder = new File("downloads");
-			File localFile = new File(downloadsFolder, path);
+			File localFile = new File(getLocalResourcesFolder(), path);
 			
 			return JsonParser.instance.parseFileContent(localFile);
 		}
