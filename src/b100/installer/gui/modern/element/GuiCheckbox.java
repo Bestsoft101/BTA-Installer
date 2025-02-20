@@ -2,7 +2,7 @@ package b100.installer.gui.modern.element;
 
 import java.awt.event.KeyEvent;
 
-import b100.installer.Utils;
+import b100.installer.Sound;
 import b100.installer.gui.modern.InstallerGuiModern;
 import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.GuiScreen;
@@ -136,8 +136,8 @@ public class GuiCheckbox extends GuiElement implements Focusable {
 	
 	public void clickButton() {
 		checked = !checked;
-		
-		Utils.click();
+
+		Sound.click.play();
 		
 		actionListeners.forEach((listener) -> listener.actionPerformed(this));
 		

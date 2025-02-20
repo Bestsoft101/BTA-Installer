@@ -20,11 +20,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineEvent;
 
 import b100.installer.installer.MultiMcInstaller;
 import b100.utils.FileUtils;
@@ -39,6 +34,7 @@ public abstract class Utils {
 	public static final int OS_UNKNOWN = 3;
 	
 	public static File multiMcInstanceFolderOverride = null;
+	
 	
 	public static File getMinecraftDirectory() {
 		return getAppDirectory("minecraft");
@@ -391,22 +387,5 @@ public abstract class Utils {
 	}
 
 	/////////////////////////////////////////
-	
-	public static void click() {
-		try(AudioInputStream stream = AudioSystem.getAudioInputStream(Utils.class.getResourceAsStream("/click.wav"))) {
-			Clip clip = AudioSystem.getClip();
-			clip.open(stream);
-			clip.addLineListener(event -> {
-				if(event.getType().equals(LineEvent.Type.STOP)) {
-					event.getLine().close();
-				}
-			});
-			FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			control.setValue(control.getMinimum() + ((control.getMaximum() - control.getMinimum()) * 0.75f));
-			clip.start();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 }

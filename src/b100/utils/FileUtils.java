@@ -178,9 +178,15 @@ public abstract class FileUtils {
 	}
 	
 	public static void validateFileExists(File file) {
-		if(file == null) throw new NullPointerException();
-		if(!file.exists()) throw new RuntimeException("File "+file+" doesn't exist!");
-		if(!file.isFile()) throw new RuntimeException("Not a file: "+file);
+		if(file == null)
+			throw new NullPointerException();
+		
+		file = file.getAbsoluteFile();
+		
+		if(!file.exists())
+			throw new RuntimeException("File " + file + " doesn't exist!");
+		if(!file.isFile())
+			throw new RuntimeException("Not a file: " + file);
 	}
 	
 	public static void validateFolderExists(File folder) {

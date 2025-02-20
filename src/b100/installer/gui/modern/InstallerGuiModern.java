@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import b100.installer.Global;
+import b100.installer.Sound;
 import b100.installer.Utils;
 import b100.installer.gui.modern.render.DefaultRenderer;
 import b100.installer.gui.modern.render.FontRenderer;
@@ -57,6 +58,8 @@ public class InstallerGuiModern {
 			throw new IllegalStateException("Instance already exists!");
 		}
 		instance = this;
+		
+		Sound.init();
 		
 		renderer = new DefaultRenderer();
 		

@@ -147,7 +147,7 @@ public class DefaultRenderer extends Renderer {
 	public static BufferedImage loadTexture(String path) {
 		InputStream in = null;
 		try {
-			in = DefaultRenderer.class.getResourceAsStream(path);
+			in = Utils.class.getResourceAsStream(path);
 			return ImageIO.read(in);
 		}catch (Exception e) {
 			System.out.println("Could not load texture: " + path);

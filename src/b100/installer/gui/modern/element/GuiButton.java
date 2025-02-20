@@ -3,7 +3,7 @@ package b100.installer.gui.modern.element;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import b100.installer.Utils;
+import b100.installer.Sound;
 import b100.installer.gui.modern.InstallerGuiModern;
 import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.GuiScreen;
@@ -117,7 +117,7 @@ public class GuiButton extends GuiElement implements Focusable {
 	}
 	
 	public void clickButton() {
-		Utils.click();
+		Sound.click.play();
 		
 		actionListeners.forEach((listener) -> listener.actionPerformed(this));
 	}
