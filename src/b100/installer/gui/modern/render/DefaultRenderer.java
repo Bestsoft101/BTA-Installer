@@ -1,8 +1,10 @@
 package b100.installer.gui.modern.render;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -14,7 +16,7 @@ import b100.installer.util.Utils;
 
 public class DefaultRenderer extends Renderer {
 	
-	private Graphics g;
+	private Graphics2D g;
 	
 	private int scale = 1;
 	
@@ -35,7 +37,7 @@ public class DefaultRenderer extends Renderer {
 		if(graphics == null) {
 			throw new NullPointerException("Graphics is null!");
 		}
-		g = graphics;
+		g = (Graphics2D) graphics;
 		
 		int width = component.getWidth();
 		int height = component.getHeight();
@@ -141,8 +143,16 @@ public class DefaultRenderer extends Renderer {
 		if(y >= scissorY + scissorHeight) return true;
 		return false;
 	}
-	
-	///////////////////////////////
+
+	@Override
+	public void enableInvertColor() {
+		g.setComposite(BlendComposite.Negation);
+	}
+
+	@Override
+	public void disableInvertColor() {
+		g.setComposite(AlphaComposite.SrcOver);
+	}
 	
 	public static BufferedImage loadTexture(String path) {
 		InputStream in = null;
@@ -203,5 +213,4 @@ public class DefaultRenderer extends Renderer {
 		
 		return coloredImage;
 	}
-	
 }

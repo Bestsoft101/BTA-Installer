@@ -56,6 +56,9 @@ public class InstallerGuiModern {
 	
 	private boolean holdingShift = false;
 	private boolean holdingAlt = false;
+	private boolean holdingCtrl = false;
+	
+	private boolean cancelCharEvent = false;
 	
 	public volatile Crash crash;
 	
@@ -247,6 +250,10 @@ public class InstallerGuiModern {
 		return holdingAlt;
 	}
 	
+	public boolean isCtrlPressed() {
+		return holdingCtrl;
+	}
+	
 	public void scheduleRepaint() {
 		repaint = true;
 	}
@@ -297,8 +304,25 @@ public class InstallerGuiModern {
 		if(key == KeyEvent.VK_ALT) {
 			holdingAlt = pressed;
 		}
+		if(key == KeyEvent.VK_CONTROL) {
+			holdingCtrl = pressed;
+		}
 		if(screen != null && screen.isInitialized()) {
-			screen.keyEvent(key, pressed);
+			boolean ret = screen.keyEvent(key, pressed);
+			if(pressed && ret) {
+				cancelCharEvent = true;
+			}
+			if(!pressed) {
+				cancelCharEvent = false;
+			}
+		}
+	}
+	
+	private void charEvent(char c) {
+		if(screen != null && screen.isInitialized()) {
+			if(!cancelCharEvent) {
+				screen.charEvent(c);	
+			}
 		}
 	}
 	
@@ -366,7 +390,7 @@ public class InstallerGuiModern {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			
+			InstallerGuiModern.this.charEvent(e.getKeyChar());
 		}
 
 		@Override

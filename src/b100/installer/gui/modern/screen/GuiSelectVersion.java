@@ -1,5 +1,6 @@
 package b100.installer.gui.modern.screen;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -83,10 +84,10 @@ public class GuiSelectVersion extends GuiScrollListScreen implements ActionListe
 		if(super.keyEvent(key, pressed)) {
 			return true;
 		}
-//		if((key == KeyEvent.VK_ENTER || key == KeyEvent.VK_SPACE) && pressed) {
-//			consumer.accept(selectedVersion);
-//			return true;
-//		}
+		if((key == KeyEvent.VK_ENTER || key == KeyEvent.VK_SPACE) && pressed) {
+			consumer.accept(selectedVersion);
+			return true;
+		}
 		return false;
 	}
 	
@@ -97,8 +98,6 @@ public class GuiSelectVersion extends GuiScrollListScreen implements ActionListe
 			
 			selectedVersion = versionButton.version;
 			selectButton.setClickable(selectedVersion != null);
-			
-			System.out.println("Selected Version: " + selectedVersion);
 		}
 		super.focusChanged(focusable);
 	}

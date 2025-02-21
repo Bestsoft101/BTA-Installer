@@ -55,6 +55,16 @@ public class GuiContainer extends GuiElement implements FocusListener {
 	}
 	
 	@Override
+	public boolean charEvent(char c) {
+		for(int i=0; i < elements.size(); i++) {
+			if(elements.get(i).charEvent(c)) {
+				return true;
+			}
+		}
+		return super.charEvent(c);
+	}
+	
+	@Override
 	public boolean scrollEvent(double verticalAmount, double mouseX, double mouseY) {
 		for(int i=0; i < elements.size(); i++) {
 			if(elements.get(i).scrollEvent(verticalAmount, mouseX, mouseY)) {

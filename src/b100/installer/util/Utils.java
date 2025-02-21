@@ -1,5 +1,9 @@
 package b100.installer.util;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
@@ -317,6 +321,29 @@ public abstract class Utils {
 			}
 		}
 		return null;
+	}
+
+	public static String getClipboardString() {
+		try {
+			Transferable trans = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+			if(trans != null && trans.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				String s = (String) trans.getTransferData(DataFlavor.stringFlavor);
+				return s;
+			}
+			return null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void copyString(String text) {
+		try {
+			StringSelection selection = new StringSelection(text);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/////////////////////////////////////////

@@ -156,8 +156,6 @@ public class GuiInstallMultiMc extends GuiScreen implements ActionListener {
 		if(source == checkboxAdvancedMode) {
 			advancedMode = checkboxAdvancedMode.isChecked();
 			
-			System.out.println("Advanced Mode: " + advancedMode);
-			
 			boolean wasFocused = checkboxAdvancedMode.isFocused();
 			
 			init();

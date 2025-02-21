@@ -18,6 +18,7 @@ import b100.installer.gui.modern.element.GuiListButton;
 import b100.installer.gui.modern.element.GuiScrollBar;
 import b100.installer.gui.modern.element.GuiScrollableList;
 import b100.installer.gui.modern.element.GuiScrollableList.ListLayout.Align;
+import b100.installer.gui.modern.element.GuiTextField;
 import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.util.ActionListener;
 
@@ -38,6 +39,8 @@ public class GuiFileChooser extends GuiScreen {
 	private File currentDirectory = null;
 	private File selectedFile = null;
 	
+	public GuiTextField pathTextField;
+	
 	public Function<File, Boolean> fileFilter;
 	
 	public GuiFileChooser(GuiScreen parentScreen) {
@@ -47,6 +50,8 @@ public class GuiFileChooser extends GuiScreen {
 	@Override
 	protected void onInit() {
 		add(new GuiBackground(this));
+
+		pathTextField = add(new GuiTextField(this));
 		
 		ActionListener actionListener = getInternalActionListener();
 		
@@ -90,16 +95,27 @@ public class GuiFileChooser extends GuiScreen {
 	@Override
 	public boolean keyEvent(int key, boolean pressed) {
 		if(pressed) {
+			if(pathTextField.isFocused() && key == KeyEvent.VK_ENTER) {
+				File file = new File(pathTextField.getText());
+				if(file.isDirectory()) {
+					setDirectory(file, true, false);	
+				}
+			}
 			if(InstallerGuiModern.getInstance().isAltPressed() && key == KeyEvent.VK_UP) {
 				directoryUp();
 				return true;
 			}
+		}
+		if(super.keyEvent(key, pressed)) {
+			return true;
+		}
+		if(pressed) {
 			if(key == KeyEvent.VK_BACK_SPACE) {
 				directoryBack();
 				return true;
 			}
 		}
-		return super.keyEvent(key, pressed);
+		return false;
 	}
 	
 	public boolean directoryBack() {
@@ -126,7 +142,7 @@ public class GuiFileChooser extends GuiScreen {
 		super.draw();
 		
 		if(currentDirectory != null) {
-			fontRenderer.drawString(currentDirectory.getAbsolutePath(), 16, 16);
+//			fontRenderer.drawString(currentDirectory.getAbsolutePath(), 16, 16);
 		}
 	}
 	
@@ -166,6 +182,8 @@ public class GuiFileChooser extends GuiScreen {
 		buttonOpen.setSize(fontRenderer.getStringWidth(buttonOpen.text) + 10, h2);
 		buttonOpen.setPosition(buttonCancel.posX - innerPadding - buttonOpen.width, y2);
 		
+		pathTextField.setPosition(outerPadding, y0).setSize(width - 2 * outerPadding - 2 * h0 - 2 * innerPadding, h0);
+		
 		super.onResize();
 	}
 	
@@ -177,14 +195,13 @@ public class GuiFileChooser extends GuiScreen {
 			return false;
 		}
 		
-		System.out.println("Set Directory: " + directory);
-		
 		if(currentDirectory != null && addToPreviousDirectories) {
 			if(previousDirectories.size() == 0 || !previousDirectories.get(0).equals(currentDirectory)) {
 				previousDirectories.add(0, currentDirectory);	
 			}
 		}
 		currentDirectory = directory;
+		pathTextField.setText(directory.getAbsolutePath());
 		
 		currentDirectoryList.removeAll();
 		File[] filesInDirectory = directory.listFiles();

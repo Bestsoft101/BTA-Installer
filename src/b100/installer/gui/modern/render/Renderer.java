@@ -35,4 +35,8 @@ public abstract class Renderer {
 	
 	public abstract void disableScissor();
 	
+	public abstract void enableInvertColor();
+	
+	public abstract void disableInvertColor();
+	
 }

@@ -156,7 +156,7 @@ public abstract class GuiScreen extends GuiContainer implements FocusListener, C
 	@Override
 	public void focusChanged(Focusable focusable) {
 		if(focusable.isFocused()) {
-			if(focusedElement != null) {
+			if(focusedElement != null && focusedElement != focusable) {
 				focusedElement.setFocused(false);
 			}
 			this.focusedElement = focusable;

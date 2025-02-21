@@ -29,6 +29,10 @@ public abstract class GuiElement {
 		return false;
 	}
 	
+	public boolean charEvent(char c) {
+		return false;
+	}
+	
 	public boolean scrollEvent(double verticalAmount, double mouseX, double mouseY) {
 		return false;
 	}

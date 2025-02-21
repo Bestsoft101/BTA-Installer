@@ -17,8 +17,8 @@ public class Textures {
 	public static BufferedImage logo = loadTexture("logo1");
 	public static BufferedImage checkmark = loadTexture("checkmark");
 	public static BufferedImage icons = loadTexture("icons");
-	public static BufferedImage shadow_1 = createGradientImage(1, 6, 0x00000000, 0x80000000);
-	public static BufferedImage shadow_2 = createGradientImage(1, 6, 0x80000000, 0x00000000);
+	public static BufferedImage shadow_1 = createGradientImage(1, 6, 0x00000000, 0x80000000, false);
+	public static BufferedImage shadow_2 = createGradientImage(1, 6, 0x80000000, 0x00000000, false);
 	
 	static {
 		System.out.println("Loaded Textures!");
@@ -49,12 +49,17 @@ public class Textures {
 		return missingTex;
 	}
 	
-	private static BufferedImage createGradientImage(int width, int height, int color1, int color2) {
+	private static BufferedImage createGradientImage(int width, int height, int color1, int color2, boolean horizontal) {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		
 		for(int i=0; i < image.getWidth(); i++) {
 			for(int j=0; j < image.getHeight(); j++) {
-				float factor = j / ((float) (image.getHeight() - 1));
+				float factor;
+				if(horizontal) {
+					factor = i / ((float) (image.getWidth() - 1));
+				}else {
+					factor = j / ((float) (image.getHeight() - 1));	
+				}
 				
 				image.setRGB(i, j, Utils.mixARGB(color1, color2, factor));
 			}
