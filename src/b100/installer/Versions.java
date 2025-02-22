@@ -8,6 +8,7 @@ import java.util.Map;
 
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 import b100.installer.util.ModLoader;
+import b100.installer.util.Utils;
 import b100.json.element.JsonArray;
 import b100.json.element.JsonEntry;
 import b100.json.element.JsonObject;
@@ -42,6 +43,8 @@ public class Versions {
 		JsonObject channelsObject = DownloadHelper.getJson("bta-client/channels.json");
 		JsonArray channels = channelsObject.getArray("channels");
 		
+		int index = 0;
+		
 		for(int i=0; i < channels.length(); i++) {
 			String channelId = channels.get(i).getAsString().value;
 			
@@ -60,12 +63,18 @@ public class Versions {
 				if(versionManifest.has("displayName")) {
 					displayName = versionManifest.getString("displayName");
 				}
+				long releaseTime = 0L;
+				if(versionManifest.has("release")) {
+					releaseTime = versionManifest.getLong("release");
+				}
 				
-				Version version = new Version(versionId, displayName, channel, versionManifest);
+				Version version = new Version(versionId, displayName, channel, versionManifest, index++, releaseTime);
 				allVersions.add(version);
 				idToVersionMap.put(versionId, version);
 			}
 		}
+		
+		allVersions.sort((o1, o2) -> o2.compareTo(o1));
 		
 		System.out.println("All Versions: ");
 		
@@ -130,7 +139,7 @@ public class Versions {
 		}
 	}
 	
-	public static class Version {
+	public static class Version implements Comparable<Version> {
 		
 		/** The ID does not contain any special characters or spaces, e.g. "7.3-pre1" */
 		public final String id;
@@ -140,11 +149,16 @@ public class Versions {
 		public final Channel channel;
 		public final JsonObject manifest;
 		
-		public Version(String id, String displayName, Channel channel, JsonObject manifest) {
+		public final int index;
+		public final long releaseTime;
+		
+		public Version(String id, String displayName, Channel channel, JsonObject manifest, int index, long releaseTime) {
 			this.id = id;
 			this.displayName = displayName;
 			this.channel = channel;
 			this.manifest = manifest;
+			this.index = index;
+			this.releaseTime = releaseTime;
 		}
 		
 		public File getFile(String filename) {
@@ -169,6 +183,14 @@ public class Versions {
 			}
 			return version.getDisplayName();
 		}
-		
+
+		@Override
+		public int compareTo(Version o) {
+			if(releaseTime == o.releaseTime) {
+				return o.index - index;
+			}
+			
+			return (int) Utils.clampl(releaseTime - o.releaseTime, -1, 1);
+		}
 	}
 }

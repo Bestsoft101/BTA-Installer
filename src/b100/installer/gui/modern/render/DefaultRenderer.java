@@ -201,9 +201,9 @@ public class DefaultRenderer extends Renderer {
 					int g = (rgb >>  8) & 0xFF;
 					int b = (rgb >>  0) & 0xFF;
 					
-					r = Utils.clamp((int) (r * rmul), 0, 255);
-					g = Utils.clamp((int) (g * gmul), 0, 255);
-					b = Utils.clamp((int) (b * bmul), 0, 255);
+					r = Utils.clampi((int) (r * rmul), 0, 255);
+					g = Utils.clampi((int) (g * gmul), 0, 255);
+					b = Utils.clampi((int) (b * bmul), 0, 255);
 					
 					coloredImage.setRGB(x, y, a << 24 | r << 16 | g << 8 | b);
 				}

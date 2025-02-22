@@ -59,7 +59,7 @@ public class GuiScrollableList extends GuiContainer {
 		scrollRegionHeight = getScrollRegionHeight();
 		contentHeight = layout.getContentHeight(this);
 		maxScrollAmount = Math.max(0.0, contentHeight - scrollRegionHeight);
-		scrollAmount = Utils.clamp(scrollAmount, 0.0, maxScrollAmount);
+		scrollAmount = Utils.clampd(scrollAmount, 0.0, maxScrollAmount);
 		layout.moveElements(this);
 		
 		super.onResize();
@@ -86,7 +86,7 @@ public class GuiScrollableList extends GuiContainer {
 				newScrollAmount = 0.0;
 			}
 		}else {
-			newScrollAmount = Utils.clamp(newScrollAmount, 0.0, maxScrollAmount);	
+			newScrollAmount = Utils.clampd(newScrollAmount, 0.0, maxScrollAmount);	
 		}
 		if(newScrollAmount == scrollAmount) {
 			return;

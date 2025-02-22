@@ -40,7 +40,6 @@ public abstract class Utils {
 	
 	public static File multiMcInstanceFolderOverride = null;
 	
-	
 	public static File getMinecraftDirectory() {
 		return getAppDirectory("minecraft");
 	}
@@ -361,13 +360,19 @@ public abstract class Utils {
 		return (int) Math.ceil(a / (double) b);
 	}
 	
-	public static int clamp(int val, int min, int max) {
+	public static int clampi(int val, int min, int max) {
 		if(val < min) return min;
 		if(val > max) return max;
 		return val;
 	}
 	
-	public static double clamp(double val, double min, double max) {
+	public static double clampd(double val, double min, double max) {
+		if(val < min) return min;
+		if(val > max) return max;
+		return val;
+	}
+	
+	public static long clampl(long val, long min, long max) {
 		if(val < min) return min;
 		if(val > max) return max;
 		return val;
@@ -383,10 +388,10 @@ public abstract class Utils {
 		g = (int) (g * mul);
 		b = (int) (b * mul);
 
-		a = clamp(a, 0, 255);
-		r = clamp(r, 0, 255);
-		g = clamp(g, 0, 255);
-		b = clamp(b, 0, 255);
+		a = clampi(a, 0, 255);
+		r = clampi(r, 0, 255);
+		g = clampi(g, 0, 255);
+		b = clampi(b, 0, 255);
 		
 		return (a << 24) | (r << 16) | (g << 8) | b;
 	}

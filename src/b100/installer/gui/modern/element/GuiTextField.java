@@ -53,7 +53,7 @@ public class GuiTextField extends GuiElement implements Focusable {
 		int x = posX + 4;
 		int y = posY + height / 2 - 4;
 		
-		cursorPosition = Utils.clamp(cursorPosition, 0, text.length());
+		cursorPosition = Utils.clampi(cursorPosition, 0, text.length());
 		
 		if(isTextSelected()) {
 			int selectionStart = getSelectionStart();
@@ -225,7 +225,7 @@ public class GuiTextField extends GuiElement implements Focusable {
 	}
 	
 	private int getNextWordIndex(int dir) {
-		dir = Utils.clamp(dir, -1, 1);
+		dir = Utils.clampi(dir, -1, 1);
 		if(dir == 0) return cursorPosition;
 		
 		for(int i = cursorPosition + dir; i > 0 && i < text.length(); i += dir) {
