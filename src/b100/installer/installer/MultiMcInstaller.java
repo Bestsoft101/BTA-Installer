@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import b100.installer.Config;
-import b100.installer.DownloadHelper;
 import b100.installer.Global;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
@@ -97,7 +96,7 @@ public class MultiMcInstaller implements Installer {
 		if(lwjgl3) {
 			System.out.println("Setting up LWJGL 3 patch");
 			
-			DownloadHelper.downloadFile("misc/multimc/lwjgl3.json", lwjglPatchFile);
+			Utils.extractFile("/resources/multimc/lwjgl3.json", lwjglPatchFile);
 		}else {
 			lwjglPatchFile.delete();
 		}
@@ -106,8 +105,8 @@ public class MultiMcInstaller implements Installer {
 		File minecraftPatchFile = new File(patchesFolder, "net.minecraft.json");
 		if(noawt) {
 			System.out.println("Settings up minecraft patch");
-			
-			JsonObject minecraftPatch = DownloadHelper.getJson("misc/multimc/minecraft.json");
+
+			JsonObject minecraftPatch = JsonParser.instance.parseStream(getClass().getResourceAsStream("/resources/multimc/minecraft.json"));
 			
 			List<JsonElement> traits = new ArrayList<>();
 			traits.add(new JsonString("texturepacks"));

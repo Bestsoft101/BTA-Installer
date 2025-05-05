@@ -345,6 +345,32 @@ public abstract class Utils {
 		}
 	}
 	
+	public static void extractFile(String internalPath, File output) {
+		File parent = output.getAbsoluteFile().getParentFile();
+		if(!parent.exists()) {
+			parent.mkdirs();
+		}
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			in = Utils.class.getResourceAsStream(internalPath);
+			if(in == null) {
+				throw new NullPointerException("Resource does not exist: \"" + internalPath + "\"!");
+			}
+			out = new FileOutputStream(output);
+			StreamUtils.transferData(in, out);
+		}catch (Exception e) {
+			throw new RuntimeException("Could not extract file from \"" + internalPath + "\" to " + output.getAbsolutePath(), e);
+		}finally {
+			try {
+				in.close();
+			}catch (Exception e) {}
+			try {
+				out.close();
+			}catch (Exception e) {}
+		}
+	}
+	
 	/////////////////////////////////////////
 	// Math
 	
