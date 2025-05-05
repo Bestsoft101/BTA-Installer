@@ -53,7 +53,7 @@ public class StringReader {
 	}
 	
 	public boolean isWhitespace(char c) {
-		return c == ' ' || c == '\t' || c == '\n';
+		return Character.isWhitespace(c);
 	}
 	
 	public void next() {
