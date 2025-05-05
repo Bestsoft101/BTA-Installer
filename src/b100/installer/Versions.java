@@ -51,7 +51,7 @@ public class Versions {
 			Channel channel = new Channel(channelId, null);
 			allChannels.add(channel);
 			
-			JsonObject versionsRoot = DownloadHelper.getJson("bta-client/" + channelId + "/versions.json");
+			JsonObject versionsRoot = DownloadHelper.getJson("bta-client/" + channelId + "/versions-new.json");
 			JsonObject versions = versionsRoot.getObject("versions");
 			
 			for(int j=0; j < versions.entryList().size(); j++) {
