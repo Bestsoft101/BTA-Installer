@@ -12,7 +12,7 @@ import b100.installer.Global;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.config.ConfigUtil;
-import b100.installer.gui.classic.MultiMcInstallerGUI;
+import b100.installer.gui.classic.MultiMCInstallerGUI;
 import b100.installer.util.ModLoader;
 import b100.installer.util.Utils;
 import b100.json.JsonParser;
@@ -22,7 +22,7 @@ import b100.json.element.JsonObject;
 import b100.json.element.JsonString;
 import b100.utils.StringUtils;
 
-public class MultiMcInstaller implements Installer {
+public class MultiMCInstaller implements Installer {
 
 	@Override
 	public boolean install(Map<String, Object> parameters) {
@@ -43,7 +43,7 @@ public class MultiMcInstaller implements Installer {
 		
 		Config config = Config.getInstance();
 		config.lastSelectedVersion.value = version.id;
-		config.lastInstallType.value = MultiMcInstallerGUI.INSTALL_TYPE;
+		config.lastInstallType.value = MultiMCInstallerGUI.INSTALL_TYPE;
 		config.lastMultimcDirectory.value = instancesFolder.getAbsolutePath();
 		config.save();
 		
@@ -81,7 +81,7 @@ public class MultiMcInstaller implements Installer {
 			instanceProperties.put("InstanceType", "OneSix");
 			instanceProperties.put("notes", "");
 			if(!instanceProperties.containsKey("name")) {
-				instanceProperties.put("name", "Better Than Adventure!");
+				instanceProperties.put("name", "Better than Adventure!");
 			}
 //			if(!instanceProperties.containsKey("iconKey")) {
 //				instanceProperties.put("iconKey", "planks");

@@ -13,7 +13,7 @@ import b100.installer.gui.modern.element.GuiListButton;
 import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.screen.GuiScrollListScreen;
 import b100.installer.gui.modern.util.ActionListener;
-import b100.installer.installer.MultiMcInstaller;
+import b100.installer.installer.MultiMCInstaller;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;
 import b100.json.element.JsonEntry;
@@ -87,7 +87,7 @@ public class GuiSelectInstance extends GuiScrollListScreen implements ActionList
 			for(int i=0; i < files.length; i++) {
 				File instanceFolder = files[i];
 				
-				if(!MultiMcInstaller.isInstance(instanceFolder)) {
+				if(!MultiMCInstaller.isInstance(instanceFolder)) {
 					continue;
 				}
 				
@@ -176,7 +176,7 @@ public class GuiSelectInstance extends GuiScrollListScreen implements ActionList
 			
 			this.instanceFolder = instanceFolder;
 			try {
-				instanceName = MultiMcInstaller.getInstanceName(instanceFolder);	
+				instanceName = MultiMCInstaller.getInstanceName(instanceFolder);	
 			}catch (Exception e) {
 				e.printStackTrace();
 			}

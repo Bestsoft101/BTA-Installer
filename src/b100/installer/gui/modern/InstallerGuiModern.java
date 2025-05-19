@@ -28,7 +28,7 @@ import b100.installer.gui.modern.render.FontRenderer;
 import b100.installer.gui.modern.render.Renderer;
 import b100.installer.gui.modern.screen.GuiMainMenu;
 import b100.installer.gui.modern.screen.GuiScreen;
-import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
+import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMC;
 import b100.installer.util.Crash;
 import b100.installer.util.CrashHandler;
 import b100.installer.util.Utils;
@@ -116,7 +116,7 @@ public class InstallerGuiModern {
 		if(instancesFolder != null) {
 			System.out.println("Found Instances Folder: " + instancesFolder);	
 			
-			setScreen(new GuiInstallMultiMc(null, instancesFolder));
+			setScreen(new GuiInstallMultiMC(null, instancesFolder));
 		}else {
 			setScreen(null);
 		}

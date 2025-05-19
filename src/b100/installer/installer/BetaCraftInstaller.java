@@ -11,13 +11,13 @@ import b100.installer.DownloadHelper;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.config.ConfigUtil;
-import b100.installer.gui.classic.BetaCraftInstallerGUI;
+import b100.installer.gui.classic.BetacraftInstallerGUI;
 import b100.installer.util.ModLoader;
 import b100.installer.util.Utils;
 import b100.json.element.JsonObject;
 import b100.utils.StringUtils;
 
-public class BetaCraftInstaller implements Installer {
+public class BetacraftInstaller implements Installer {
 
 	@Override
 	public boolean install(Map<String, Object> parameters) {
@@ -32,7 +32,7 @@ public class BetaCraftInstaller implements Installer {
 		// Update config
 		Config config = Config.getInstance();
 		config.lastSelectedVersion.value = selectedVersion;
-		config.lastInstallType.value = BetaCraftInstallerGUI.INSTALL_TYPE;
+		config.lastInstallType.value = BetacraftInstallerGUI.INSTALL_TYPE;
 		config.lastBetaCraftDirectory.value = betacraftDirectory.getAbsolutePath();
 		config.save();
 		

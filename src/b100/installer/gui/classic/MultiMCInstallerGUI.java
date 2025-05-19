@@ -10,19 +10,19 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import b100.installer.Config;
-import b100.installer.installer.MultiMcInstaller;
+import b100.installer.installer.MultiMCInstaller;
 import b100.installer.util.ModLoader;
 
 @SuppressWarnings("serial")
-public class MultiMcInstallerGUI extends BaseInstallerGUI {
+public class MultiMCInstallerGUI extends BaseInstallerGUI {
 	
 	public static final String INSTALL_TYPE = "multimc";
 	
 	public JTextField multimcDirectoryTextfield;
 	
-	public MultiMcInstaller multiMcInstaller = new MultiMcInstaller();
+	public MultiMCInstaller multiMCInstaller = new MultiMCInstaller();
 	
-	public MultiMcInstallerGUI(InstallerGuiClassic installerGUI) {
+	public MultiMCInstallerGUI(InstallerGuiClassic installerGUI) {
 		super(installerGUI);
 
 		int inset = 4;
@@ -32,7 +32,7 @@ public class MultiMcInstallerGUI extends BaseInstallerGUI {
 
 		List<ModLoader> modLoaders = new ArrayList<>();
 		modLoaders.add(ModLoader.None);
-		versionComponent = new VersionComponent(modLoaders, multiMcInstaller);
+		versionComponent = new VersionComponent(modLoaders, multiMCInstaller);
 		
 		installButton = new JButton("Install");
 		installButton.addActionListener(this);
@@ -53,7 +53,7 @@ public class MultiMcInstallerGUI extends BaseInstallerGUI {
 		parameters.put("instancesfolder", instancesFolder.getAbsolutePath());
 		parameters.put("version", versionComponent.getSelectedVersion());
 		
-		return multiMcInstaller.install(parameters);
+		return multiMCInstaller.install(parameters);
 	}
 	
 }

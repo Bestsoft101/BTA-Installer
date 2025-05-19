@@ -4,8 +4,8 @@ import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiElement;
 import b100.installer.gui.modern.render.Textures;
-import b100.installer.gui.modern.screen.multimc.GuiChooseMultiMcFolder;
-import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMc;
+import b100.installer.gui.modern.screen.multimc.GuiChooseMultiMCFolder;
+import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMC;
 import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.util.Utils;
 
@@ -24,7 +24,7 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 		add(new GuiBackground(this));
 		
 		buttonMultiMc = add(new GuiButton(this, "MultiMC / Prism Launcher").addActionListener(this));
-		buttonBetaCraft = add(new GuiButton(this, "BetaCraft"));
+		buttonBetaCraft = add(new GuiButton(this, "Betacraft"));
 		buttonVanillaLauncher = add(new GuiButton(this, "Vanilla Launcher"));
 		
 		buttonBetaCraft.setClickable(false);
@@ -39,7 +39,7 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 		int y = 30;
 		
 		renderer.drawImage(Textures.logo, x, y + 8);
-		fontRenderer.drawString("Better Than Adventure! Installer", 2, 2, 0x505050, true);
+		fontRenderer.drawString("Better than Adventure! Installer", 2, 2, 0x505050, true);
 	}
 	
 	@Override
@@ -57,9 +57,9 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 	public void actionPerformed(GuiElement source) {
 		if(source == buttonMultiMc) {
 			if(Utils.multiMcInstanceFolderOverride != null) {
-				setScreen(new GuiInstallMultiMc(this, Utils.multiMcInstanceFolderOverride));
+				setScreen(new GuiInstallMultiMC(this, Utils.multiMcInstanceFolderOverride));
 			}else {
-				setScreen(new GuiChooseMultiMcFolder(this));
+				setScreen(new GuiChooseMultiMCFolder(this));
 			}
 		}
 	}

@@ -26,7 +26,7 @@ import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
 
 import b100.installer.Download;
-import b100.installer.installer.MultiMcInstaller;
+import b100.installer.installer.MultiMCInstaller;
 import b100.utils.FileUtils;
 import b100.utils.StreamUtils;
 import b100.utils.StringUtils;
@@ -315,7 +315,7 @@ public abstract class Utils {
 			if(runDirectory == null) {
 				break;
 			}
-			if(MultiMcInstaller.isInstancesFolder(runDirectory)) {
+			if(MultiMCInstaller.isInstancesFolder(runDirectory)) {
 				return runDirectory;
 			}
 		}

@@ -6,9 +6,9 @@ import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.util.Utils;
 
-public class GuiChooseMultiMcFolder extends GuiFileChooser implements ActionListener {
+public class GuiChooseMultiMCFolder extends GuiFileChooser implements ActionListener {
 
-	public GuiChooseMultiMcFolder(GuiScreen parentScreen) {
+	public GuiChooseMultiMCFolder(GuiScreen parentScreen) {
 		super(parentScreen);
 		
 		this.fileFilter = (file) -> file.isDirectory();
@@ -26,7 +26,7 @@ public class GuiChooseMultiMcFolder extends GuiFileChooser implements ActionList
 		if(source == buttonOpen) {
 			Utils.multiMcInstanceFolderOverride = getSelectedFile();
 			
-			setScreen(new GuiInstallMultiMc(parentScreen, Utils.multiMcInstanceFolderOverride));
+			setScreen(new GuiInstallMultiMC(parentScreen, Utils.multiMcInstanceFolderOverride));
 		}
 	}
 	

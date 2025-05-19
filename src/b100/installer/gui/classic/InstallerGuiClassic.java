@@ -18,8 +18,8 @@ public class InstallerGuiClassic {
 	public JTabbedPane tabs;
 	
 	public VanillaLauncherInstallerGUI vanillaLauncherInstallerGUI;
-	public BetaCraftInstallerGUI betaCraftInstallerGUI;
-	public MultiMcInstallerGUI multiMCInstallerGUI;
+	public BetacraftInstallerGUI betacraftInstallerGUI;
+	public MultiMCInstallerGUI multiMcInstallerGUI;
 	
 	public InstallerGuiClassic() {
 		if(instance != null) {
@@ -33,21 +33,21 @@ public class InstallerGuiClassic {
 		mainPanel = new GridPanel();
 
 		vanillaLauncherInstallerGUI = new VanillaLauncherInstallerGUI(this);
-		betaCraftInstallerGUI = new BetaCraftInstallerGUI(this);
-		multiMCInstallerGUI = new MultiMcInstallerGUI(this);
+		betacraftInstallerGUI = new BetacraftInstallerGUI(this);
+		multiMcInstallerGUI = new MultiMCInstallerGUI(this);
 		
 		tabs = new JTabbedPane();
 		tabs.addTab("Vanilla Launcher", vanillaLauncherInstallerGUI);
-		tabs.addTab("BetaCraft", betaCraftInstallerGUI);
-		tabs.addTab("MultiMC / Prism Launcher", multiMCInstallerGUI);
+		tabs.addTab("BetaCraft", betacraftInstallerGUI);
+		tabs.addTab("MultiMC / Prism Launcher", multiMcInstallerGUI);
 		tabs.addTab("Log", new LogGUI());
 		
 		Config config = Config.getInstance();
 		String lastInstallType = config.lastInstallType.value;
 		if(lastInstallType != null) {
 			if(lastInstallType.equalsIgnoreCase(VanillaLauncherInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(0);
-			if(lastInstallType.equalsIgnoreCase(BetaCraftInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(1);
-			if(lastInstallType.equalsIgnoreCase(MultiMcInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(2);
+			if(lastInstallType.equalsIgnoreCase(BetacraftInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(1);
+			if(lastInstallType.equalsIgnoreCase(MultiMCInstallerGUI.INSTALL_TYPE)) tabs.setSelectedIndex(2);
 		}
 		
 		mainPanel.add(tabs, 0, 1, 1, 1);

@@ -12,21 +12,21 @@ import javax.swing.JTextField;
 import b100.installer.Config;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
-import b100.installer.installer.BetaCraftInstaller;
+import b100.installer.installer.BetacraftInstaller;
 import b100.installer.util.ModLoader;
 import b100.installer.util.Utils;
 
 @SuppressWarnings("serial")
-public class BetaCraftInstallerGUI extends BaseInstallerGUI {
+public class BetacraftInstallerGUI extends BaseInstallerGUI {
 
 	public static final String INSTALL_TYPE = "betacraft";
 	
 	public JTextField betacraftDirectoryTextfield;
 	public JTextField instanceTextfield;
 	
-	public BetaCraftInstaller betacraftInstaller = new BetaCraftInstaller();
+	public BetacraftInstaller betacraftInstaller = new BetacraftInstaller();
 	
-	public BetaCraftInstallerGUI(InstallerGuiClassic installerGUI) {
+	public BetacraftInstallerGUI(InstallerGuiClassic installerGUI) {
 		super(installerGUI);
 		
 		int inset = 4;
@@ -36,7 +36,7 @@ public class BetaCraftInstallerGUI extends BaseInstallerGUI {
 		betacraftDirectoryTextfield.setText(getBetaCraftDirectory());
 		
 		instanceTextfield = new JTextField();
-		instanceTextfield.setText("Better Than Adventure!");
+		instanceTextfield.setText("Better than Adventure!");
 		
 		List<ModLoader> modLoaders = new ArrayList<>();
 		modLoaders.add(ModLoader.None);
