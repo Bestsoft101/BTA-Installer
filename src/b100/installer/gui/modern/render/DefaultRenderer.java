@@ -90,6 +90,17 @@ public class DefaultRenderer extends Renderer {
 			if(isOutsideScissorArea(x, y, w, h)) {
 				return;
 			}
+
+			if(x < scissorX) {
+				int offset = scissorX - x;
+				x += offset;
+				sx += offset;
+				w -= offset;
+			}
+			if(x + w >= scissorX + scissorWidth) {
+				int offset = (x + w) - (scissorX + scissorWidth);
+				w -= offset;
+			}
 			
 			if(y < scissorY) {
 				int offset = scissorY - y;
@@ -145,13 +156,18 @@ public class DefaultRenderer extends Renderer {
 	}
 
 	@Override
-	public void enableInvertColor() {
+	public void setInvertColorBlendMode() {
 		g.setComposite(BlendComposite.Negation);
 	}
 
 	@Override
-	public void disableInvertColor() {
+	public void resetBlendMode() {
 		g.setComposite(AlphaComposite.SrcOver);
+	}
+
+	@Override
+	public void setAlphaBlendMode() {
+		g.setComposite(BlendComposite.Average);
 	}
 	
 	public static BufferedImage loadTexture(String path) {

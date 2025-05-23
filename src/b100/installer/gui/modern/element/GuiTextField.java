@@ -73,10 +73,10 @@ public class GuiTextField extends GuiElement implements Focusable {
 			fontRenderer.drawString(str2, x + w1, y, 0xFFFF00);
 			fontRenderer.drawString(str3, x + w1 + w2, y, textColor);
 			
-			renderer.enableInvertColor();
+			renderer.setInvertColorBlendMode();
 			renderer.setColor(0xFFFFFF);
 			renderer.drawRectangle(x1, y - 1, w, 10);
-			renderer.disableInvertColor();
+			renderer.resetBlendMode();
 		}else {
 			fontRenderer.drawString(text, x, y, textColor);
 		}

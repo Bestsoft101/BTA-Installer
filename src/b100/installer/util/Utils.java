@@ -371,6 +371,25 @@ public abstract class Utils {
 		}
 	}
 	
+	public static List<String> splitLines(String string) {
+		List<String> lines = new ArrayList<>();
+		
+		int start = 0;
+		int i = string.indexOf('\n', start);
+		while(true) {
+			if(i == -1) {
+				lines.add(string.substring(start, string.length()));
+				break;
+			}
+			
+			lines.add(string.substring(start, i));
+			start = i + 1;
+			i = string.indexOf('\n', start);
+		}
+		
+		return lines;
+	}
+	
 	/////////////////////////////////////////
 	// Math
 	

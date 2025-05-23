@@ -35,8 +35,10 @@ public abstract class Renderer {
 	
 	public abstract void disableScissor();
 	
-	public abstract void enableInvertColor();
+	public abstract void resetBlendMode();
 	
-	public abstract void disableInvertColor();
+	public abstract void setInvertColorBlendMode();
+	
+	public abstract void setAlphaBlendMode();
 	
 }

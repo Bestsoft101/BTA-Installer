@@ -84,8 +84,11 @@ public class GuiButton extends GuiElement implements Focusable {
 			fontColor = 0x808080;
 		}
 		
-		// TODO
-		renderer.drawImage(texture, posX, posY);
+		int w1 = width / 2;
+		int w2 = width - w1;
+		
+		renderer.drawSubImage(texture, posX, posY, w1, height, 0, 0);
+		renderer.drawSubImage(texture, posX + w1, posY, w2, height, 200 - w2, 0);
 		
 		renderer.setColor(0xff0000);
 		
