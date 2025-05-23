@@ -8,29 +8,44 @@ public class GuiTextElement extends GuiElement {
 
 	protected List<String> lines;
 	
-	public double alignX;
-	public double alignY;
+	protected double alignX = 0.0;
+	protected double alignY = 0.0;
 	
 	protected int textWidth;
 	protected int textHeight;
 	
-	public GuiTextElement(String text, double alignX, double alignY) {
+	protected int textColor = 0xFFFFFF;
+	
+	protected boolean autoSize = false;
+	
+	public GuiTextElement() {
 		setSize(8, 8);
+	}
+	
+	public GuiTextElement(String text, double alignX, double alignY) {
+		this();
+		setAlign(alignX, alignY);
 		setText(text);
-		
-		this.alignX = alignX;
-		this.alignY = alignY;
 	}
 	
 	@Override
 	public void draw() {
+		if(lines == null) {
+			return;
+		}
+
+		if(autoSize) {
+			width = textWidth;
+			height = textHeight;	
+		}
+		
 		int textPosX = (int) (posX + (width - textWidth) * alignX);
 		int textPosY = (int) (posY + (width - textWidth) * alignY);
 		
 		for(int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
 			String line = lines.get(lineNumber);
 			
-			fontRenderer.drawString(line, textPosX, textPosY + lineNumber * 9);
+			fontRenderer.drawString(line, textPosX, textPosY + lineNumber * 9, textColor);
 		}
 	}
 	
@@ -42,7 +57,18 @@ public class GuiTextElement extends GuiElement {
 		this.alignY = alignY;
 	}
 	
-	public void setText(String text) {
+	public GuiTextElement setAlign(double alignX, double alignY) {
+		this.alignX = alignX;
+		this.alignY = alignY;
+		return this;
+	}
+	
+	public GuiTextElement setText(String text) {
+		if(text == null) {
+			this.lines = null;
+			return this;
+		}
+		
 		this.lines = Utils.splitLines(text);
 
 		int maxLineWidth = 0;
@@ -53,8 +79,28 @@ public class GuiTextElement extends GuiElement {
 		textWidth = maxLineWidth;
 		textHeight = lines.size() * 8 + lines.size() - 1;
 		
-		width = Math.max(width, textWidth);
-		height = Math.max(height, textHeight);
+		if(autoSize) {
+			width = textWidth;
+			height = textHeight;
+		}
+		
+		return this;
+	}
+	
+	public GuiTextElement setTextColor(int textColor) {
+		this.textColor = textColor;
+		return this;
+	}
+	
+	public GuiTextElement setAutoSize(boolean autoSize) {
+		this.autoSize = autoSize;
+
+		if(autoSize) {
+			width = textWidth;
+			height = textHeight;	
+		}
+		
+		return this;
 	}
 	
 	public double getAlignX() {
@@ -63,5 +109,13 @@ public class GuiTextElement extends GuiElement {
 	
 	public double getAlignY() {
 		return alignY;
+	}
+	
+	public int getTextColor() {
+		return textColor;
+	}
+	
+	public boolean isAutoSizeEnabled() {
+		return autoSize;
 	}
 }

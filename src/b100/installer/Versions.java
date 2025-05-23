@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
+import b100.installer.installer.ProgressListener;
 import b100.installer.util.ModLoader;
 import b100.installer.util.Utils;
 import b100.json.element.JsonArray;
@@ -161,8 +162,8 @@ public class Versions {
 			this.releaseTime = releaseTime;
 		}
 		
-		public File getFile(String filename) {
-			return DownloadHelper.getFile("bta-client/" + channel.id + "/" + id + "/" + filename);
+		public File getFile(String filename, ProgressListener progressListener) {
+			return DownloadHelper.getFile("bta-client/" + channel.id + "/" + id + "/" + filename, progressListener);
 		}
 		
 		public String getDisplayName() {

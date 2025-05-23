@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 
 import b100.installer.Download;
 import b100.installer.installer.MultiMCInstaller;
+import b100.installer.installer.ProgressListener;
 import b100.utils.FileUtils;
 import b100.utils.StreamUtils;
 import b100.utils.StringUtils;
@@ -235,7 +236,7 @@ public abstract class Utils {
 		}
 	}
 	
-	public static void copyFile(File from, File to) {
+	public static void copyFile(File from, File to, ProgressListener progressListener) {
 		FileUtils.createFolderForFile(to);
 		
 		InputStream in = null;
@@ -243,8 +244,23 @@ public abstract class Utils {
 		try {
 			in = new FileInputStream(from);
 			out = new FileOutputStream(to);
+
+			byte[] temp = new byte[1024];
 			
-			StreamUtils.transferData(in, out);
+			long copiedAmount = 0;
+			long totalAmount = from.length();
+			
+			while(true) {
+				int read = in.read(temp);
+				if(read == -1) break;
+				out.write(temp, 0, read);
+				
+				copiedAmount += read;
+				if(progressListener != null) {
+					float progress = (float) (copiedAmount / (double) totalAmount);
+					progressListener.setProgress(progress);
+				}
+			}
 		}catch (Exception e) {
 			throw new RuntimeException("Copying file from '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "'!", e);
 		}finally {

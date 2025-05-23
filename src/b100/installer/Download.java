@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import b100.installer.installer.ProgressListener;
 import b100.json.JsonParser;
 import b100.json.element.JsonObject;
 import b100.utils.FileUtils;
@@ -23,6 +24,8 @@ public class Download {
 	/** Should the download progress be printed into the log? */
 	private boolean printProgress = true;
 	
+	private ProgressListener progressListener;
+	
 	public Download(String url) {
 		this.url = url;
 	}
@@ -31,6 +34,11 @@ public class Download {
 	
 	public Download setPrintProgress(boolean printProgress) {
 		this.printProgress = printProgress;
+		return this;
+	}
+	
+	public Download setProgressListener(ProgressListener progressListener) {
+		this.progressListener = progressListener;
 		return this;
 	}
 	
@@ -97,12 +105,17 @@ public class Download {
 				downloadedFileSize += read;
 				bout.write(cache, 0, read);
 				
+				float progress = (float) (downloadedFileSize / (double) completeFileSize);
+				if(progressListener != null) {
+					progressListener.setProgress(progress);
+				}
+				
 				if(printProgress) {
 					long now = System.currentTimeMillis();
 					if(now > lastPrint + 500) {
 						lastPrint = now;
 						
-						int percent = (int) ((downloadedFileSize / (double) completeFileSize) * 100);
+						int percent = (int) (progress * 100);
 						System.out.println("Downloading: " + percent + "%");
 					}
 				}

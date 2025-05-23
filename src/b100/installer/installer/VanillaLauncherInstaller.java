@@ -23,7 +23,7 @@ import b100.utils.StringUtils;
 public class VanillaLauncherInstaller implements Installer {
 
 	@Override
-	public boolean install(Map<String, Object> parameters) {
+	public boolean install(Map<String, Object> parameters, ProgressListener progressListener) {
 		String selectedVersion = (String) parameters.get("version");
 		ModLoader loader = (ModLoader) parameters.get("loader");
 		File minecraftDirectory = new File((String) parameters.get("mcdir"));
@@ -95,7 +95,7 @@ public class VanillaLauncherInstaller implements Installer {
 				return false;
 			}
 			
-			File btaJarFile = version.getFile("client.jar");
+			File btaJarFile = version.getFile("client.jar", progressListener);
 			Utils.createModdedMinecraftJar(minecraftJar, btaJarFile, outputJar);
 		}else {
 			System.out.println("Version is installed");

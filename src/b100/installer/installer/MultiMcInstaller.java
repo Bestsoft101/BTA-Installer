@@ -25,7 +25,7 @@ import b100.utils.StringUtils;
 public class MultiMCInstaller implements Installer {
 
 	@Override
-	public boolean install(Map<String, Object> parameters) {
+	public boolean install(Map<String, Object> parameters, ProgressListener progressListener) {
 		File instancesFolder = new File((String) parameters.get("instancesfolder"));
 		if(!instancesFolder.isDirectory()) {
 			JOptionPane.showMessageDialog(null, "Invalid MultiMC / Prism Launcher instances folder: '" + instancesFolder.getAbsolutePath() + "'!");
@@ -71,9 +71,10 @@ public class MultiMCInstaller implements Installer {
 		boolean lwjgl3 = installType.equals("lwjgl3");
 		System.out.println("LWJGL 3: " + lwjgl3);
 		boolean noawt = installType.equals("noawt") || installType.equals("lwjgl3");
-		
+
 		// instance.cfg
 		{
+			progressListener.update("Setting up instance configuration...");
 			System.out.println("Setting up instance.cfg");
 			
 			File instanceCfg = new File(instanceFolder, "instance.cfg");
@@ -100,7 +101,8 @@ public class MultiMCInstaller implements Installer {
 		}else {
 			lwjglPatchFile.delete();
 		}
-		
+
+		progressListener.update("Setting up Minecraft patch...");
 		// Minecraft Patch
 		File minecraftPatchFile = new File(patchesFolder, "net.minecraft.json");
 		if(noawt) {
@@ -121,7 +123,8 @@ public class MultiMCInstaller implements Installer {
 		}else {
 			minecraftPatchFile.delete();
 		}
-		
+
+		progressListener.update("Setting up BTA patch...");
 		// BTA-Patch
 		{
 			System.out.println("Setting up BTA patch");
@@ -133,9 +136,14 @@ public class MultiMCInstaller implements Installer {
 			
 			StringUtils.saveStringToFile(patchFile, patch.toString());
 			
-			Utils.copyFile(version.getFile("client.jar"), new File(jarmodsFolder, versionFileName));
+			progressListener.update("Downloading client jar...");
+			File file = version.getFile("client.jar", progressListener);
+			
+			progressListener.update("Copying client jar...");
+			Utils.copyFile(file, new File(jarmodsFolder, versionFileName), progressListener);
 		}
-		
+
+		progressListener.update("Setting up instance package...");
 		// mmc-pack.json
 		{
 			System.out.println("Setting up mmc-pack.json");
@@ -165,8 +173,8 @@ public class MultiMCInstaller implements Installer {
 			File mmcPack = new File(instanceFolder, "mmc-pack.json");
 			StringUtils.saveStringToFile(mmcPack, pack.toString());
 		}
-		
-		JOptionPane.showMessageDialog(null, "Done!");
+
+		progressListener.update("Done!");
 		return true;
 	}
 

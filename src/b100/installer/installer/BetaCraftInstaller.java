@@ -20,7 +20,7 @@ import b100.utils.StringUtils;
 public class BetacraftInstaller implements Installer {
 
 	@Override
-	public boolean install(Map<String, Object> parameters) {
+	public boolean install(Map<String, Object> parameters, ProgressListener progressListener) {
 		String selectedVersion = (String) parameters.get("version");
 		ModLoader loader = (ModLoader) parameters.get("loader");
 		File betacraftDirectory = new File((String) parameters.get("betacraftdir"));
@@ -65,7 +65,7 @@ public class BetacraftInstaller implements Installer {
 				return false;
 			}
 			
-			File btaJarFile = version.getFile("client.jar");
+			File btaJarFile = version.getFile("client.jar", progressListener);
 			Utils.createModdedMinecraftJar(minecraftJar, btaJarFile, outputJar);
 		}else {
 			System.out.println("Version is installed");
@@ -81,8 +81,8 @@ public class BetacraftInstaller implements Installer {
 			if(!installedLaunchMethod.exists()) {
 				System.out.println("Installing launch method");
 				
-				File cachedFile = DownloadHelper.getFile("misc/betacraft/" + launchMethod + ".jar");
-				Utils.copyFile(cachedFile, installedLaunchMethod);
+				File cachedFile = DownloadHelper.getFile("misc/betacraft/" + launchMethod + ".jar", progressListener);
+				Utils.copyFile(cachedFile, installedLaunchMethod, progressListener);
 			}else {
 				System.out.println("Launch method is installed");
 			}

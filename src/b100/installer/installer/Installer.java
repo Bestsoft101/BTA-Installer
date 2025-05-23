@@ -6,6 +6,6 @@ import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 
 public interface Installer extends VersionFilter {
 	
-	public boolean install(Map<String, Object> parameters);
+	public boolean install(Map<String, Object> parameters, ProgressListener progressListener);
 	
 }

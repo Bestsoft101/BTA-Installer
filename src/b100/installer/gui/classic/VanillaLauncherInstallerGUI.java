@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import b100.installer.Config;
 import b100.installer.installer.VanillaLauncherInstaller;
+import b100.installer.installer.ProgressListener.Dummy;
 import b100.installer.util.ModLoader;
 import b100.installer.util.Utils;
 
@@ -54,7 +55,7 @@ public class VanillaLauncherInstallerGUI extends BaseInstallerGUI {
 		parameters.put("loader", versionComponent.getSelectedLoader());
 		parameters.put("mcdir", minecraftDirectoryTextfield.getText());
 		
-		return vanillaLauncherInstaller.install(parameters);
+		return vanillaLauncherInstaller.install(parameters, new Dummy());
 	}
 	
 	public String getMinecraftDirectory() {

@@ -83,21 +83,24 @@ public class GuiDialog extends GuiContainer {
 	
 	@Override
 	public boolean mouseEvent(int button, boolean pressed, double mouseX, double mouseY) {
-		if(enabled && pressed && screen.isMouseOver(this)) {
-			enabled = false;
-			
-			InstallerGuiModern.getInstance().scheduleRepaint();
-			return true;
+		if(enabled) {
+			if(pressed && screen.isMouseOver(this)) {
+				close();
+				return true;
+			}
+			return super.mouseEvent(button, pressed, mouseX, mouseY);	
 		}
-		return super.mouseEvent(button, pressed, mouseX, mouseY);
+		return false;
 	}
 	
 	public void close() {
 		enabled = false;
+		InstallerGuiModern.getInstance().scheduleRepaint();
 	}
 	
 	public void open() {
 		enabled = true;
+		InstallerGuiModern.getInstance().scheduleRepaint();
 	}
 	
 	public boolean isOpened() {

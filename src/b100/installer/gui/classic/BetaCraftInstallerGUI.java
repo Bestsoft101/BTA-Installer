@@ -13,6 +13,7 @@ import b100.installer.Config;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.installer.BetacraftInstaller;
+import b100.installer.installer.ProgressListener.Dummy;
 import b100.installer.util.ModLoader;
 import b100.installer.util.Utils;
 
@@ -67,7 +68,7 @@ public class BetacraftInstallerGUI extends BaseInstallerGUI {
 		parameters.put("betacraftdir", betacraftDirectoryTextfield.getText());
 		parameters.put("instancename", instanceTextfield.getText());
 		
-		return betacraftInstaller.install(parameters);
+		return betacraftInstaller.install(parameters, new Dummy());
 	}
 	
 	public String getBetaCraftDirectory() {

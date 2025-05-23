@@ -13,17 +13,22 @@ import b100.installer.gui.modern.InstallerGuiModern;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiCheckbox;
+import b100.installer.gui.modern.element.GuiDialog;
 import b100.installer.gui.modern.element.GuiElement;
+import b100.installer.gui.modern.element.GuiImageElement;
+import b100.installer.gui.modern.element.GuiProgressBar;
+import b100.installer.gui.modern.element.GuiTextElement;
 import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.screen.GuiSelectVersion;
 import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.installer.MultiMCInstaller;
+import b100.installer.installer.ProgressListener;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;
 import b100.json.element.JsonObject;
 
-public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
+public class GuiInstallMultiMC extends GuiScreen implements ActionListener, ProgressListener {
 
 	public File instancesFolder;
 	public File instanceFolder;
@@ -41,6 +46,16 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
 	public MultiMCInstaller multiMcInstaller = new MultiMCInstaller();
 	
 	public boolean advancedMode = false;
+	
+	public boolean installing = false;
+	public String installerStatus = null;
+	
+	public GuiTextElement line0;
+	public GuiTextElement line1;
+	
+	public GuiImageElement logo;
+	
+	public GuiProgressBar progressBar;
 	
 	public GuiInstallMultiMC(GuiScreen parentScreen, File instancesFolder) {
 		super(parentScreen);
@@ -64,6 +79,10 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
 	protected void onInit() {
 		add(new GuiBackground(this));
 		
+		logo = add(new GuiImageElement(Textures.logo));
+		
+		add(new GuiTextElement().setText("Install into MultiMC / Prism Launcher").setTextColor(0x505050).setPosition(2, 2));
+		
 		buttonInstall = add(new GuiButton(this, "Install").addActionListener(this));
 		
 		if(advancedMode) {
@@ -75,50 +94,54 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
 		}
 		
 		checkboxAdvancedMode = add(new GuiCheckbox(this, "Advanced Mode", advancedMode).addActionListener(this));
-
+		
+		line0 = add(new GuiTextElement().setAlign(0.5, 0.0));
+		line1 = add(new GuiTextElement().setAlign(0.5, 0.0));
+		
+		progressBar = add(new GuiProgressBar().setEnabled(false).setProgress(0.5f));
+		
 		refresh();
 	}
 	
 	@Override
 	public void draw() {
+		updateStrings();
+		
 		super.draw();
+	}
+	
+	public void updateStrings() {
+		line0.setText(null).setTextColor(0xFFFFFF);
+		line1.setText(null).setTextColor(0xFFFFFF);
+		
+		if(installing) {
+			line1.setText(installerStatus);
+			return;
+		}
+		
+		if(!selectedInstance.instanceExists) {
+			line1.setText("Not installed!");
+			return;
+		}
+		
+		if(advancedMode) {
+			line1.setText("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion));
+			return;
+		}
 
-		int x = (renderer.getWidth() - Textures.logo.getWidth()) / 2;
-		int y = 30;
-		
-		renderer.drawImage(Textures.logo, x, y + 8);
-		
-		fontRenderer.drawString("Install into MultiMC / Prism Launcher", 2, 02, 0x505050, true);
-//		fontRenderer.drawString("Instance Folder: " + instanceFolder, 2, 12, 0x505050, true);
-		
-		int x1 = posX + width / 2;
-		int y1 = buttonInstall.posY - 36;
-		
-		if(selectedInstance.instanceExists) {
-			if(!advancedMode) {
-				fontRenderer.drawCenteredString("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion), x1, y1, 0xFFFFFF, true);
-				if(Objects.equals(selectedInstance.currentVersion, latestVersion)) {
-					fontRenderer.drawCenteredString("Up to date!", x1, y1 + 12, 0xFFFF00, true);
-				}else {
-					fontRenderer.drawCenteredString("Update Available: " + latestVersion.getDisplayName(), x1, y1 + 12, 0x00FF00, true);	
-				}
-			}else {
-				fontRenderer.drawCenteredString("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion), x1, y1 + 18, 0xFFFFFF, true);
-			}
-			
+		line0.setText("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion));
+		if(Objects.equals(selectedInstance.currentVersion, latestVersion)) {
+			line1.setText("Up to date!").setTextColor(0x00FF00);
 		}else {
-			if(advancedMode) {
-				fontRenderer.drawCenteredString("Not installed!", x1, y1 + 18, 0xFFFFFF, true);
-			}else {
-				fontRenderer.drawCenteredString("Not installed!", x1, y1 + 12, 0xFFFFFF, true);
-			}
+			line1.setText("Update Available: " + latestVersion.getDisplayName()).setTextColor(0x00FF00);
 		}
 	}
 	
 	@Override
 	public void onResize() {
 		super.onResize();
-		
+
+		int center = posX + width / 2;
 		int x1 = width / 2 - 100;
 		int y1 = height / 4 + 24;
 		int p = 24;
@@ -131,7 +154,19 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
 			buttonInstall.setPosition(x1, y1 + p * 3);
 		}
 		
+		int y2 = buttonInstall.posY - 24;
+		if(advancedMode) {
+			y2 += 6;
+		}
+		
+		line0.setPosition(center, y2 - 12).setSize(0, 0);
+		line1.setPosition(center, y2 + 0).setSize(0, 0);
+		
+		progressBar.setPosition(center - progressBar.width / 2, line1.posY + 12);
+		
 		checkboxAdvancedMode.setPosition(8, height - checkboxAdvancedMode.height - 8);
+
+		logo.setPosition((width - logo.width) / 2, 38);
 	}
 
 	@Override
@@ -175,12 +210,30 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
 		parameters.put("version", selectedVersion.id);
 		parameters.put("instancename", selectedInstance.getInstanceFolderName());
 		
+		ProgressListener progressListener = this;
+		
 		Runnable runnable = () -> {
 			try {
-				multiMcInstaller.install(parameters);
+				installing = true;
+				progressListener.update("Installing...");
+				
+				multiMcInstaller.install(parameters, progressListener);
+
+				installing = false;
+				progressListener.update("Done!");
 				
 				EventQueue.invokeLater(() -> {
 					buttonInstall.setClickable(true);
+					
+					GuiDialog doneDialog = new GuiDialog(this);
+					doneDialog.add(new GuiTextElement("Done!", 0.5, 0.0));
+					
+					GuiButton button = new GuiButton(this, "Close");
+					button.addActionListener(e -> doneDialog.close());
+					button.width = 150;
+					doneDialog.add(button);
+					
+					add(doneDialog);
 					
 					refresh();
 				});
@@ -192,6 +245,22 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener {
 		Thread thread = new Thread(runnable);
 		thread.setName("Install-Thread");
 		thread.start();
+	}
+
+	@Override
+	public void update(String string) {
+		installerStatus = string;
+		
+		InstallerGuiModern.getInstance().scheduleRepaint();
+		progressBar.setEnabled(false);
+	}
+
+	@Override
+	public void setProgress(float progress) {
+		progressBar.setEnabled(true);
+		progressBar.setProgress(progress);
+		
+		InstallerGuiModern.getInstance().scheduleRepaint();
 	}
 	
 	public void setInstance(String instanceName) {

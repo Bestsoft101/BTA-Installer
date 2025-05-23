@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 
 import b100.installer.Config;
 import b100.installer.installer.MultiMCInstaller;
+import b100.installer.installer.ProgressListener.Dummy;
 import b100.installer.util.ModLoader;
 
 @SuppressWarnings("serial")
@@ -53,7 +54,7 @@ public class MultiMCInstallerGUI extends BaseInstallerGUI {
 		parameters.put("instancesfolder", instancesFolder.getAbsolutePath());
 		parameters.put("version", versionComponent.getSelectedVersion());
 		
-		return multiMCInstaller.install(parameters);
+		return multiMCInstaller.install(parameters, new Dummy());
 	}
 	
 }

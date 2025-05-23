@@ -25,7 +25,7 @@ public class GuiChooseMultiMCFolder extends GuiFileChooser implements ActionList
 		
 		GuiDialog info = new GuiDialog(this);
 		
-		info.add(new GuiTextElement("Please select the MultiMC / Prism Launcher instances folder.", 0.0, 0.0));
+		info.add(new GuiTextElement().setText("Please select the MultiMC / Prism Launcher instances folder.").setAutoSize(true));
 		
 		GuiButton closeButton = new GuiButton(this, "Ok");
 		closeButton.addActionListener((e) -> info.close());

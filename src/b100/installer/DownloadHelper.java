@@ -2,6 +2,7 @@ package b100.installer;
 
 import java.io.File;
 
+import b100.installer.installer.ProgressListener;
 import b100.json.JsonParser;
 import b100.json.element.JsonObject;
 import b100.utils.FileUtils;
@@ -20,7 +21,7 @@ public class DownloadHelper {
 	/**
 	 * Get the file from the cache if it exists, or download it
 	 */
-	public static File getFile(String path) {
+	public static File getFile(String path, ProgressListener progressListener) {
 		if(Global.isOffline()) {
 			File localFile = new File(getLocalResourcesFolder(), path);
 			
@@ -31,7 +32,7 @@ public class DownloadHelper {
 		File cachedFile = new File(downloadsFolder, path);
 		
 		if(!cachedFile.exists()) {
-			new Download(getUrl(path)).setPrintProgress(true).downloadIntoFile(cachedFile);
+			new Download(getUrl(path)).setPrintProgress(true).setProgressListener(progressListener).downloadIntoFile(cachedFile);
 		}
 		
 		return cachedFile;
@@ -40,7 +41,7 @@ public class DownloadHelper {
 	/**
 	 * Just download the file
 	 */
-	public static void downloadFile(String path, File target) {
+	public static void downloadFile(String path, File target, ProgressListener progressListener) {
 		if(Global.isOffline()) {
 			File localFile = new File(getLocalResourcesFolder(), path);
 			
@@ -48,7 +49,7 @@ public class DownloadHelper {
 			return;
 		}
 		
-		new Download(getUrl(path)).setPrintProgress(false).downloadIntoFile(target);
+		new Download(getUrl(path)).setPrintProgress(false).setProgressListener(progressListener).downloadIntoFile(target);
 	}
 	
 	public static JsonObject getJson(String path) {
