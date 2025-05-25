@@ -1,0 +1,1 @@
+This file is read by the updater to ensure that no incorrect file gets deleted, do not delete or modify it.

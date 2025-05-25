@@ -1,5 +1,7 @@
 package b100.installer.gui.modern.screen;
 
+import static b100.installer.util.Utils.*;
+
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiElement;
@@ -7,7 +9,6 @@ import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.multimc.GuiChooseMultiMCFolder;
 import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMC;
 import b100.installer.gui.modern.util.ActionListener;
-import b100.installer.util.Utils;
 
 public class GuiMainMenu extends GuiScreen implements ActionListener {
 	
@@ -15,8 +16,12 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 	public GuiButton buttonBetaCraft;
 	public GuiButton buttonVanillaLauncher;
 	
+	public String versionString;
+	
 	public GuiMainMenu(GuiScreen parentScreen) {
 		super(parentScreen);
+		
+		versionString = readVersion();
 	}
 
 	@Override
@@ -38,8 +43,11 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 		int x = (renderer.getWidth() - Textures.logo.getWidth()) / 2;
 		int y = 30;
 		
+		int w = fontRenderer.getStringWidth(versionString);
+		
 		renderer.drawImage(Textures.logo, x, y + 8);
 		fontRenderer.drawString("Better than Adventure! Installer", 2, 2, 0x505050, true);
+		fontRenderer.drawString(versionString, width - w - 1, height - 9, 0x505050, true);
 	}
 	
 	@Override
@@ -56,8 +64,8 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 	@Override
 	public void actionPerformed(GuiElement source) {
 		if(source == buttonMultiMc) {
-			if(Utils.multiMcInstanceFolderOverride != null) {
-				setScreen(new GuiInstallMultiMC(this, Utils.multiMcInstanceFolderOverride));
+			if(multiMcInstanceFolderOverride != null) {
+				setScreen(new GuiInstallMultiMC(this, multiMcInstanceFolderOverride));
 			}else {
 				setScreen(new GuiChooseMultiMCFolder(this));
 			}

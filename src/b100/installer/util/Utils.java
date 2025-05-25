@@ -5,13 +5,17 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -26,6 +30,8 @@ import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
 
 import b100.installer.Download;
+import b100.installer.Main;
+import b100.installer.config.ConfigUtil;
 import b100.installer.installer.MultiMCInstaller;
 import b100.installer.installer.ProgressListener;
 import b100.utils.FileUtils;
@@ -404,6 +410,122 @@ public abstract class Utils {
 		}
 		
 		return lines;
+	}
+	
+	public static void createAndRunThread(String name, boolean daemon, Runnable runnable) {
+		Thread thread = new Thread(runnable);
+		if(name != null) {
+			thread.setName(name);	
+		}
+		thread.setDaemon(daemon);
+		thread.start();
+	}
+	
+	public static String getJarFileMainClass(File file) {
+		ZipFile zipFile = null;
+		try {
+			zipFile = new ZipFile(file);
+			return ConfigUtil.loadProperties(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF")), ':').get("Main-Class").trim();
+		}catch (Exception e) {
+			throw new RuntimeException(e);
+		}finally {
+			try {
+				zipFile.close();
+			}catch (Exception e) {}
+		}
+	}
+	
+	public static String getManifestAttribute(String name) {
+		return ConfigUtil.loadProperties(Main.class.getResourceAsStream("/META-INF/MANIFEST.MF"), ':').get("Installer-Main-Class").trim();
+	}
+	
+	public static void invokeMain(ClassLoader classLoader, String className, String[] args) {
+		try {
+			classLoader.loadClass(className).getDeclaredMethod("main", String[].class).invoke(null, new Object[] { args });
+		}catch (Exception e) {
+			throw new RuntimeException("Invoking main method of class \"" + className + "\"", e);
+		}
+	}
+	
+	public static String getEscapedPath(File file) {
+		return "\"" + file.getAbsolutePath() + "\"";
+	}
+	
+	public static void copyFile(File from, File to) {
+		File parent = to.getAbsoluteFile().getParentFile();
+		if(!parent.exists()) {
+			parent.mkdirs();
+		}
+		
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			in = new FileInputStream(from);
+			out = new FileOutputStream(to);
+			
+			copy(in, out);
+		}catch (Exception e) {
+			throw new RuntimeException("Copying file from \"" + from.getAbsolutePath() + "\" to \"" + to + "\"!", e);
+		}finally {
+			try {
+				in.close();
+			}catch (Exception e) {}
+			try {
+				out.close();
+			}catch (Exception e) {}
+		}
+	}
+	
+	public static void copy(InputStream in, OutputStream out) throws IOException {
+		byte[] cache = new byte[1024];
+		while(true) {
+			int read = in.read(cache);
+			if(read < 0) {
+				break;
+			}
+			out.write(cache, 0, read);
+		}
+	}
+	
+	public static Process startProcess(List<String> cmd) {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder(cmd);
+			processBuilder.inheritIO();
+			return processBuilder.start();
+		}catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static File getFileFromURL(String urlString) {
+		try {
+			URL url = new URL(urlString);
+			URI uri = url.toURI();
+			return new File(uri);
+		}catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static String readVersion() {
+		return readLine(Main.class.getResourceAsStream("/version.txt"));
+	}
+	
+	public static String readLine(InputStream in) {
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(in));
+			return br.readLine();
+		}catch (Exception e) {
+			throw new RuntimeException(e);
+		}finally {
+			try {
+				in.close();
+			}catch (Exception e) {}
+			try {
+				br.close();
+			}catch (Exception e) {}
+		}
 	}
 	
 	/////////////////////////////////////////
