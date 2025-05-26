@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -31,8 +32,6 @@ import javax.imageio.ImageIO;
 
 import b100.installer.Download;
 import b100.installer.Main;
-import b100.installer.config.ConfigUtil;
-import b100.installer.installer.MultiMCInstaller;
 import b100.installer.installer.ProgressListener;
 import b100.utils.FileUtils;
 import b100.utils.StreamUtils;
@@ -44,8 +43,6 @@ public abstract class Utils {
 	public static final int OS_MAC = 1;
 	public static final int OS_LINUX = 2;
 	public static final int OS_UNKNOWN = 3;
-	
-	public static File multiMcInstanceFolderOverride = null;
 	
 	public static File getMinecraftDirectory() {
 		return getAppDirectory("minecraft");
@@ -326,23 +323,6 @@ public abstract class Utils {
 		}
 		return -1;
 	}
-	
-	public static File getMultiMCInstancesFolder() {
-		if(multiMcInstanceFolderOverride != null) {
-			return multiMcInstanceFolderOverride;
-		}
-		File runDirectory = new File(".").getAbsoluteFile();
-		for(int i=0; i < 10; i++) {
-			runDirectory = runDirectory.getParentFile();
-			if(runDirectory == null) {
-				break;
-			}
-			if(MultiMCInstaller.isInstancesFolder(runDirectory)) {
-				return runDirectory;
-			}
-		}
-		return null;
-	}
 
 	public static String getClipboardString() {
 		try {
@@ -419,32 +399,6 @@ public abstract class Utils {
 		}
 		thread.setDaemon(daemon);
 		thread.start();
-	}
-	
-	public static String getJarFileMainClass(File file) {
-		ZipFile zipFile = null;
-		try {
-			zipFile = new ZipFile(file);
-			return ConfigUtil.loadProperties(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF")), ':').get("Main-Class").trim();
-		}catch (Exception e) {
-			throw new RuntimeException(e);
-		}finally {
-			try {
-				zipFile.close();
-			}catch (Exception e) {}
-		}
-	}
-	
-	public static String getManifestAttribute(String name) {
-		return ConfigUtil.loadProperties(Main.class.getResourceAsStream("/META-INF/MANIFEST.MF"), ':').get("Installer-Main-Class").trim();
-	}
-	
-	public static void invokeMain(ClassLoader classLoader, String className, String[] args) {
-		try {
-			classLoader.loadClass(className).getDeclaredMethod("main", String[].class).invoke(null, new Object[] { args });
-		}catch (Exception e) {
-			throw new RuntimeException("Invoking main method of class \"" + className + "\"", e);
-		}
 	}
 	
 	public static String getEscapedPath(File file) {
@@ -528,7 +482,22 @@ public abstract class Utils {
 		}
 	}
 	
-	/////////////////////////////////////////
+	public static void getDirFromArgs(String name, String[] args, int i, Consumer<File> consumer) {
+		if(args.length <= i) {
+			System.out.println("Didn't receive path after \"" + args[i - 1] + "\"!");
+			return;
+		}
+		String arg = args[i];
+		File file = new File(arg);
+		if(file.isDirectory()) {
+			System.out.println(name + " in args: " + file.getAbsolutePath());
+			consumer.accept(file);
+		}else {
+			System.out.println("Received invalid " + name.toLowerCase() + " in args: \"" + arg + "\"");	
+		}
+	}
+	
+	////////////////////////////////
 	// Math
 	
 	public static int floor(double d) {
@@ -602,6 +571,6 @@ public abstract class Utils {
 		return (int) (a * (1.0f - factor) + b * factor);
 	}
 
-	/////////////////////////////////////////
+	////////////////////////////////
 
 }

@@ -1,5 +1,6 @@
 package b100.installer;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -13,6 +14,7 @@ import b100.installer.installer.ProgressListener;
 import b100.json.JsonParser;
 import b100.json.element.JsonObject;
 import b100.utils.FileUtils;
+import b100.utils.ImageUtils;
 
 /**
  * Helper class for downloading files
@@ -74,6 +76,19 @@ public class Download {
 		}catch (Exception e) {
 			throw new RuntimeException("Downloading file: '" + file.getAbsolutePath() + "' from '" + url + "'!", e);
 		}
+	}
+	
+	public BufferedImage getAsImage() {
+		// There's probably a better way to do this
+		File temp = new File("TEMP-" + (System.currentTimeMillis() % 1000) + ".png");
+		File parent = temp.getAbsoluteFile().getParentFile();
+		if(!parent.exists()) {
+			parent.mkdirs();
+		}
+		downloadIntoFile(temp);
+		BufferedImage image = ImageUtils.loadExternalImage(temp);
+		temp.delete();
+		return image;
 	}
 
 	//////////////////////////////////////////////

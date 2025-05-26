@@ -1,5 +1,4 @@
 package b100.installer.installer;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +7,14 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import b100.installer.Config;
+import b100.installer.Download;
 import b100.installer.Global;
 import b100.installer.Versions;
 import b100.installer.Versions.Version;
 import b100.installer.config.ConfigUtil;
 import b100.installer.gui.classic.MultiMCInstallerGUI;
 import b100.installer.util.ModLoader;
+import b100.installer.util.MultiMCHelper;
 import b100.installer.util.Utils;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;
@@ -26,43 +27,26 @@ public class MultiMCInstaller implements Installer {
 
 	@Override
 	public boolean install(Map<String, Object> parameters, ProgressListener progressListener) {
-		File instancesFolder = new File((String) parameters.get("instancesfolder"));
-		if(!instancesFolder.isDirectory()) {
-			JOptionPane.showMessageDialog(null, "Invalid MultiMC / Prism Launcher instances folder: '" + instancesFolder.getAbsolutePath() + "'!");
-			return false;
-		}
-		
-		System.out.println("Instances folder: " + instancesFolder);
-		
-		String versionId = (String) parameters.get("version");
-		Version version = Versions.getInstance().get(versionId);
-		if(version == null) {
-			throw new NullPointerException("Version is null!");
-		}
-		System.out.println("Selected Version: " + version);
+		return install(new Parameters(parameters), progressListener);
+	}
+	
+	public boolean install(Parameters params, ProgressListener progressListener) {
+		System.out.println("Launcher folder: " + params.launcherFolder);
+		System.out.println("Selected Version: " + params.version);
+		System.out.println("Instance Folder: " + params.instanceFolder.getAbsolutePath());
 		
 		Config config = Config.getInstance();
-		config.lastSelectedVersion.value = version.id;
+		config.lastSelectedVersion.value = params.version.id;
 		config.lastInstallType.value = MultiMCInstallerGUI.INSTALL_TYPE;
-		config.lastMultimcDirectory.value = instancesFolder.getAbsolutePath();
+//		config.lastMultimcDirectory.value = params.instancesFolder.getAbsolutePath();
 		config.save();
 		
-		String instanceFolderName;
-		if(parameters.containsKey("instancename")) {
-			instanceFolderName = (String) parameters.get("instancename");
-		}else {
-			instanceFolderName = Global.MULTIMC_INSTANCE_FOLDER_NAME;
-		}
+		File jarmodsFolder = new File(params.instanceFolder, "jarmods");
+		File patchesFolder = new File(params.instanceFolder, "patches");
 		
-		File instanceFolder = new File(instancesFolder, instanceFolderName);
-		System.out.println("Instance Folder: " + instanceFolder.getAbsolutePath());
-		
-		File jarmodsFolder = new File(instanceFolder, "jarmods");
-		File patchesFolder = new File(instanceFolder, "patches");
-		
-		JsonObject manifest = version.manifest;
+		JsonObject manifest = params.version.manifest;
 		if(manifest == null) {
-			JOptionPane.showMessageDialog(null, "Version '" + version + "' does not exist!");
+			JOptionPane.showMessageDialog(null, "Version '" + params.version + "' does not exist!");
 			return false;
 		}
 		JsonObject multimcObject = manifest.getObject("multimc");
@@ -71,22 +55,46 @@ public class MultiMCInstaller implements Installer {
 		boolean lwjgl3 = installType.equals("lwjgl3");
 		System.out.println("LWJGL 3: " + lwjgl3);
 		boolean noawt = installType.equals("noawt") || installType.equals("lwjgl3");
+		
+		String iconKey = null;
+		try {
+			File iconsFolder = MultiMCHelper.getIconsDirectory();
+			if(iconsFolder != null) {
+				progressListener.update("Setting icon...");
+				if(manifest.has("icon")) {
+					String iconName = manifest.getString("icon");
+					System.out.println("Set icon: " + iconName);
+					
+					String iconUrl = Global.getDownloadUrl() + "bta-installer/icons/" + iconName + ".png";
+					
+					MultiMCHelper.setIcon(iconName, new Download(iconUrl).setProgressListener(progressListener).getAsImage());
+					iconKey = iconName;
+				}else {
+					System.out.println("No icon in manifest!");
+				}	
+			}else {
+				System.out.println("Icons folder is null, can't set icon!");
+			}	
+		}catch (Exception e) {
+			System.err.println("Icon installation failed!");
+			e.printStackTrace();
+		}
 
 		// instance.cfg
 		{
 			progressListener.update("Setting up instance configuration...");
 			System.out.println("Setting up instance.cfg");
 			
-			File instanceCfg = new File(instanceFolder, "instance.cfg");
+			File instanceCfg = new File(params.instanceFolder, "instance.cfg");
 			Map<String, String> instanceProperties = ConfigUtil.loadPropertiesFile(instanceCfg, '=');
 			instanceProperties.put("InstanceType", "OneSix");
 			instanceProperties.put("notes", "");
 			if(!instanceProperties.containsKey("name")) {
 				instanceProperties.put("name", "Better than Adventure!");
 			}
-//			if(!instanceProperties.containsKey("iconKey")) {
-//				instanceProperties.put("iconKey", "planks");
-//			}
+			if(iconKey != null) {
+				instanceProperties.put("iconKey", iconKey);
+			}
 			ConfigUtil.saveProperties(instanceCfg, instanceProperties, '=');
 		}
 		
@@ -129,15 +137,15 @@ public class MultiMCInstaller implements Installer {
 		{
 			System.out.println("Setting up BTA patch");
 			
-			String versionFileName = "bta-" + versionId + ".jar";
+			String versionFileName = "bta-" + params.version.id + ".jar";
 			
-			JsonObject patch = createPatch(btaPatchUid, version, versionFileName);
+			JsonObject patch = createPatch(btaPatchUid, params.version, versionFileName);
 			File patchFile = new File(patchesFolder, btaPatchUid + ".json");
 			
 			StringUtils.saveStringToFile(patchFile, patch.toString());
 			
 			progressListener.update("Downloading client jar...");
-			File file = version.getFile("client.jar", progressListener);
+			File file = params.version.getFile("client.jar", progressListener);
 			
 			progressListener.update("Copying client jar...");
 			Utils.copyFile(file, new File(jarmodsFolder, versionFileName), progressListener);
@@ -170,10 +178,10 @@ public class MultiMCInstaller implements Installer {
 			pack.set("components", new JsonArray(packComponents));
 			pack.set("formatVersion", 1);
 			
-			File mmcPack = new File(instanceFolder, "mmc-pack.json");
+			File mmcPack = new File(params.instanceFolder, "mmc-pack.json");
 			StringUtils.saveStringToFile(mmcPack, pack.toString());
 		}
-
+		
 		progressListener.update("Done!");
 		return true;
 	}
@@ -206,36 +214,44 @@ public class MultiMCInstaller implements Installer {
 		return root;
 	}
 	
-	public static boolean isInstancesFolder(File file) {
-		return new File(file, "instgroups.json").isFile();
-	}
-	
-	public static boolean isInstance(File file) {
-		if(file.isDirectory()) {
-			File instanceCfg = new File(file, "instance.cfg");
-			File mmcPack = new File(file, "mmc-pack.json");
-			return instanceCfg.isFile() && mmcPack.isFile();
-		}
-		return false;
-	}
-	
-	public static String getInstanceName(File instanceFolder) {
-		File instanceCfg = new File(instanceFolder, "instance.cfg");
+	public static class Parameters {
 		
-		Map<String, String> properties = ConfigUtil.loadPropertiesFile(instanceCfg, '=');
-		return properties.get("name");
-	}
-	
-	public static String getLatestVersion() {
-		String url = "https://downloads.betterthanadventure.net/bta-client/release/versions.json";
-		File btaVersionsFile = new File(Global.getInstallerDirectory(), "bta-versions.json");
-		Utils.downloadFileAndPrintProgress(url, btaVersionsFile);
-		JsonObject obj = JsonParser.instance.parseFileContent(btaVersionsFile);
-		String latestVersion = obj.getString("default");
-		if(latestVersion.startsWith("v")) {
-			latestVersion = latestVersion.substring(1);
+		public final File launcherFolder;
+		public final File instanceFolder;
+		public final Version version;
+		
+		public Parameters(File launcherFolder, File instanceFolder, Version version) {
+			this.launcherFolder = launcherFolder;
+			this.instanceFolder = instanceFolder;
+			this.version = version;
 		}
-		return latestVersion;
+		
+		public Parameters(Map<String, Object> parameters) {
+			launcherFolder = new File((String) parameters.get("launcherfolder"));
+			if(!launcherFolder.isDirectory()) {
+				throw new RuntimeException("Invalid MultiMC / Prism Launcher folder: '" + launcherFolder.getAbsolutePath() + "'!");
+			}
+
+			File instancesFolder = new File((String) parameters.get("instancesfolder"));
+			if(!instancesFolder.isDirectory()) {
+				throw new RuntimeException("Invalid instances folder: '" + instancesFolder.getAbsolutePath() + "'!");
+			}
+
+			String versionId = (String) parameters.get("version");
+			version = Versions.getInstance().get(versionId);
+			if(version == null) {
+				throw new NullPointerException("Version is null!");
+			}
+			
+			String instanceFolderName;
+			if(parameters.containsKey("instancename")) {
+				instanceFolderName = (String) parameters.get("instancename");
+			}else {
+				instanceFolderName = Global.MULTIMC_INSTANCE_FOLDER_NAME;
+			}
+
+			instanceFolder = new File(instancesFolder, instanceFolderName);
+		}
 	}
 	
 }

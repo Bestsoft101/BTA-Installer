@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import b100.installer.util.Log;
+import b100.installer.util.MultiMCHelper;
 import b100.installer.util.Utils;
 
 public class Global {
@@ -15,7 +16,16 @@ public class Global {
 	private static String downloadUrl = "https://downloads.betterthanadventure.net/";
 	private static File logFile;
 	
+	private static boolean initialized = false;
+	
 	public static void setup(String[] args) {
+		if(initialized) {
+			return;
+		}
+		initialized = true;
+
+		MultiMCHelper.init(args);
+		
 		if(args != null) {
 			for(int i=0; i < args.length; i++) {
 				String arg = args[i];
@@ -32,6 +42,10 @@ public class Global {
 		
 		if(!offline) {
 			offline = checkFileExists("offline");	
+		}
+		File runInstance = MultiMCHelper.getRunInstanceDirectory();
+		if(runInstance != null && installerDirectory == null) {
+			installerDirectory = new File(runInstance, ".bta-installer");
 		}
 		if(installerDirectory == null) {
 			installerDirectory = Utils.getAppDirectory("bta-installer");

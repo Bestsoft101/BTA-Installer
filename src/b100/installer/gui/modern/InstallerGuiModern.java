@@ -31,7 +31,7 @@ import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMC;
 import b100.installer.util.Crash;
 import b100.installer.util.CrashHandler;
-import b100.installer.util.Utils;
+import b100.installer.util.MultiMCHelper;
 
 public class InstallerGuiModern {
 	
@@ -112,7 +112,7 @@ public class InstallerGuiModern {
 		
 		initFrame();
 		
-		File instancesFolder = Utils.getMultiMCInstancesFolder();
+		File instancesFolder = MultiMCHelper.getInstancesDirectory();
 		if(instancesFolder != null) {
 			System.out.println("Found Instances Folder: " + instancesFolder);	
 			

@@ -2,8 +2,6 @@ package b100.installer.gui.modern.screen.multimc;
 
 import java.awt.EventQueue;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import b100.installer.Global;
@@ -23,7 +21,9 @@ import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.screen.GuiSelectVersion;
 import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.installer.MultiMCInstaller;
+import b100.installer.installer.MultiMCInstaller.Parameters;
 import b100.installer.installer.ProgressListener;
+import b100.installer.util.MultiMCHelper;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;
 import b100.json.element.JsonObject;
@@ -31,7 +31,6 @@ import b100.json.element.JsonObject;
 public class GuiInstallMultiMC extends GuiScreen implements ActionListener, ProgressListener {
 
 	public File instancesFolder;
-	public File instanceFolder;
 	
 	public GuiButton buttonInstall;
 	public GuiButton buttonSelectVersion;
@@ -57,15 +56,16 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 	
 	public GuiProgressBar progressBar;
 	
-	public GuiInstallMultiMC(GuiScreen parentScreen, File instancesFolder) {
+	public GuiInstallMultiMC(GuiScreen parentScreen, File launcherFolder) {
 		super(parentScreen);
+		if(launcherFolder == null) {
+			throw new NullPointerException("Launcher folder is null!");
+		}
 		
+		instancesFolder = MultiMCHelper.getInstancesDirectory();
 		if(instancesFolder == null) {
 			throw new NullPointerException("Instances folder is null!");
 		}
-		
-		this.instancesFolder = instancesFolder;
-		this.instanceFolder = new File(instancesFolder, Global.MULTIMC_INSTANCE_FOLDER_NAME);
 		
 		this.latestVersion = Versions.getInstance().getLatestVersion();
 		System.out.println("Latest BTA Version: " + latestVersion);
@@ -204,23 +204,20 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 	public void install() {
 		buttonInstall.setClickable(false);
 		
-		final Map<String, Object> parameters = new HashMap<>();
+		File launcherDirectory = MultiMCHelper.getLauncherDirectory();
+		File instanceFolder = new File(instancesFolder, selectedInstance.getInstanceFolderName());
 		
-		parameters.put("instancesfolder", instancesFolder.getAbsolutePath());
-		parameters.put("version", selectedVersion.id);
-		parameters.put("instancename", selectedInstance.getInstanceFolderName());
-		
-		ProgressListener progressListener = this;
+		Parameters params = new Parameters(launcherDirectory, instanceFolder, selectedVersion);
 		
 		Runnable runnable = () -> {
 			try {
 				installing = true;
-				progressListener.update("Installing...");
+				update("Installing...");
 				
-				multiMcInstaller.install(parameters, progressListener);
+				multiMcInstaller.install(params, this);
 
 				installing = false;
-				progressListener.update("Done!");
+				update("Done!");
 				
 				EventQueue.invokeLater(() -> {
 					buttonInstall.setClickable(true);
@@ -321,16 +318,16 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 			}
 			
 			this.instanceFolder = instanceFolder;
-			this.instanceExists = MultiMCInstaller.isInstance(instanceFolder);
+			this.instanceExists = MultiMCHelper.isInstance(instanceFolder);
 			
-			if(!MultiMCInstaller.isInstance(instanceFolder)) {
+			if(!MultiMCHelper.isInstance(instanceFolder)) {
 				displayName = null;
 				oldBtaJarFile = null;
 				currentVersion = null;
 				return;
 			}
 			
-			displayName = MultiMCInstaller.getInstanceName(instanceFolder);
+			displayName = MultiMCHelper.getInstanceName(instanceFolder);
 			
 			File mmcPackFile = new File(instanceFolder, "mmc-pack.json");
 			File patchesFolder = new File(instanceFolder, "patches");

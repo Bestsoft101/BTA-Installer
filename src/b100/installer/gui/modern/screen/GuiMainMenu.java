@@ -2,6 +2,8 @@ package b100.installer.gui.modern.screen;
 
 import static b100.installer.util.Utils.*;
 
+import java.io.File;
+
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiElement;
@@ -9,6 +11,7 @@ import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.multimc.GuiChooseMultiMCFolder;
 import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMC;
 import b100.installer.gui.modern.util.ActionListener;
+import b100.installer.util.MultiMCHelper;
 
 public class GuiMainMenu extends GuiScreen implements ActionListener {
 	
@@ -64,8 +67,9 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 	@Override
 	public void actionPerformed(GuiElement source) {
 		if(source == buttonMultiMc) {
-			if(multiMcInstanceFolderOverride != null) {
-				setScreen(new GuiInstallMultiMC(this, multiMcInstanceFolderOverride));
+			File launcherFolder = MultiMCHelper.getLauncherDirectory();
+			if(launcherFolder != null) {
+				setScreen(new GuiInstallMultiMC(this, launcherFolder));
 			}else {
 				setScreen(new GuiChooseMultiMCFolder(this));
 			}

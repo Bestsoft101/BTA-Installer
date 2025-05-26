@@ -1,23 +1,37 @@
 package b100.installer;
 
-import static b100.installer.util.Utils.*;
-
 import java.util.List;
 
 import javax.swing.UIManager;
 
+import b100.installer.gui.modern.InstallerGuiModern;
 import b100.installer.updater.UpdateInfoWindow;
 import b100.installer.updater.Updater;
 
 public class Main {
 	
 	public static void main(String[] args) {
+		boolean noUpdate = false;
+		for(String arg : args) {
+			if(arg.equals("--noUpdate")) {
+				noUpdate = true;
+			}
+		}
+		
+		Global.setup(args);
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		if(noUpdate) {
+			System.out.println("Update check disabled through launch parameters!");
+			launchInstaller(args);
+			return;
+		}
+		
 		List<String> availableUpdates = Updater.searchAvailableUpdates();
 		if(availableUpdates == null) {
 			System.out.println("Update check failed!");
@@ -42,10 +56,6 @@ public class Main {
 	}
 	
 	public static void launchInstaller(String[] args) {
-		String installerMainClassName = getManifestAttribute("Installer-Main-Class").trim();
-		if(installerMainClassName == null) {
-			throw new RuntimeException("Missing installer main class in manifest!");
-		}
-		invokeMain(Main.class.getClassLoader(), installerMainClassName, args);
+		InstallerGuiModern.main(args);
 	}
 }

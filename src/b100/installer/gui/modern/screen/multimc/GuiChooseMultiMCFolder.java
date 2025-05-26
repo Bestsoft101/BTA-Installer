@@ -1,5 +1,7 @@
 package b100.installer.gui.modern.screen.multimc;
 
+import java.io.File;
+
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiDialog;
 import b100.installer.gui.modern.element.GuiElement;
@@ -7,7 +9,7 @@ import b100.installer.gui.modern.element.GuiTextElement;
 import b100.installer.gui.modern.screen.GuiFileChooser;
 import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.util.ActionListener;
-import b100.installer.util.Utils;
+import b100.installer.util.MultiMCHelper;
 
 public class GuiChooseMultiMCFolder extends GuiFileChooser implements ActionListener {
 
@@ -25,7 +27,7 @@ public class GuiChooseMultiMCFolder extends GuiFileChooser implements ActionList
 		
 		GuiDialog info = new GuiDialog(this);
 		
-		info.add(new GuiTextElement().setText("Please select the MultiMC / Prism Launcher instances folder.").setAutoSize(true));
+		info.add(new GuiTextElement().setText("Please select the MultiMC / Prism Launcher folder.").setAutoSize(true));
 		
 		GuiButton closeButton = new GuiButton(this, "Ok");
 		closeButton.addActionListener((e) -> info.close());
@@ -38,9 +40,11 @@ public class GuiChooseMultiMCFolder extends GuiFileChooser implements ActionList
 	@Override
 	public void actionPerformed(GuiElement source) {
 		if(source == buttonOpen) {
-			Utils.multiMcInstanceFolderOverride = getSelectedFile();
+			File launcherDirectory = getSelectedFile();
 			
-			setScreen(new GuiInstallMultiMC(parentScreen, Utils.multiMcInstanceFolderOverride));
+			MultiMCHelper.setLauncherDirectory(launcherDirectory);
+			
+			setScreen(new GuiInstallMultiMC(parentScreen, launcherDirectory));
 		}
 	}
 	

@@ -1,11 +1,11 @@
 package net.minecraft.client;
 
-import b100.installer.gui.modern.InstallerGuiModern;
+import b100.installer.Main;
 
 public class Minecraft {
 	
 	public static void main(String[] args) {
-		InstallerGuiModern.main(args);
+		Main.main(args);
 	}
 	
 }
