@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 import b100.installer.installer.ProgressListener;
@@ -108,9 +109,20 @@ public class Versions {
 		return filteredVersions;
 	}
 	
+	public Version getLatestStableVersion() {
+		return getLatestVersion(version -> version.channel.id.equals("release"));
+	}
+	
+	public Version getLatestVersion(Predicate<Version> filter) {
+		for(Version version : allVersions) {
+			if(filter.test(version)) {
+				return version;
+			}
+		}
+		throw new RuntimeException("No version found for filter: " + filter);
+	}
+	
 	public Version getLatestVersion() {
-		// TODO
-		
 		return allVersions.get(0);
 	}
 	

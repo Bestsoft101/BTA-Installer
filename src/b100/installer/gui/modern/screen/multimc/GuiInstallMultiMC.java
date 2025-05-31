@@ -38,7 +38,7 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 	
 	public GuiCheckbox checkboxAdvancedMode;
 	
-	public final Version latestVersion;
+	public final Version latestStableVersion;
 	public Version selectedVersion = null;
 	public InstanceInfo selectedInstance = null;
 	
@@ -67,10 +67,10 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 			throw new NullPointerException("Instances folder is null!");
 		}
 		
-		this.latestVersion = Versions.getInstance().getLatestVersion();
-		System.out.println("Latest BTA Version: " + latestVersion);
+		this.latestStableVersion = Versions.getInstance().getLatestStableVersion();
+		System.out.println("Latest Stable Version: " + latestStableVersion);
 		
-		selectedVersion = latestVersion;
+		selectedVersion = latestStableVersion;
 		
 		setInstance(Global.MULTIMC_INSTANCE_FOLDER_NAME);
 	}
@@ -90,7 +90,7 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 			buttonSelectInstance = add(new GuiButton(this, "Instance").addActionListener(this));	
 		}else {
 			setInstance(Global.MULTIMC_INSTANCE_FOLDER_NAME);
-			selectedVersion = latestVersion;
+			selectedVersion = latestStableVersion;
 		}
 		
 		checkboxAdvancedMode = add(new GuiCheckbox(this, "Advanced Mode", advancedMode).addActionListener(this));
@@ -130,10 +130,10 @@ public class GuiInstallMultiMC extends GuiScreen implements ActionListener, Prog
 		}
 
 		line0.setText("Installed Version: " + Version.getDisplayName(selectedInstance.currentVersion));
-		if(Objects.equals(selectedInstance.currentVersion, latestVersion)) {
+		if(Objects.equals(selectedInstance.currentVersion, latestStableVersion)) {
 			line1.setText("Up to date!").setTextColor(0x00FF00);
 		}else {
-			line1.setText("Update Available: " + latestVersion.getDisplayName()).setTextColor(0x00FF00);
+			line1.setText("Update Available: " + latestStableVersion.getDisplayName()).setTextColor(0x00FF00);
 		}
 	}
 	
