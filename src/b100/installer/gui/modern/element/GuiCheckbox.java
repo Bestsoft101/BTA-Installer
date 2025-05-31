@@ -144,6 +144,14 @@ public class GuiCheckbox extends GuiElement implements Focusable {
 		InstallerGuiModern.getInstance().scheduleRepaint();
 	}
 	
+	public void setChecked(boolean checked) {
+		if(checked != this.checked) {
+			this.checked = checked;
+			
+			InstallerGuiModern.getInstance().scheduleRepaint();
+		}
+	}
+	
 	public boolean isChecked() {
 		return checked;
 	}

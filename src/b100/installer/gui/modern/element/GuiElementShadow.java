@@ -17,24 +17,29 @@ public class GuiElementShadow extends GuiElement {
 	@Override
 	public void draw() {
 		if(parent != null) {
-			this.posX = parent.posX;
-			this.width = parent.width;
+			posX = parent.posX;
+			width = parent.width;
 			if(position == Position.ABOVE_ELEMENT) {
-				this.posY = parent.posY - image.getHeight();
-				this.height = image.getHeight();
+				posY = parent.posY - image.getHeight();
 			}else if(position == Position.BELOW_ELEMENT) {
-				this.posY = parent.posY + parent.height;
-				this.height = image.getHeight();	
+				posY = parent.posY + parent.height;
+			}else if(position == Position.IN_ELEMENT_TOP) {
+				posY = parent.posY;
+			}else if(position == Position.IN_ELEMENT_BOTTOM) {
+				posY = parent.posY + parent.height - image.getHeight();
 			}
+			height = image.getHeight();
 		}
 		
 		renderer.drawImageStretched(image, posX, posY, width, height);
 	}
 	
-	public static enum Position {
-		
-		ABOVE_ELEMENT, BELOW_ELEMENT;
-		
+	@Override
+	public boolean isSolid() {
+		return false;
 	}
 	
+	public static enum Position {
+		ABOVE_ELEMENT, BELOW_ELEMENT, IN_ELEMENT_TOP, IN_ELEMENT_BOTTOM;
+	}
 }

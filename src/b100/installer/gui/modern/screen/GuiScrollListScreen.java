@@ -2,13 +2,10 @@ package b100.installer.gui.modern.screen;
 
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiElement;
-import b100.installer.gui.modern.element.GuiElementShadow;
 import b100.installer.gui.modern.element.GuiScrollBar;
 import b100.installer.gui.modern.element.GuiScrollableList;
-import b100.installer.gui.modern.element.GuiElementShadow.Position;
 import b100.installer.gui.modern.element.GuiScrollableList.Layout;
 import b100.installer.gui.modern.element.GuiScrollableList.ListLayout;
-import b100.installer.gui.modern.render.Textures;
 
 public abstract class GuiScrollListScreen extends GuiScreen {
 
@@ -46,8 +43,7 @@ public abstract class GuiScrollListScreen extends GuiScreen {
 		add(header);
 		add(footer);
 		
-		add(new GuiElementShadow(header, Textures.shadow_2, Position.BELOW_ELEMENT));
-		add(new GuiElementShadow(footer, Textures.shadow_1, Position.ABOVE_ELEMENT));
+		scrollList.createShadows(this);
 		
 		scrollBar = add(new GuiScrollBar(this, scrollList));
 	}

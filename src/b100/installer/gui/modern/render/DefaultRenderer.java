@@ -119,6 +119,32 @@ public class DefaultRenderer extends Renderer {
 
 	@Override
 	public void drawRectangle(int x, int y, int w, int h) {
+		if(scissorEnabled) {
+			if(isOutsideScissorArea(x, y, w, h)) {
+				return;
+			}
+
+			if(x < scissorX) {
+				int offset = scissorX - x;
+				x += offset;
+				w -= offset;
+			}
+			if(x + w >= scissorX + scissorWidth) {
+				int offset = (x + w) - (scissorX + scissorWidth);
+				w -= offset;
+			}
+			
+			if(y < scissorY) {
+				int offset = scissorY - y;
+				y += offset;
+				h -= offset;
+			}
+			if(y + h >= scissorY + scissorHeight) {
+				int offset = (y + h) - (scissorY + scissorHeight);
+				h -= offset;
+			}
+		}
+		
 		g.fillRect(x * scale, y * scale, w * scale, h * scale);
 	}
 

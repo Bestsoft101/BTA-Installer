@@ -53,6 +53,14 @@ public abstract class GuiElement {
 		return this;
 	}
 	
+	public GuiElement setPositionAndSize(GuiElement element) {
+		posX = element.posX;
+		posY = element.posY;
+		width = element.width;
+		height = element.height;
+		return this;
+	}
+	
 	public boolean isInside(double x, double y) {
 		return x >= posX && y >= posY && x < posX + width && y < posY + height;
 	}

@@ -40,7 +40,7 @@ public class GuiTextElement extends GuiElement {
 		}
 		
 		int textPosX = (int) (posX + (width - textWidth) * alignX);
-		int textPosY = (int) (posY + (width - textWidth) * alignY);
+		int textPosY = (int) (posY + (height - textHeight) * alignY);
 		
 		for(int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
 			String line = lines.get(lineNumber);

@@ -126,6 +126,10 @@ public class Versions {
 		return allVersions.get(0);
 	}
 	
+	public List<Channel> getAllChannels() {
+		return allChannels;
+	}
+	
 	public class Channel {
 		
 		/** e.g. "prerelease" */

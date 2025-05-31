@@ -1,6 +1,8 @@
 package b100.installer.gui.modern.element;
 
 import b100.installer.gui.modern.InstallerGuiModern;
+import b100.installer.gui.modern.element.GuiElementShadow.Position;
+import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.GuiScreen;
 import b100.installer.gui.modern.util.FocusDirection;
 import b100.installer.gui.modern.util.Focusable;
@@ -22,10 +24,20 @@ public class GuiScrollableList extends GuiContainer {
 	public boolean useScissor = false;
 	public int scrollToElementOffset = 4;
 	
+	public GuiScrollableList(GuiScreen screen) {
+		this(screen, new ListLayout());
+	}
+	
 	public GuiScrollableList(GuiScreen screen, Layout layout) {
 		this.screen = screen;
 		this.layout = layout;
 		this.isList = true;
+	}
+	
+	public GuiScrollableList createShadows(GuiContainer container) {
+		container.add(new GuiElementShadow(this, Textures.shadow_2, Position.IN_ELEMENT_TOP));
+		container.add(new GuiElementShadow(this, Textures.shadow_1, Position.IN_ELEMENT_BOTTOM));
+		return this;
 	}
 	
 	@Override
