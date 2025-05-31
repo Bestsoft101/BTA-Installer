@@ -118,7 +118,15 @@ public class UpdateInfoWindow implements ActionListener {
 				str.append(version).append(":\n");
 				
 				String url = Global.getDownloadUrl() + "bta-installer/changelogs/" + version + ".txt";
-				String changelog = new Download(url).downloadAsString();
+				String changelog;
+				try {
+					changelog = new Download(url).downloadAsString();	
+				}catch (Exception e) {
+					e.printStackTrace();
+					str.append(" - Could not load changelog!\n\n");
+					continue;
+				}
+				
 				String[] lines = changelog.split("\n");
 				
 				for(String line : lines) {
