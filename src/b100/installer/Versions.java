@@ -10,8 +10,10 @@ import java.util.function.Predicate;
 import b100.installer.gui.classic.VersionListGUI.VersionFilter;
 import b100.installer.installer.ProgressListener;
 import b100.installer.util.ModLoader;
+import b100.installer.util.TimeUtil;
 import b100.installer.util.Utils;
 import b100.json.element.JsonArray;
+import b100.json.element.JsonElement;
 import b100.json.element.JsonEntry;
 import b100.json.element.JsonObject;
 
@@ -66,8 +68,13 @@ public class Versions {
 					displayName = versionManifest.getString("displayName");
 				}
 				long releaseTime = 0L;
-				if(versionManifest.has("release")) {
-					releaseTime = versionManifest.getLong("release");
+				JsonElement release = versionManifest.get("release");
+				if(release != null) {
+					if(release.isNumber()) {
+						releaseTime = release.getAsNumber().getLong();
+					}else if(release.isString()) {
+						releaseTime = TimeUtil.parseTime(release.getAsString().value);
+					}
 				}
 				
 				Version version = new Version(versionId, displayName, channel, versionManifest, index++, releaseTime);
@@ -79,7 +86,6 @@ public class Versions {
 		allVersions.sort((o1, o2) -> o2.compareTo(o1));
 		
 		System.out.println("All Versions: ");
-		
 		for(Version version : allVersions) {
 			System.out.println(version);
 		}
