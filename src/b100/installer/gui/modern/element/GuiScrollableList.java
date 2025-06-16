@@ -22,6 +22,7 @@ public class GuiScrollableList extends GuiContainer {
 	
 	public boolean centerElements = true;
 	public boolean useScissor = false;
+	public int scissorBorder = 0;
 	public int scrollToElementOffset = 4;
 	
 	public GuiScrollableList(GuiScreen screen) {
@@ -56,7 +57,7 @@ public class GuiScrollableList extends GuiContainer {
 	@Override
 	public void draw() {
 		if(useScissor) {
-			renderer.enableScissor(posX, posY, width, height);	
+			renderer.enableScissor(posX - scissorBorder, posY - scissorBorder, width + 2 * scissorBorder, height + 2 * scissorBorder);	
 		}
 		
 		super.draw();

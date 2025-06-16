@@ -279,6 +279,7 @@ public class GuiFileChooser extends GuiScreen {
 			
 			centerElements = false;
 			useScissor = true;
+			scissorBorder = 1;
 			scrollToElementOffset = 0;
 		}
 		
