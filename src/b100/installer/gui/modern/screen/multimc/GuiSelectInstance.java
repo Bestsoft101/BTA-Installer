@@ -16,6 +16,7 @@ import b100.installer.gui.modern.util.ActionListener;
 import b100.installer.util.MultiMCHelper;
 import b100.json.JsonParser;
 import b100.json.element.JsonArray;
+import b100.json.element.JsonElement;
 import b100.json.element.JsonEntry;
 import b100.json.element.JsonObject;
 
@@ -57,62 +58,60 @@ public class GuiSelectInstance extends GuiScrollListScreen implements ActionList
 
 	@Override
 	public void initScrollElements() {
-		// Read instance groups
-		List<String> instanceGroups = new ArrayList<String>();
-		Map<String, String> instanceToGroup = new HashMap<>();
-		{
-			instanceGroups.add(DEFAULT_GROUP_ID);
-			
-			File instgroupsFile = new File(instancesFolder, "instgroups.json");
-			JsonObject instgroups = JsonParser.instance.parseFileContent(instgroupsFile);
-			JsonObject groups = instgroups.getObject("groups");
-			
+		final List<String> allInstanceGroups = new ArrayList<String>(); // All instance groups in order
+		final Map<String, String> instanceToGroupMap = new HashMap<>(); // Get group name from instance name
+		final Map<String, List<String>> groupToInstancesMap = new HashMap<>(); // Get contained instances from group name
+		
+		allInstanceGroups.add(DEFAULT_GROUP_ID);
+		
+		// Read instgroups.json
+		File instgroupsFile = new File(instancesFolder, "instgroups.json");
+		if(instgroupsFile.isFile()) {
+			JsonObject groups = JsonParser.instance.parseFileContent(instgroupsFile).getObject("groups");
 			for(JsonEntry entry : groups) {
 				String groupName = entry.name;
 				
-				instanceGroups.add(groupName);
+				allInstanceGroups.add(groupName);
 				
 				JsonArray instancesInGroup = entry.value.getAsObject().getArray("instances");
-				for(int j=0; j < instancesInGroup.length(); j++) {
-					String instanceName = instancesInGroup.get(j).getAsString().value;
-					
-					instanceToGroup.put(instanceName, groupName);
+				for(JsonElement element : instancesInGroup) {
+					instanceToGroupMap.put(element.getAsString().value, groupName);
 				}
-			}
+			}	
 		}
 		
-		Map<String, List<String>> groupToInstanceList = new HashMap<>();
-		{
-			File[] files = instancesFolder.listFiles();
-			for(int i=0; i < files.length; i++) {
-				File instanceFolder = files[i];
-				
-				if(!MultiMCHelper.isInstance(instanceFolder)) {
-					continue;
-				}
-				
-				String instanceName = instanceFolder.getName();
-				String groupName = instanceToGroup.get(instanceName);
-				if(groupName == null) {
-					groupName = DEFAULT_GROUP_ID;
-				}
-				
-				List<String> instancesInGroup = groupToInstanceList.get(groupName);
-				if(instancesInGroup == null) {
-					instancesInGroup = new ArrayList<>();
-					groupToInstanceList.put(groupName, instancesInGroup);
-				}
-				
-				instancesInGroup.add(instanceName);
+		// Get all instances in folder and create list for each group
+		for(File instanceFolder : instancesFolder.listFiles()) {
+			if(!MultiMCHelper.isInstance(instanceFolder)) {
+				continue;
 			}
+			
+			String instanceName = instanceFolder.getName();
+			String instanceGroup = instanceToGroupMap.get(instanceName);
+			if(instanceGroup == null) {
+				instanceGroup = DEFAULT_GROUP_ID;
+			}
+			
+			List<String> instancesInGroup = groupToInstancesMap.get(instanceGroup);
+			if(instancesInGroup == null) {
+				instancesInGroup = new ArrayList<>();
+				groupToInstancesMap.put(instanceGroup, instancesInGroup);
+			}
+			
+			instancesInGroup.add(instanceName);
 		}
 		
-		for(String groupName : instanceGroups) {
+		// Go through all lists in order and create list elements for all instances
+		for(String groupName : allInstanceGroups) {
 			if(!DEFAULT_GROUP_ID.equals(groupName)) {
 				scrollList.add(new GroupElement(groupName));	
 			}
 			
-			List<String> instancesInGroup = groupToInstanceList.get(groupName);
+			List<String> instancesInGroup = groupToInstancesMap.get(groupName);
+			if(instanceToGroupMap == null) {
+				// Apparently instgroups.json can contain empty groups or groups with non-existant instances
+				continue;
+			}
 			
 			for(String instanceName : instancesInGroup) {
 				File instanceFolder = new File(instancesFolder, instanceName);
