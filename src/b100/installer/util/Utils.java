@@ -43,32 +43,37 @@ public abstract class Utils {
 	public static final int OS_MAC = 1;
 	public static final int OS_LINUX = 2;
 	public static final int OS_UNKNOWN = 3;
+	public static final int OPERATING_SYSTEM;
+	
+	static {
+		int os = OS_UNKNOWN;
+		
+		String osName = System.getProperty("os.name").toLowerCase();
+		if(osName.contains("win")) os = OS_WINDOWS;
+		if(osName.contains("mac")) os = OS_MAC;
+		if(osName.contains("linux") || osName.contains("unix") || osName.contains("sunos") || osName.contains("solaris")) os = OS_LINUX;
+		
+		OPERATING_SYSTEM = os;
+	}
 	
 	public static File getMinecraftDirectory() {
 		return getAppDirectory("minecraft");
 	}
 	
 	public static File getAppDirectory(String appName) {
-		int operatingSystem = OS_UNKNOWN;
-		
-		String osName = System.getProperty("os.name").toLowerCase();
-		if(osName.contains("win")) operatingSystem = OS_WINDOWS;
-		if(osName.contains("mac")) operatingSystem = OS_MAC;
-		if(osName.contains("linux") || osName.contains("unix") || osName.contains("sunos") || osName.contains("solaris")) operatingSystem = OS_LINUX;
-		
 		File appDir;
 		String userHome = System.getProperty("user.home", ".");
 		
-		if(operatingSystem == OS_LINUX) {
+		if(OPERATING_SYSTEM == OS_LINUX) {
 			appDir = new File(userHome, "." + appName + "/");
-		}else if(operatingSystem == OS_WINDOWS) {
+		}else if(OPERATING_SYSTEM == OS_WINDOWS) {
 			String appdata = System.getenv("APPDATA");
 			if(appdata != null) {
 				appDir = new File(appdata, "." + appName + "/");
 			}else {
 				appDir = new File(userHome, "." + appName + "/");
 			}
-		}else if(operatingSystem == OS_MAC) {
+		}else if(OPERATING_SYSTEM == OS_MAC) {
 			appDir = new File(userHome, "Library/Application Support/" + appName + "/");
 		}else {
 			appDir = new File(userHome, appName + "/");

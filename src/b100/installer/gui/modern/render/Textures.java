@@ -19,6 +19,7 @@ public class Textures {
 	public static BufferedImage icons = loadTexture("icons");
 	public static BufferedImage shadow_1 = createGradientImage(1, 6, 0x00000000, 0x80000000, false);
 	public static BufferedImage shadow_2 = createGradientImage(1, 6, 0x80000000, 0x00000000, false);
+	public static BufferedImage dialogBackground = createColorImage(0xC8101010);
 	
 	static {
 		System.out.println("Loaded Textures!");
@@ -47,6 +48,22 @@ public class Textures {
 		
 		g.dispose();
 		return missingTex;
+	}
+	
+	private static BufferedImage createColorImage(int color) {
+		return createColorImage(1, 1, color);
+	}
+	
+	private static BufferedImage createColorImage(int width, int height, int color) {
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		
+		for(int i=0; i < image.getWidth(); i++) {
+			for(int j=0; j < image.getHeight(); j++) {
+				image.setRGB(i, j, color);
+			}
+		}
+		
+		return image;
 	}
 	
 	private static BufferedImage createGradientImage(int width, int height, int color1, int color2, boolean horizontal) {

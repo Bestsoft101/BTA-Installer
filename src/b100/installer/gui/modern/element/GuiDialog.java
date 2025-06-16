@@ -1,6 +1,7 @@
 package b100.installer.gui.modern.element;
 
 import b100.installer.gui.modern.InstallerGuiModern;
+import b100.installer.gui.modern.render.Textures;
 import b100.installer.gui.modern.screen.GuiScreen;
 
 public class GuiDialog extends GuiContainer {
@@ -65,12 +66,8 @@ public class GuiDialog extends GuiContainer {
 		setPosition(screen.posX, screen.posY);
 		setSize(screen.width, screen.height);
 		
-		renderer.setAlphaBlendMode();
-		renderer.setColor(0xC8101010);
+		renderer.drawImageStretched(Textures.dialogBackground, posX, posY, width, height);
 		
-		renderer.drawRectangle(posX, posY, width, height);
-		
-		renderer.resetBlendMode();
 		renderer.setColor(0xFF808080);
 		renderer.drawRectangleOutline(background.posX - 1, background.posY - 1, background.width + 2, background.height + 2);
 		

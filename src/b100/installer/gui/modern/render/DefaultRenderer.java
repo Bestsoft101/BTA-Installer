@@ -182,8 +182,9 @@ public class DefaultRenderer extends Renderer {
 	}
 
 	@Override
-	public void setInvertColorBlendMode() {
-		g.setComposite(BlendComposite.Negation);
+	public boolean areBlendModesSupported() {
+		// Blend composites crash on linux
+		return Utils.OPERATING_SYSTEM != Utils.OS_LINUX;
 	}
 
 	@Override
@@ -192,8 +193,10 @@ public class DefaultRenderer extends Renderer {
 	}
 
 	@Override
-	public void setAlphaBlendMode() {
-		g.setComposite(BlendComposite.Average);
+	public void setInvertColorBlendMode() {
+		if(areBlendModesSupported()) {
+			g.setComposite(BlendComposite.Negation);	
+		}
 	}
 	
 	public static BufferedImage loadTexture(String path) {
