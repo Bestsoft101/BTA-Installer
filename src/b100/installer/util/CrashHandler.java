@@ -48,14 +48,6 @@ public class CrashHandler {
 		frame.setVisible(true);
 	}
 	
-	public static String createErrorLog(Throwable throwable) {
-		StringBuilder str = new StringBuilder();
-		
-		createErrorLog(str, throwable);
-		
-		return str.toString();
-	}
-	
 	public static void createErrorLog(StringBuilder str, Throwable throwable) {
 		str.append(throwable.getClass().getName());
 		

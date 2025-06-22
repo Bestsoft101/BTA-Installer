@@ -2,6 +2,7 @@ package b100.installer;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import b100.installer.util.Log;
 import b100.installer.util.MultiMCHelper;
@@ -9,6 +10,7 @@ import b100.installer.util.Utils;
 
 public class Global {
 	
+	public static final String VERSION = Utils.readVersion();
 	public static final String MULTIMC_INSTANCE_FOLDER_NAME = "BTA_MANAGED_INSTANCE";
 	
 	private static File installerDirectory;
@@ -55,8 +57,10 @@ public class Global {
 		Log.setup(logFile);
 		Log.enable();
 		
-		System.out.println("Installer Directory: '" + installerDirectory.getAbsolutePath() + "'");
-		System.out.println("Offline Mode: " + offline);
+		List<String> infos = Utils.getInstallerAndSystemInfo();
+		for(String info : infos) {
+			System.out.println(info);
+		}
 		
 		Config.getInstance().load();
 	}

@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import b100.installer.gui.modern.screen.multimc.GuiInstallMultiMC;
 import b100.installer.util.Crash;
 import b100.installer.util.CrashHandler;
 import b100.installer.util.MultiMCHelper;
+import b100.installer.util.Utils;
 
 public class InstallerGuiModern {
 	
@@ -89,6 +91,12 @@ public class InstallerGuiModern {
 			StringBuilder msg = new StringBuilder();
 			
 			msg.append("The installer has crashed!\n\n");
+			
+			List<String> infos = Utils.getInstallerAndSystemInfo();
+			for(String info : infos) {
+				msg.append(info).append('\n');
+			}
+			msg.append('\n');
 			
 			CrashHandler.createErrorLog(msg, e);
 			

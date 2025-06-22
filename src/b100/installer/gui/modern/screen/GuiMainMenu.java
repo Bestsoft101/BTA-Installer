@@ -1,9 +1,8 @@
 package b100.installer.gui.modern.screen;
 
-import static b100.installer.util.Utils.*;
-
 import java.io.File;
 
+import b100.installer.Global;
 import b100.installer.gui.modern.element.GuiBackground;
 import b100.installer.gui.modern.element.GuiButton;
 import b100.installer.gui.modern.element.GuiElement;
@@ -19,12 +18,8 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 	public GuiButton buttonBetaCraft;
 	public GuiButton buttonVanillaLauncher;
 	
-	public String versionString;
-	
 	public GuiMainMenu(GuiScreen parentScreen) {
 		super(parentScreen);
-		
-		versionString = readVersion();
 	}
 
 	@Override
@@ -46,11 +41,11 @@ public class GuiMainMenu extends GuiScreen implements ActionListener {
 		int x = (renderer.getWidth() - Textures.logo.getWidth()) / 2;
 		int y = 30;
 		
-		int w = fontRenderer.getStringWidth(versionString);
+		int w = fontRenderer.getStringWidth(Global.VERSION);
 		
 		renderer.drawImage(Textures.logo, x, y + 8);
 		fontRenderer.drawString("Better than Adventure! Installer", 2, 2, 0x505050, true);
-		fontRenderer.drawString(versionString, width - w - 1, height - 9, 0x505050, true);
+		fontRenderer.drawString(Global.VERSION, width - w - 1, height - 9, 0x505050, true);
 	}
 	
 	@Override

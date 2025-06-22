@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
 
 import b100.installer.Download;
+import b100.installer.Global;
 import b100.installer.Main;
 import b100.installer.installer.ProgressListener;
 import b100.utils.FileUtils;
@@ -468,6 +469,25 @@ public abstract class Utils {
 	
 	public static String readVersion() {
 		return readLine(Main.class.getResourceAsStream("/version.txt"));
+	}
+	
+	public static List<String> getInstallerAndSystemInfo() {
+		List<String> infos = new ArrayList<>();
+		
+		try {
+			infos.add("Installer Version: " + Global.VERSION);
+			infos.add("Installer Directory: '" + Global.getInstallerDirectory().getAbsolutePath() + "'");
+			infos.add("Offline Mode: " + Global.isOffline());
+			infos.add("Operating System: " + System.getProperty("os.name"));
+			infos.add("Java Version: " + System.getProperty("java.version"));	
+		}catch (Exception e) {
+			String msg = "Could not get debug information!";
+			infos.add(msg);
+			System.err.println(msg);
+			e.printStackTrace();
+		}
+		
+		return infos;
 	}
 	
 	public static String readLine(InputStream in) {
