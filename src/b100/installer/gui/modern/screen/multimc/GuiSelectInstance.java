@@ -108,7 +108,7 @@ public class GuiSelectInstance extends GuiScrollListScreen implements ActionList
 			}
 			
 			List<String> instancesInGroup = groupToInstancesMap.get(groupName);
-			if(instanceToGroupMap == null) {
+			if(instancesInGroup == null) {
 				// Apparently instgroups.json can contain empty groups or groups with non-existant instances
 				continue;
 			}
