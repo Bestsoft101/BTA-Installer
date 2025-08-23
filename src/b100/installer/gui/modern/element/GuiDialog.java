@@ -90,6 +90,14 @@ public class GuiDialog extends GuiContainer {
 		return false;
 	}
 	
+	@Override
+	public GuiElement getClickElementAt(double x, double y) {
+		if(!enabled) {
+			return null;
+		}
+		return super.getClickElementAt(x, y);
+	}
+	
 	public void close() {
 		enabled = false;
 		InstallerGuiModern.getInstance().scheduleRepaint();
