@@ -60,6 +60,6 @@ public class Sound {
 	public static Sound click = null;
 	
 	public static void init() {
-		click = new Sound(Sound.class.getResourceAsStream("/click.wav"));
+		click = new Sound(Sound.class.getResourceAsStream("/resources/sounds/click.wav"));
 	}
 }

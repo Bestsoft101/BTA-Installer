@@ -26,7 +26,7 @@ public class Textures {
 	}
 	
 	private static BufferedImage loadTexture(String name) {
-		BufferedImage tex = DefaultRenderer.loadTexture("/" + name + ".png");
+		BufferedImage tex = DefaultRenderer.loadTexture("/resources/images/" + name + ".png");
 		
 		BufferedImage tex1 = new BufferedImage(tex.getWidth(), tex.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = tex1.getGraphics();
