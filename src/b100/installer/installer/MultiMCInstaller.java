@@ -56,6 +56,7 @@ public class MultiMCInstaller implements Installer {
 		System.out.println("LWJGL 3: " + lwjgl3);
 		boolean noawt = installType.equals("noawt") || installType.equals("lwjgl3");
 		
+		// Icon
 		String iconKey = null;
 		try {
 			File iconsFolder = MultiMCHelper.getIconsDirectory();
@@ -92,8 +93,22 @@ public class MultiMCInstaller implements Installer {
 			if(!instanceProperties.containsKey("name")) {
 				instanceProperties.put("name", "Better than Adventure!");
 			}
+			
 			if(iconKey != null) {
-				instanceProperties.put("iconKey", iconKey);
+				boolean updateIcon;
+				
+				if(!instanceProperties.containsKey("iconKey")) {
+					// If no icon is set, always set it
+					updateIcon = true;
+				}else {
+					// If the icon is already set, only update it if overrideIcons is enabled
+					updateIcon = Config.getInstance().overrideIcons.value;
+				}
+				
+				if(updateIcon) {
+					System.out.println("Updating instance icon key");
+					instanceProperties.put("iconKey", iconKey);	
+				}
 			}
 			ConfigUtil.saveProperties(instanceCfg, instanceProperties, '=');
 		}

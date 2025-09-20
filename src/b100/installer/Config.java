@@ -3,6 +3,7 @@ package b100.installer;
 import java.io.File;
 
 import b100.installer.Versions.Version;
+import b100.installer.config.BooleanProperty;
 import b100.installer.config.ConfigFile;
 import b100.installer.config.LongProperty;
 import b100.installer.config.StringProperty;
@@ -12,6 +13,15 @@ public class Config extends ConfigFile {
 	public static final File CONFIG_FOLDER = Global.getInstallerDirectory();
 	public static final File CONFIG_FILE = new File(CONFIG_FOLDER, "installer.txt");
 	private static final Config INSTANCE = new Config(CONFIG_FILE);
+	
+	static {
+		INSTANCE.load();
+		
+		// Save immediately in case new options are added through an update, to make them appear in the config file.
+		// TODO Preferrably, the file should only be saved if a new option has been added.
+		
+		INSTANCE.save();
+	}
 	
 	public static Config getInstance() {
 		return INSTANCE;
@@ -23,6 +33,7 @@ public class Config extends ConfigFile {
 	public StringProperty lastBetaCraftDirectory = register("lastBetaCraftDirectory", new StringProperty());
 	public StringProperty lastMultimcDirectory = register("lastMultimcDirectory", new StringProperty());
 	public LongProperty lastVersionQueryTime = register("lastVersionQueryTime", new LongProperty(0));
+	public BooleanProperty overrideIcons = register("overrideIcons", new BooleanProperty(true));
 	
 	private Config(File file) {
 		super(file);
