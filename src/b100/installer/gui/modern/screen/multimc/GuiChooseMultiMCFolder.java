@@ -41,10 +41,35 @@ public class GuiChooseMultiMCFolder extends GuiFileChooser implements ActionList
 	public void actionPerformed(GuiElement source) {
 		if(source == buttonOpen) {
 			File launcherDirectory = getSelectedFile();
+			if(launcherDirectory == null) {
+				GuiDialog info = new GuiDialog(this);
+				info.add(new GuiTextElement().setText("Please select a folder!").setAutoSize(true));
+
+				GuiButton closeButton = new GuiButton(this, "Ok");
+				closeButton.addActionListener((e) -> info.close());
+				closeButton.width = 150;
+				info.add(closeButton);
+				
+				add(info);
+				return;
+			}
 			
 			MultiMCHelper.setLauncherDirectory(launcherDirectory);
+			File instancesDirectory = MultiMCHelper.getInstancesDirectory();
+			if(instancesDirectory == null) {
+				GuiDialog info = new GuiDialog(this);
+				info.add(new GuiTextElement().setText("Couldn't find an instances folder in\n'" + launcherDirectory.getAbsolutePath() + "'!").setAutoSize(true));
+
+				GuiButton closeButton = new GuiButton(this, "Ok");
+				closeButton.addActionListener((e) -> info.close());
+				closeButton.width = 150;
+				info.add(closeButton);
+				
+				add(info);
+				return;
+			}
 			
-			setScreen(new GuiInstallMultiMC(parentScreen, launcherDirectory));
+			setScreen(new GuiInstallMultiMC(parentScreen, launcherDirectory));	
 		}
 	}
 	
